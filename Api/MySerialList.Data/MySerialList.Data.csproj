@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190507185309_A.cs" />
+    <Compile Remove="Migrations\20190507185309_A.Designer.cs" />
+    <Compile Remove="Migrations\20190516175146_b.cs" />
+    <Compile Remove="Migrations\20190516175146_b.Designer.cs" />
+    <Compile Remove="Migrations\20190521214010_C.cs" />
+    <Compile Remove="Migrations\20190521214010_C.Designer.cs" />
+    <Compile Remove="Migrations\20190523170728_D.cs" />
+    <Compile Remove="Migrations\20190523170728_D.Designer.cs" />
+    <Compile Remove="Migrations\20190523174135_E.cs" />
+    <Compile Remove="Migrations\20190523174135_E.Designer.cs" />
+    <Compile Remove="Migrations\20190527165002_F.cs" />
+    <Compile Remove="Migrations\20190527165002_F.Designer.cs" />
+    <Compile Remove="Migrations\20190528181325_comments.cs" />
+    <Compile Remove="Migrations\20190528181325_comments.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MySerialList.Component\MySerialList.Component.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore.relational\2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
