@@ -1,0 +1,43 @@
+@import '../index.scss';
+
+footer{
+    display: flex;
+    background: $primary-color;
+    grid-area: myFooter;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $text;
+    p{
+        margin: 20px 0 5px 0;
+        font-size: 20px;
+    }
+
+    code{
+        letter-spacing: 2px;
+        margin: 2px;
+    }
+
+    .Versatile{
+        font-size: 18px;
+        margin: 15px 0 10px 0;
+        a{
+            color: $buttons;
+            margin-left: 1px;
+        }
+    }
+}
+
+@media only screen and (min-width: 768px){
+    footer{
+        p{
+            font-size: 24px;
+        }
+        code{
+            font-size: 18px;
+        }
+        .Versatile{
+            font-size: 20px;
+        }
+    }
+}
