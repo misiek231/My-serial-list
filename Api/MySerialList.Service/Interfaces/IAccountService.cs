@@ -8,9 +8,10 @@ namespace MovieBook.Service.Interfaces
 {
     public interface IAccountService
     {
-        Task<TokenModel> AuthenticateAsync(string userName, string password);
+        Task<TokenModel> AuthenticateAsync(string username, string password);
         Task CreateAsync(CreateUserModel value);
         Task UpdateAsync(int id, EditUserModel value);
         Task DeleteAsync(int id);
+        Task ConfirmEmail(string userId, string emailToken);
     }
 }

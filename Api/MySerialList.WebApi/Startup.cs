@@ -7,12 +7,14 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MovieBook.Data;
+using MovieBook.Data.Model;
 using MovieBook.Repository;
 using MovieBook.Service;
 using MovieBook.WebApi.Exception;
@@ -46,8 +48,20 @@ namespace MovieBook
             services.AddMvc();
 
             services.AddDbContext<MySerialListDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DebugConnection")) // ReleaseConnection, DebugConnection           
+                options.UseSqlServer(Configuration.GetConnectionString("RemoteConnection")) // ReleaseConnection, DebugConnection           
             );
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedEmail = true;
+            }).AddDefaultTokenProviders()
+              .AddEntityFrameworkStores<MySerialListDBContext>();
 
             ConfigureSwagger(services);
 

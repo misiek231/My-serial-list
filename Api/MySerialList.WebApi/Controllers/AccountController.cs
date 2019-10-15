@@ -19,7 +19,14 @@ namespace MovieBook.WebApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<TokenModel>> LoginAsync([FromBody]AuthenticateUserModel userParam)
         {
-            return Ok(await _accountService.AuthenticateAsync(userParam.UserName, userParam.Password));
+            return Ok(await _accountService.AuthenticateAsync(userParam.Username, userParam.Password));
+        }
+
+        [HttpGet("verify/email")]
+        public async Task<RedirectResult> ConfirmEmail(string userId, string emailToken)
+        {
+            await _accountService.ConfirmEmail(userId, emailToken);
+            return Redirect($"{Request.Scheme}://{Request.Host.Value}");
         }
 
         [HttpPost("create")]

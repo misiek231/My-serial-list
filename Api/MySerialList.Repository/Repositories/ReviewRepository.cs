@@ -76,7 +76,7 @@ namespace MovieBook.Repository.Repositories
                 {
                     Description = r.Description,
                     CreateAt = r.CreateAt.ToString(@"dd/MM/yyyy hh\:mm"),
-                    Username = r.User.Username
+                    Username = r.User.UserName
                 }).ToListAsync();
         }
 
