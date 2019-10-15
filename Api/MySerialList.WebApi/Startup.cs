@@ -67,13 +67,20 @@ namespace MovieBook
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot";
+            });
+
             return ConfigureAutofac(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseCors(b =>
             {
                 b.AllowAnyHeader()
@@ -99,8 +106,19 @@ namespace MovieBook
                 app.UseHsts();
             }
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "wwwroot";
+            });
+
             app.UseHttpsRedirection();
-            app.UseMvc();
         }
 
         private IServiceProvider ConfigureAutofac(IServiceCollection services)
