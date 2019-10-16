@@ -24,4 +24,9 @@
     <ProjectReference Include="..\MySerialList.Service\MySerialList.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="build\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

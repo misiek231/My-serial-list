@@ -69,7 +69,7 @@ namespace MovieBook
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "wwwroot";
+                configuration.RootPath = "build";
             });
 
             return ConfigureAutofac(services);
@@ -115,7 +115,7 @@ namespace MovieBook
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "wwwroot";
+                spa.Options.SourcePath = "build";
             });
 
             app.UseHttpsRedirection();
