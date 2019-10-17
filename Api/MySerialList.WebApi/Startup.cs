@@ -48,7 +48,7 @@ namespace MovieBook
             services.AddMvc();
 
             services.AddDbContext<MySerialListDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("RemoteConnection")) // ReleaseConnection, DebugConnection           
+                options.UseSqlServer(Configuration.GetConnectionString("DebugConnection")) // ReleaseConnection, DebugConnection           
             );
 
             services.AddIdentity<User, IdentityRole>(options =>

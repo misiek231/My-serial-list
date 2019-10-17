@@ -330,3 +330,6 @@ ASALocalRun/
 .mfractor/
 Api/MySerialList.WebApi/wwwroot/
 Api/MySerialList.WebApi/build/
+my_serial_list/ios/
+my_serial_list/android/
+my_serial_list/.vscode/
