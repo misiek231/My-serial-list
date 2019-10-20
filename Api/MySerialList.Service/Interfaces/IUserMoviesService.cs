@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MovieBook.Component;
-using MovieBook.Model.Movie;
-using MovieBook.Model.UserMovies;
+using MySerialList.Component;
+using MySerialList.Model.Movie;
+using MySerialList.Model.UserMovies;
 
-namespace MovieBook.Service.Interfaces
+namespace MySerialList.Service.Interfaces
 {
     public interface IUserMoviesService
     {

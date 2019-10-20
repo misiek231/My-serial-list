@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieBook.Component;
-using MovieBook.Data;
-using MovieBook.Data.Model;
-using MovieBook.Model.Movie;
-using MovieBook.Model.UserMovies;
-using MovieBook.Repository.Interfaces;
+using MySerialList.Component;
+using MySerialList.Data;
+using MySerialList.Data.Model;
+using MySerialList.Model.Movie;
+using MySerialList.Model.UserMovies;
+using MySerialList.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieBook.Repository.Repositories
+namespace MySerialList.Repository.Repositories
 {
     public class UserMoviesRepository : IUserMoviesRepository
     {

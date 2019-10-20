@@ -1,29 +1,64 @@
-﻿using Microsoft.Extensions.Options;
-using MovieBook.Model.Movie;
-using MovieBook.Repository.Interfaces;
-using MovieBook.Service.Exception;
-using MovieBook.Service.Interfaces;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
+using MySerialList.Model.Movie;
+using MySerialList.Repository.Interfaces;
+using MySerialList.Service.Exception;
+using MySerialList.Service.Interfaces;
+using MySerialList.Model.FilmProduction;
+using MySerialList.Repository.Interfaces;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace MovieBook.Service.Services
+namespace MySerialList.Service.Services
 {
-    public class MovieService : IMovieService
+    public class FilmProductionService : IFilmProductionService
     {
 
         private readonly string _apiKey;
+        private readonly string _postersPath;
         private readonly IReviewRepository _reviewRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IFilmProductionRepository _filmProductionRepository;
 
-        public MovieService(IOptions<AppSettings> appSettings, IReviewRepository reviewRepository)
+        public FilmProductionService(IOptions<AppSettings> appSettings, IReviewRepository reviewRepository, IHostingEnvironment hostingEnvironment, IFilmProductionRepository filmProductionRepository)
         {
             _apiKey = appSettings.Value.ApiKey;
+            _postersPath = appSettings.Value.PostersPath;
             _reviewRepository = reviewRepository;
+            _hostingEnvironment = hostingEnvironment;
+            _filmProductionRepository = filmProductionRepository;
+        }
+
+        public Task<IEnumerable<FilmProductionRating>> GetTopRated() => _filmProductionRepository.GetTopRated();
+
+        public async Task AddFilmProductionAsync(AddFilmProduction addFilmProduction)
+        {
+            var file = addFilmProduction.Poster;
+            string fileName = null;
+            
+            if(file != null)
+            {
+                var uploads = Path.Combine(_hostingEnvironment.WebRootPath, _postersPath);
+
+                if (file.Length > 0)
+                {
+                    fileName = Guid.NewGuid().ToString() + "." + file.FileName.Split('.').Last();
+                    var filePath = Path.Combine(uploads, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+
+            await _filmProductionRepository.AddFilmProductionAsync(addFilmProduction, fileName);
         }
 
         public async Task<Movie> GetMovie(string id)
@@ -74,25 +109,6 @@ namespace MovieBook.Service.Services
             };
         }
 
-        public async Task<IEnumerable<MovieRating>> GetTopRated()
-        {
-            List<MovieRating> movies = new List<MovieRating>();
-            foreach (MovieRating movieRating in await _reviewRepository.GetTopRated())
-            {
-                Movie movie = await GetMovie(movieRating.MovieId);
-                movies.Add(new MovieRating
-                {
-                    MovieId = movie.Id,
-                    PosterUrl = movie.Poster,
-                    Rating = movieRating.Rating,
-                    Title = movie.Title,
-                    Type = movie.Type,
-                    Votes = movieRating.Votes,
-                    Year = movie.Year
-                });
-            }
-            return movies;
-        }
 
         public async Task<MovieSearchList> SearchMovies(string title, int page)
         {

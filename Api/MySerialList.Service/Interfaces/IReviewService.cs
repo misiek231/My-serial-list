@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MovieBook.Model.Review;
+using MySerialList.Model.Review;
 
-namespace MovieBook.Service.Interfaces
+namespace MySerialList.Service.Interfaces
 {
     public interface IReviewService
     {

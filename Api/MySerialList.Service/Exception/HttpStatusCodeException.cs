@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace MovieBook.Service.Exception
+namespace MySerialList.Service.Exception
 {
     public class HttpStatusCodeException : WebException
     {

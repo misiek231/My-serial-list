@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieBook.Model.User
+namespace MySerialList.Model.User
 {
     public class TokenModel
     {

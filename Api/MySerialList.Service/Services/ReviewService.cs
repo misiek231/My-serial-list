@@ -1,14 +1,14 @@
-﻿using MovieBook.Model.Review;
-using MovieBook.Repository.Interfaces;
-using MovieBook.Service.Exception;
-using MovieBook.Service.Interfaces;
+﻿using MySerialList.Model.Review;
+using MySerialList.Repository.Interfaces;
+using MySerialList.Service.Exception;
+using MySerialList.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieBook.Service.Services
+namespace MySerialList.Service.Services
 {
     public class ReviewService : IReviewService
     {

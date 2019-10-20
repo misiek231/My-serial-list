@@ -1,5 +1,5 @@
-﻿using MovieBook.Component;
-using MovieBook.Data.Model;
+﻿using MySerialList.Component;
+using MySerialList.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

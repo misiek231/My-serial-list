@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieBook.Model.Review;
-using MovieBook.Service.Interfaces;
+using MySerialList.Model.Review;
+using MySerialList.Service.Interfaces;
 
-namespace MovieBook.WebApi.Controllers
+namespace MySerialList.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

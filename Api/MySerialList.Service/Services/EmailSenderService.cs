@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using MovieBook.Service;
+using MySerialList.Service;
 using MySerialList.Service.Interfaces;
 using SendGrid;
 using SendGrid.Helpers.Mail;

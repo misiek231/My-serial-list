@@ -1,10 +1,10 @@
-﻿using MovieBook.Component;
+﻿using MySerialList.Component;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace MovieBook.Model.UserMovies
+namespace MySerialList.Model.UserMovies
 {
     public class AddUserMovieModel
     {

@@ -1,4 +1,4 @@
-﻿using MovieBook.Data.Model;
+﻿using MySerialList.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,6 +18,6 @@ namespace MySerialList.Data.Model
 
         [ForeignKey("FilmProductionId")]
         public virtual FilmProduction FilmProduction { get; set; }
-        public virtual IEnumerable<Review> Reviews { get; set; }
+        public virtual IEnumerable<ReviewFilmProduction> Reviews { get; set; }
     }
 }

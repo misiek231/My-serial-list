@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace MovieBook.Repository
+namespace MySerialList.Repository
 {
     public class RepositoryModule : Module
     {

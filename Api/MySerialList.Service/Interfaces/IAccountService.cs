@@ -1,10 +1,10 @@
-﻿using MovieBook.Model.User;
+﻿using MySerialList.Model.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieBook.Service.Interfaces
+namespace MySerialList.Service.Interfaces
 {
     public interface IAccountService
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieBook.Model.Movie
+namespace MySerialList.Model.Movie
 {
     public class MovieSearchList
     {

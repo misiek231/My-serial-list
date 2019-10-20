@@ -55,18 +55,12 @@ namespace MySerialList.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: true),
                     Released = table.Column<DateTime>(nullable: false),
-                    Runtime = table.Column<string>(nullable: true),
                     Genre = table.Column<string>(nullable: true),
                     Director = table.Column<string>(nullable: true),
                     Actors = table.Column<string>(nullable: true),
                     Plot = table.Column<string>(nullable: true),
                     Language = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    Awards = table.Column<string>(nullable: true),
                     Poster = table.Column<string>(nullable: true),
-                    BoxOffice = table.Column<string>(nullable: true),
-                    Production = table.Column<string>(nullable: true),
-                    Website = table.Column<string>(nullable: true),
                     IsSeries = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -259,33 +253,60 @@ namespace MySerialList.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "EpisodeReviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: true),
-                    FilmProductionId = table.Column<int>(nullable: true),
-                    EpisodeId = table.Column<int>(nullable: true),
+                    EpisodeId = table.Column<int>(nullable: false),
                     Grade = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_EpisodeReviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Episodes_EpisodeId",
+                        name: "FK_EpisodeReviews_Episodes_EpisodeId",
+                        column: x => x.EpisodeId,
+                        principalTable: "Episodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EpisodeReviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FilmProductionReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    FilmProductionId = table.Column<int>(nullable: false),
+                    Grade = table.Column<int>(nullable: false),
+                    EpisodeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FilmProductionReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FilmProductionReviews_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reviews_FilmProductions_FilmProductionId",
+                        name: "FK_FilmProductionReviews_FilmProductions_FilmProductionId",
                         column: x => x.FilmProductionId,
                         principalTable: "FilmProductions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_UserId",
+                        name: "FK_FilmProductionReviews_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -369,23 +390,33 @@ namespace MySerialList.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EpisodeReviews_EpisodeId",
+                table: "EpisodeReviews",
+                column: "EpisodeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EpisodeReviews_UserId",
+                table: "EpisodeReviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Episodes_FilmProductionId",
                 table: "Episodes",
                 column: "FilmProductionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_EpisodeId",
-                table: "Reviews",
+                name: "IX_FilmProductionReviews_EpisodeId",
+                table: "FilmProductionReviews",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_FilmProductionId",
-                table: "Reviews",
+                name: "IX_FilmProductionReviews_FilmProductionId",
+                table: "FilmProductionReviews",
                 column: "FilmProductionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserId",
-                table: "Reviews",
+                name: "IX_FilmProductionReviews_UserId",
+                table: "FilmProductionReviews",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -430,7 +461,10 @@ namespace MySerialList.Data.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "EpisodeReviews");
+
+            migrationBuilder.DropTable(
+                name: "FilmProductionReviews");
 
             migrationBuilder.DropTable(
                 name: "WatchingEpisodeStatuses");

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace MovieBook.Service
+namespace MySerialList.Service
 {
     public class ServiceModule : Module
     {

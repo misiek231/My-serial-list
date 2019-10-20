@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieBook.Model.Review
+namespace MySerialList.Model.Review
 {
     public class CommentModel
     {

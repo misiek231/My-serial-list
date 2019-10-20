@@ -2,7 +2,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace MovieBook.Component
+namespace MySerialList.Component
 {
     public class Helpers
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieBook.Model.User;
-using MovieBook.Service.Interfaces;
+using MySerialList.Model.User;
+using MySerialList.Service.Interfaces;
 using System.Threading.Tasks;
 
-namespace MovieBook.WebApi.Controllers
+namespace MySerialList.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

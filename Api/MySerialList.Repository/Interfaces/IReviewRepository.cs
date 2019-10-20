@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MovieBook.Model.Movie;
-using MovieBook.Model.Review;
+using MySerialList.Model.Movie;
+using MySerialList.Model.Review;
 
-namespace MovieBook.Repository.Interfaces
+namespace MySerialList.Repository.Interfaces
 {
     public interface IReviewRepository
     {
@@ -13,7 +13,7 @@ namespace MovieBook.Repository.Interfaces
         Task<IEnumerable<CommentModel>> GetComments(string movieId);
         Task<bool> IsReviewAdded(string movieId, int userId);
         Task<RatingModel> GetRating(string movieId);
-        Task<IEnumerable<MovieRating>> GetTopRated();
+        Task<IEnumerable<FilmProductionRating>> GetTopRated();
         Task<bool> IsCommentAdded(string movieId, int userId);
         Task AddComment(AddCommentModel addCommentModel, int userId);
     }

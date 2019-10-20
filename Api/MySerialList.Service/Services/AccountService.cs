@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MovieBook.Component;
-using MovieBook.Data.Model;
-using MovieBook.Model.User;
-using MovieBook.Repository.Interfaces;
-using MovieBook.Service.Exception;
-using MovieBook.Service.Interfaces;
+using MySerialList.Component;
+using MySerialList.Data.Model;
+using MySerialList.Model.User;
+using MySerialList.Repository.Interfaces;
+using MySerialList.Service.Exception;
+using MySerialList.Service.Interfaces;
 using MySerialList.Service.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MovieBook.Service.Services
+namespace MySerialList.Service.Services
 {
     public class AccountService : IAccountService
     {
@@ -94,11 +94,11 @@ namespace MovieBook.Service.Services
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, value.Password);
-
+          
             if (result.Succeeded)
             {
                 User newUser = await _userManager.FindByEmailAsync(user.Email);
-                string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 string callbackUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://" +
                     $"{_httpContextAccessor.HttpContext.Request.Host.Value}" +
                     $"/api/Account/verify/email?userId=" +

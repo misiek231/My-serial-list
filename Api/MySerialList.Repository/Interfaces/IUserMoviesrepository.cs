@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MovieBook.Component;
-using MovieBook.Data.Model;
-using MovieBook.Model.Movie;
-using MovieBook.Model.UserMovies;
+using MySerialList.Component;
+using MySerialList.Data.Model;
+using MySerialList.Model.Movie;
+using MySerialList.Model.UserMovies;
 
-namespace MovieBook.Repository.Interfaces
+namespace MySerialList.Repository.Interfaces
 {
     public interface IUserMoviesRepository
     {

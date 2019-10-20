@@ -1,23 +1,23 @@
-﻿using MovieBook.Component;
-using MovieBook.Model.Movie;
-using MovieBook.Model.UserMovies;
-using MovieBook.Repository.Interfaces;
-using MovieBook.Service.Exception;
-using MovieBook.Service.Interfaces;
+﻿using MySerialList.Component;
+using MySerialList.Model.Movie;
+using MySerialList.Model.UserMovies;
+using MySerialList.Repository.Interfaces;
+using MySerialList.Service.Exception;
+using MySerialList.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieBook.Service.Services
+namespace MySerialList.Service.Services
 {
     public class UserMoviesService : IUserMoviesService
     {
         private readonly IUserMoviesRepository _userMoviesRepository;
-        private readonly IMovieService _movieService;
+        private readonly IFilmProductionService _movieService;
         private readonly IReviewService _reviewService;
-        public UserMoviesService(IUserMoviesRepository userMoviesRepository, IMovieService movieService, IReviewService reviewService)
+        public UserMoviesService(IUserMoviesRepository userMoviesRepository, IFilmProductionService movieService, IReviewService reviewService)
         {
             _userMoviesRepository = userMoviesRepository;
             _movieService = movieService;

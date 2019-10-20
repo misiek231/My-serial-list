@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MovieBook.Data;
+using MySerialList.Data;
 
 namespace MySerialList.Data.Migrations
 {
     [DbContext(typeof(MySerialListDBContext))]
-    [Migration("20191017204208_A")]
+    [Migration("20191020214128_A")]
     partial class A
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,7 +131,7 @@ namespace MySerialList.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MovieBook.Data.Model.Comment", b =>
+            modelBuilder.Entity("MySerialList.Data.Model.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,80 @@ namespace MySerialList.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("MovieBook.Data.Model.Review", b =>
+            modelBuilder.Entity("MySerialList.Data.Model.Episode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EpisodeNumber");
+
+                    b.Property<int>("FilmProductionId");
+
+                    b.Property<DateTime>("Released");
+
+                    b.Property<int>("Season");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilmProductionId");
+
+                    b.ToTable("Episodes");
+                });
+
+            modelBuilder.Entity("MySerialList.Data.Model.FilmProduction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Actors");
+
+                    b.Property<string>("Director");
+
+                    b.Property<string>("Genre");
+
+                    b.Property<bool>("IsSeries");
+
+                    b.Property<string>("Language");
+
+                    b.Property<string>("Plot");
+
+                    b.Property<string>("Poster");
+
+                    b.Property<DateTime>("Released");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FilmProductions");
+                });
+
+            modelBuilder.Entity("MySerialList.Data.Model.ReviewEpisode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EpisodeId");
+
+                    b.Property<int>("Grade");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EpisodeReviews");
+                });
+
+            modelBuilder.Entity("MySerialList.Data.Model.ReviewFilmProduction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,7 +235,7 @@ namespace MySerialList.Data.Migrations
 
                     b.Property<int?>("EpisodeId");
 
-                    b.Property<int?>("FilmProductionId");
+                    b.Property<int>("FilmProductionId");
 
                     b.Property<int>("Grade");
 
@@ -176,10 +249,10 @@ namespace MySerialList.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("FilmProductionReviews");
                 });
 
-            modelBuilder.Entity("MovieBook.Data.Model.User", b =>
+            modelBuilder.Entity("MySerialList.Data.Model.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -230,91 +303,6 @@ namespace MySerialList.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("MovieBook.Data.Model.WatchingFilmProductionStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FilmProductionId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("WatchingStatus");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FilmProductionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("WatchingFilmProductionStatuses");
-                });
-
-            modelBuilder.Entity("MySerialList.Data.Model.Episode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EpisodeNumber");
-
-                    b.Property<int>("FilmProductionId");
-
-                    b.Property<DateTime>("Released");
-
-                    b.Property<int>("Season");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FilmProductionId");
-
-                    b.ToTable("Episodes");
-                });
-
-            modelBuilder.Entity("MySerialList.Data.Model.FilmProduction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Actors");
-
-                    b.Property<string>("Awards");
-
-                    b.Property<string>("BoxOffice");
-
-                    b.Property<string>("Country");
-
-                    b.Property<string>("Director");
-
-                    b.Property<string>("Genre");
-
-                    b.Property<bool>("IsSeries");
-
-                    b.Property<string>("Language");
-
-                    b.Property<string>("Plot");
-
-                    b.Property<string>("Poster");
-
-                    b.Property<string>("Production");
-
-                    b.Property<DateTime>("Released");
-
-                    b.Property<string>("Runtime");
-
-                    b.Property<string>("Title");
-
-                    b.Property<string>("Website");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FilmProductions");
-                });
-
             modelBuilder.Entity("MySerialList.Data.Model.WatchingEpisodeStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -336,6 +324,27 @@ namespace MySerialList.Data.Migrations
                     b.ToTable("WatchingEpisodeStatuses");
                 });
 
+            modelBuilder.Entity("MySerialList.Data.Model.WatchingFilmProductionStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FilmProductionId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("WatchingStatus");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilmProductionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WatchingFilmProductionStatuses");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -346,7 +355,7 @@ namespace MySerialList.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MovieBook.Data.Model.User")
+                    b.HasOne("MySerialList.Data.Model.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -354,7 +363,7 @@ namespace MySerialList.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MovieBook.Data.Model.User")
+                    b.HasOne("MySerialList.Data.Model.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -367,7 +376,7 @@ namespace MySerialList.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MovieBook.Data.Model.User")
+                    b.HasOne("MySerialList.Data.Model.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -375,48 +384,21 @@ namespace MySerialList.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MovieBook.Data.Model.User")
+                    b.HasOne("MySerialList.Data.Model.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MovieBook.Data.Model.Comment", b =>
+            modelBuilder.Entity("MySerialList.Data.Model.Comment", b =>
                 {
                     b.HasOne("MySerialList.Data.Model.FilmProduction", "FilmProduction")
                         .WithMany("Comments")
                         .HasForeignKey("FilmProductionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MovieBook.Data.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MovieBook.Data.Model.Review", b =>
-                {
-                    b.HasOne("MySerialList.Data.Model.Episode", "Episode")
-                        .WithMany("Reviews")
-                        .HasForeignKey("EpisodeId");
-
-                    b.HasOne("MySerialList.Data.Model.FilmProduction", "FilmProduction")
-                        .WithMany("Reviews")
-                        .HasForeignKey("FilmProductionId");
-
-                    b.HasOne("MovieBook.Data.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MovieBook.Data.Model.WatchingFilmProductionStatus", b =>
-                {
-                    b.HasOne("MySerialList.Data.Model.FilmProduction", "FilmProduction")
-                        .WithMany()
-                        .HasForeignKey("FilmProductionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MovieBook.Data.Model.User", "User")
-                        .WithMany()
+                    b.HasOne("MySerialList.Data.Model.User", "User")
+                        .WithMany("Comments")
                         .HasForeignKey("UserId");
                 });
 
@@ -428,6 +410,34 @@ namespace MySerialList.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MySerialList.Data.Model.ReviewEpisode", b =>
+                {
+                    b.HasOne("MySerialList.Data.Model.Episode", "Episode")
+                        .WithMany()
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MySerialList.Data.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MySerialList.Data.Model.ReviewFilmProduction", b =>
+                {
+                    b.HasOne("MySerialList.Data.Model.Episode")
+                        .WithMany("Reviews")
+                        .HasForeignKey("EpisodeId");
+
+                    b.HasOne("MySerialList.Data.Model.FilmProduction", "FilmProduction")
+                        .WithMany("Reviews")
+                        .HasForeignKey("FilmProductionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MySerialList.Data.Model.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("MySerialList.Data.Model.WatchingEpisodeStatus", b =>
                 {
                     b.HasOne("MySerialList.Data.Model.Episode", "Episode")
@@ -435,8 +445,20 @@ namespace MySerialList.Data.Migrations
                         .HasForeignKey("EpisodeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MovieBook.Data.Model.User", "User")
+                    b.HasOne("MySerialList.Data.Model.User", "User")
+                        .WithMany("WatchingEpisodeStatuses")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MySerialList.Data.Model.WatchingFilmProductionStatus", b =>
+                {
+                    b.HasOne("MySerialList.Data.Model.FilmProduction", "FilmProduction")
                         .WithMany()
+                        .HasForeignKey("FilmProductionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MySerialList.Data.Model.User", "User")
+                        .WithMany("WatchingFilmProductionStatuses")
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

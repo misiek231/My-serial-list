@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieBook.Model.Movie
+namespace MySerialList.Model.Movie
 {
-    public class MovieRating
+    public class FilmProductionRating
     {
         public string Title { get; set; }
-        public string Type { get; set; }
-        public string Year { get; set; }
-        public string MovieId { get; set; }
-        public string PosterUrl { get; set; }
+        public string Genre { get; set; }
+        public DateTime Released { get; set; }
+        public int FilmProductionId { get; set; }
+        public string Poster { get; set; }
         public int Votes { get; set; }
         public double Rating { get; set; }
     }

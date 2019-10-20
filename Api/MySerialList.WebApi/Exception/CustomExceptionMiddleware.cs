@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using MovieBook.Service.Exception;
+using MySerialList.Service.Exception;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace MovieBook.WebApi.Exception
+namespace MySerialList.WebApi.Exception
 {
     public class CustomExceptionMiddleware
     {

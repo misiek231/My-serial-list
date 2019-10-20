@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieBook.Model.User
+namespace MySerialList.Model.User
 {
     public class EditUserModel
     {

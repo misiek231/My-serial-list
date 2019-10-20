@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MovieBook.Component
+namespace MySerialList.Component
 {
     public enum WatchingStatus
     {

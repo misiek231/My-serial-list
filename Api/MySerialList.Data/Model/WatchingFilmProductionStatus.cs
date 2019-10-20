@@ -1,8 +1,8 @@
-﻿using MovieBook.Component;
+﻿using MySerialList.Component;
 using MySerialList.Data.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MovieBook.Data.Model
+namespace MySerialList.Data.Model
 {
     public class WatchingFilmProductionStatus
     {
