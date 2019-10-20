@@ -1,6 +1,6 @@
 @import '../../index.scss';
 
-main{
+.signIn, .signUp{
     background: $secondary-color;
     display: flex;
     flex-direction: column;
@@ -67,7 +67,7 @@ main{
         color: $text;
         font-weight: bold;
         font-size: 25px;
-        margin: 20px 0 0 0;
+        margin: 40px 0 0 0;
     }
     p{
         color: $secondary-text;
