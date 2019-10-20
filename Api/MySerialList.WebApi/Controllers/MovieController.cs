@@ -20,6 +20,13 @@ namespace MovieBook.WebApi.Controllers
             _movieService = movieService;
         }
 
+        [HttpPost("add")]
+        public async Task<ActionResult> AddMovieAsync(string title, int page)
+        {
+            await _movieService.SearchMovies(title, page);
+            return Ok();
+        }
+
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<MovieSearchList>>> SearchMovies(string title, int page)
         {

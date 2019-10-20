@@ -4,7 +4,7 @@ export const CompulsoryContext = createContext();
 
 const CompulsoryContextProvider = (props) => {
     const [compulsoryData] = useState({
-        ip: 'http://35.184.110.50'
+        ip: 'https://myseriallist.ml'
     });
 
     return (

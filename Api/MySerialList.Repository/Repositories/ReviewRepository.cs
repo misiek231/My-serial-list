@@ -24,10 +24,10 @@ namespace MovieBook.Repository.Repositories
         {
             await _movieBookDBContext.Comments.AddAsync(new Comment
             {
-                MovieId = addCommentModel.MovieId,
+                //MovieId = addCommentModel.MovieId,
                 Description = addCommentModel.Description,
                 CreateAt = DateTime.Now,
-                UserId = userId
+              //  UserId = userId
             });
 
             await _movieBookDBContext.SaveChangesAsync();
@@ -37,9 +37,9 @@ namespace MovieBook.Repository.Repositories
         {
             await _movieBookDBContext.Reviews.AddAsync(new Review
             {
-                MovieId = addReviewModel.MovieId,
+                //MovieId = addReviewModel.MovieId,
                 Grade = addReviewModel.Grade,
-                UserId = userId
+               // UserId = userId
             });
 
             await _movieBookDBContext.SaveChangesAsync();
@@ -48,12 +48,12 @@ namespace MovieBook.Repository.Repositories
         public async Task<RatingModel> GetRating(string movieId)
         {
             RatingModel i = await _movieBookDBContext.Reviews
-                .Where(r => r.MovieId == movieId)
-                .GroupBy(o => new { o.MovieId })
+               // .Where(r => r.MovieId == movieId)
+               // .GroupBy(o => new { o.MovieId })
                 .Select(g => new RatingModel
                 {
-                    Rating = Math.Round(g.Average(r => r.Grade), 1) ,
-                    Votes = g.Count()
+                   // Rating = Math.Round(g.Average(r => r.Grade), 1) ,
+                    //Votes = g.Count()
                 }).FirstOrDefaultAsync();
 
             if (i == null)
@@ -71,41 +71,41 @@ namespace MovieBook.Repository.Repositories
         public async Task<IEnumerable<CommentModel>> GetComments(string movieId)
         {
             return await _movieBookDBContext.Comments
-                .Where(r => r.MovieId == movieId)
+               // .Where(r => r.MovieId == movieId)
                 .Select(r => new CommentModel
                 {
                     Description = r.Description,
                     CreateAt = r.CreateAt.ToString(@"dd/MM/yyyy hh\:mm"),
-                    Username = r.User.Username
+                    Username = r.User.UserName
                 }).ToListAsync();
         }
 
         public async Task<IEnumerable<MovieRating>> GetTopRated()
         {
             return await _movieBookDBContext.Reviews
-                .GroupBy(o => new { o.MovieId })
-                .OrderByDescending(g => g.Average(r => r.Grade))
+               // .GroupBy(o => new { o.MovieId })
+               // .OrderByDescending(g => g.Average(r => r.Grade))
                 .Select(g => new MovieRating
                 {
-                    MovieId = g.Key.MovieId,
-                    Rating = Math.Round(g.Average(r => r.Grade), 1),
-                    Votes = g.Count()
+                   // MovieId = g.Key.MovieId,
+                 //   Rating = Math.Round(g.Average(r => r.Grade), 1),
+                 //   Votes = g.Count()
                 }).ToListAsync();
         }
 
         public async Task<bool> IsCommentAdded(string movieId, int userId)
         {
             return await _movieBookDBContext.Comments
-                .Where(r => r.MovieId == movieId)
-                .Where(r => r.UserId == userId)
+                //.Where(r => r.MovieId == movieId)
+             //   .Where(r => r.UserId == userId)
                 .AnyAsync();
         }
 
         public async Task<bool> IsReviewAdded(string movieId, int userId)
         {
             return await _movieBookDBContext.Reviews
-                 .Where(r => r.MovieId == movieId)
-                 .Where(r => r.UserId == userId)
+                // .Where(r => r.MovieId == movieId)
+                 //.Where(r => r.UserId == userId)
                  .AnyAsync();
         }
     }

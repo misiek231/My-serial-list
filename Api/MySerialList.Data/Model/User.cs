@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using MySerialList.Data.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MovieBook.Data.Model
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string HashedPassword { get; set; }
-        public string Email { get; set; }
-        public byte[] Salt { get; set; }
+        public virtual IEnumerable<Review> Reviews { get; set; }
+        public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual IEnumerable<WatchingFilmProductionStatus> WatchingFilmProductionStatuses { get; set; }
+        public virtual IEnumerable<WatchingEpisodeStatus> WatchingEpisodeStatuses { get; set; }
     }
 }
