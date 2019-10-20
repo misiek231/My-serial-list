@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import SignUp from './components/SignUpComponents/SignUp';
 import SignIn from './components/SignInComponents/SignIn';
 import Footer from './components/Footer';
+import ListView from './components/ListViewComponents/ListView';
 import SignUpContextProvider from './contexts/SignUpContext';
 import SignInContextProvider from './contexts/SignInContext';
 import CompulsoryContextProvider from './contexts/CompulsoryContext';
@@ -24,6 +25,7 @@ function App() {
             <SignIn/>
           </SignInContextProvider>
         </Route>
+        <Route path="/listview/current" render={() => <ListView  status={0} header={"Aktualnie oglądane:"} />} />
       </Switch>
       <Footer/>
       </CompulsoryContextProvider>

@@ -12,7 +12,7 @@ html,body{
 .App{
     display: grid;
     min-height: 100vh;
-    grid-template-rows: 80px minmax(70vh, auto) 1fr;
+    grid-template-rows: 80px minmax(calc(80vh - 80px), auto) 150px;
     grid-template-areas: 
     'myHeader myHeader myHeader'
     'myMain myMain myMain'

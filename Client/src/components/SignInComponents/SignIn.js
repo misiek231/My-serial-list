@@ -5,7 +5,7 @@ import SignInForm from './SignInForm';
 
 const SignIn = () => {
     return ( 
-        <main>  
+        <main className="signIn">  
             <div className="spider">
                 <img src={spider} alt=""/>
                 <h1>Zaloguj się</h1>
