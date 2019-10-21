@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Header.scss';
+import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 
 // Header visible on every page 
@@ -7,8 +8,8 @@ import { Icon } from 'antd';
 const Header = () => {
     return ( 
         <header>
-            <Icon type="read" />
-            <h1>MySerialList</h1>
+            <Icon type="read"/>
+            <Link to="/">MySerialList</Link>
         </header>
      );
 }

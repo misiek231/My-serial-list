@@ -8,6 +8,7 @@ import ListView from './components/ListViewComponents/ListView';
 import SignUpContextProvider from './contexts/SignUpContext';
 import SignInContextProvider from './contexts/SignInContext';
 import CompulsoryContextProvider from './contexts/CompulsoryContext';
+import Welcome from './components/Welcome';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
       <CompulsoryContextProvider>
       <Header/>
       <Switch>
+        <Route exact path="/">
+          <Welcome/>
+        </Route>
         <Route exact path="/signup">
           <SignUpContextProvider>
             <SignUp/>
