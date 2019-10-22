@@ -10,7 +10,7 @@ using MySerialList.Data;
 namespace MySerialList.Data.Migrations
 {
     [DbContext(typeof(MySerialListDBContext))]
-    [Migration("20191020214128_A")]
+    [Migration("20191022160014_A")]
     partial class A
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,7 +197,7 @@ namespace MySerialList.Data.Migrations
 
                     b.Property<string>("Poster");
 
-                    b.Property<DateTime>("Released");
+                    b.Property<string>("Released");
 
                     b.Property<string>("Title");
 

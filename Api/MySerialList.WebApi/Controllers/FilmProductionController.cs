@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MySerialList.Model.Movie;
-using MySerialList.Service.Interfaces;
 using MySerialList.Model.FilmProduction;
+using MySerialList.Service.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MySerialList.WebApi.Controllers
 {
@@ -29,22 +25,22 @@ namespace MySerialList.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<MovieSearchList>>> SearchFilmProduction(string title, int page)
+        [HttpGet("search/{title}")]
+        public async Task<ActionResult<IEnumerable<FilmProductionSearch>>> SearchFilmProduction(string title, int page = 1)
         {
-            return Ok(await _filmProductionService.SearchMovies(title, page));
+            return Ok(await _filmProductionService.SearchFilmProductions(title, page));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetFilmProduction(string id)
+        public async Task<ActionResult<FilmProductionData>> GetFilmProduction(int id)
         {
-            return Ok(await _filmProductionService.GetMovie(id));
+            return Ok(await _filmProductionService.GetFilmProduction(id));
         }
 
         [HttpGet("top_rated")]
-        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetTopRated()
+        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetTopRated(int page = 1)
         {
-            return Ok(await _filmProductionService.GetTopRated());
+            return Ok(await _filmProductionService.GetTopRated(page));
         }
     }
 }

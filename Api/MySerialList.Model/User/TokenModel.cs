@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MySerialList.Model.User
+﻿namespace MySerialList.Model.User
 {
     public class TokenModel
     {

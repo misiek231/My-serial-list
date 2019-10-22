@@ -36,7 +36,7 @@ namespace MySerialList.WebApi.Controllers
             return Ok();
         }
 
-       // [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Administrator")]
         [HttpPut("update/{id}")]
         public async Task<ActionResult> UpdateUserAsync(int id, [FromBody] EditUserModel value)
         {
@@ -44,7 +44,7 @@ namespace MySerialList.WebApi.Controllers
             return Ok();
         }
 
-       // [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Administrator")]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {

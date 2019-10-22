@@ -1,7 +1,5 @@
-﻿using MySerialList.Data.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MySerialList.Data.Model
 {
@@ -9,7 +7,7 @@ namespace MySerialList.Data.Model
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime Released { get; set; }
+        public string Released { get; set; }
         public string Genre { get; set; }
         public string Director { get; set; }
         public string Actors { get; set; }

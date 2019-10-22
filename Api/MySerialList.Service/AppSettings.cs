@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace MySerialList.Service
+﻿namespace MySerialList.Service
 {
     public class AppSettings
     {

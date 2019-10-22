@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySerialList.Data;
 using MySerialList.Data.Model;
-using MySerialList.Model.Movie;
+using MySerialList.Model.FilmProduction;
 using MySerialList.Model.Review;
 using MySerialList.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MySerialList.Repository.Repositories
@@ -24,23 +23,36 @@ namespace MySerialList.Repository.Repositories
         {
             await _movieBookDBContext.Comments.AddAsync(new Comment
             {
-                //MovieId = addCommentModel.MovieId,
+                //FilmProductionId = addCommentModel.FilmProductionId,
                 Description = addCommentModel.Description,
                 CreateAt = DateTime.Now,
-              //  UserId = userId
+                //  UserId = userId
             });
 
             await _movieBookDBContext.SaveChangesAsync();
         }
 
-        public async Task AddReview(AddReviewModel addReviewModel, int userId)
+        public async Task AddOrUpdateReview(AddReviewModel addReviewModel, string userId)
         {
-            await _movieBookDBContext.FilmProductionReviews.AddAsync(new ReviewFilmProduction
+            IQueryable<ReviewFilmProduction> qr = _movieBookDBContext.FilmProductionReviews
+                .Where(r => r.UserId == userId)
+                .Where(r => r.FilmProductionId == addReviewModel.FilmProductionId);
+
+            if (await qr.AnyAsync())
             {
-                //MovieId = addReviewModel.MovieId,
-                Grade = addReviewModel.Grade,
-               // UserId = userId
-            });
+                ReviewFilmProduction model = await qr.FirstAsync();
+                model.Grade = addReviewModel.Grade;
+                _movieBookDBContext.FilmProductionReviews.Update(model);
+            }
+            else
+            {
+                await _movieBookDBContext.FilmProductionReviews.AddAsync(new ReviewFilmProduction
+                {
+                    FilmProductionId = addReviewModel.FilmProductionId,
+                    Grade = addReviewModel.Grade,
+                    UserId = userId
+                });
+            }
 
             await _movieBookDBContext.SaveChangesAsync();
         }
@@ -48,11 +60,11 @@ namespace MySerialList.Repository.Repositories
         public async Task<RatingModel> GetRating(string movieId)
         {
             RatingModel i = await _movieBookDBContext.FilmProductionReviews
-               // .Where(r => r.MovieId == movieId)
-               // .GroupBy(o => new { o.MovieId })
+                // .Where(r => r.FilmProductionId == movieId)
+                // .GroupBy(o => new { o.FilmProductionId })
                 .Select(g => new RatingModel
                 {
-                   // Rating = Math.Round(g.Average(r => r.Grade), 1) ,
+                    // Rating = Math.Round(g.Average(r => r.Grade), 1) ,
                     //Votes = g.Count()
                 }).FirstOrDefaultAsync();
 
@@ -71,7 +83,7 @@ namespace MySerialList.Repository.Repositories
         public async Task<IEnumerable<CommentModel>> GetComments(string movieId)
         {
             return await _movieBookDBContext.Comments
-               // .Where(r => r.MovieId == movieId)
+                // .Where(r => r.FilmProductionId == movieId)
                 .Select(r => new CommentModel
                 {
                     Description = r.Description,
@@ -83,30 +95,39 @@ namespace MySerialList.Repository.Repositories
         public async Task<IEnumerable<FilmProductionRating>> GetTopRated()
         {
             return await _movieBookDBContext.FilmProductionReviews
-               // .GroupBy(o => new { o.MovieId })
-               // .OrderByDescending(g => g.Average(r => r.Grade))
+                // .GroupBy(o => new { o.FilmProductionId })
+                // .OrderByDescending(g => g.Average(r => r.Grade))
                 .Select(g => new FilmProductionRating
                 {
-                   // MovieId = g.Key.MovieId,
-                 //   Rating = Math.Round(g.Average(r => r.Grade), 1),
-                 //   Votes = g.Count()
+                    // FilmProductionId = g.Key.FilmProductionId,
+                    //   Rating = Math.Round(g.Average(r => r.Grade), 1),
+                    //   Votes = g.Count()
                 }).ToListAsync();
         }
 
         public async Task<bool> IsCommentAdded(string movieId, int userId)
         {
             return await _movieBookDBContext.Comments
-                //.Where(r => r.MovieId == movieId)
-             //   .Where(r => r.UserId == userId)
+                //.Where(r => r.FilmProductionId == movieId)
+                //   .Where(r => r.UserId == userId)
                 .AnyAsync();
         }
 
-        public async Task<bool> IsReviewAdded(string movieId, int userId)
+        public async Task<int?> GetUserReviewAsync(int filmProductionId, string userId)
         {
-            return await _movieBookDBContext.FilmProductionReviews
-                // .Where(r => r.MovieId == movieId)
-                 //.Where(r => r.UserId == userId)
-                 .AnyAsync();
+            IQueryable<int> qr = _movieBookDBContext.FilmProductionReviews
+                .Where(r => r.UserId == userId)
+                .Where(r => r.FilmProductionId == filmProductionId)
+                .Select(r => r.Grade);
+
+            if (await qr.AnyAsync())
+            {
+                return await qr.FirstOrDefaultAsync();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

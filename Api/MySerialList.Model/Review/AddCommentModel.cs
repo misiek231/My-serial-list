@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MySerialList.Model.Review
 {
     public class AddCommentModel
     {
         [Required]
-        public string MovieId { get; set; }
+        public string FilmProductionId { get; set; }
         [Required]
         public string Description { get; set; }
     }

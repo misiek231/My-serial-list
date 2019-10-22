@@ -1,16 +1,15 @@
-﻿using System;
+﻿using MySerialList.Model.Review;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using MySerialList.Model.Review;
 
 namespace MySerialList.Service.Interfaces
 {
     public interface IReviewService
     {
-        Task AddReview(AddReviewModel addReviewModel, int userId);
+        Task AddOrUpdateReview(AddReviewModel addReviewModel, string userId);
         Task<IEnumerable<CommentModel>> GetComments(string movieId);
         Task<RatingModel> GetRating(string movieId);
         Task AddComment(AddCommentModel addCommentModel, int userId);
+        Task<int?> GetUserReviewAsync(int filmProductionId, string userId);
     }
 }
