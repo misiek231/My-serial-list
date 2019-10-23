@@ -35,7 +35,7 @@ namespace MySerialList.Repository.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exsists(int filmProductionId)
+        public async Task<bool> ExsistsAsync(int filmProductionId)
         {
             return await _dbContext.FilmProductions.Where(f => f.Id == filmProductionId).AnyAsync();
         }
@@ -74,6 +74,11 @@ namespace MySerialList.Repository.Repositories
                 Votes = f.Reviews.Count()
             }).Skip(from).Take(to).ToListAsync();
 
+        }
+
+        public async Task<bool> IsSeriesAsync(int filmProductionId)
+        {
+            return await _dbContext.FilmProductions.Where(f => f.Id == filmProductionId).Select(f => f.IsSeries).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int from, int to)

@@ -2,7 +2,7 @@
 
 namespace MySerialList.Model.Review
 {
-    public class AddReviewModel
+    public class AddReviewFilmProductionModel
     {
         [Required]
         public int FilmProductionId { get; set; }

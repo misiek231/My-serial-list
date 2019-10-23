@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 
 namespace MySerialList.Service.Interfaces
 {
-    public interface IReviewService
+    public interface IReviewFilmProductionService
     {
-        Task AddOrUpdateReview(AddReviewModel addReviewModel, string userId);
-        Task<IEnumerable<CommentModel>> GetComments(string movieId);
-        Task<RatingModel> GetRating(string movieId);
-        Task AddComment(AddCommentModel addCommentModel, int userId);
+        Task AddOrUpdateReviewAsync(AddReviewFilmProductionModel addReviewModel, string userId);
+        Task<IEnumerable<CommentModel>> GetCommentsAsync(int filmProductionId, string name);
+        Task<RatingModel> GetRatingAsync(int filmProductionId);
+        Task AddCommentAsync(AddCommentModel addCommentModel, string userId);
         Task<int?> GetUserReviewAsync(int filmProductionId, string userId);
+        Task EditCommentAsync(AddCommentModel addCommentModel, int id, string userId);
     }
 }

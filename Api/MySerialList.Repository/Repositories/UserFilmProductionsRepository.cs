@@ -52,7 +52,7 @@ namespace MySerialList.Repository.Repositories
 
         }
 
-        public async Task<bool> IsFilmProductionAdded(int movieId, string userId)
+        public async Task<bool> IsFilmProductionAddedAsync(int movieId, string userId)
         {
             //return await _movieBookDBContext.UserFilmProductions
             //    .Where(u => u.FilmProductionId == movieId)

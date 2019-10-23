@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using MySerialList.Data;
 using MySerialList.Data.Model;
+using MySerialList.Service;
 using MySerialList.WebApi.Exception;
 using MySerialList.WebApi.Extensions;
 using System;
+using System.IO;
 
 namespace MySerialList
 {
@@ -71,6 +75,25 @@ namespace MySerialList
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseStaticFiles();
+
+            AppSettings appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
+            string postersPath;
+
+            if (env.IsDevelopment())
+            {
+                postersPath = appSettings.DebugPostersPath;
+            }
+            else
+            {
+                postersPath = appSettings.PostersPath;
+            }
+
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(postersPath),
+                RequestPath = "/images",
+                EnableDirectoryBrowsing = true
+            });
             app.UseSpaStaticFiles();
             app.UseCors(b =>
             {
@@ -88,9 +111,11 @@ namespace MySerialList
 
             app.UseAuthentication();
 
+            
+
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage(); 
+                //app.UseDeveloperExceptionPage();
             }
             else
             {

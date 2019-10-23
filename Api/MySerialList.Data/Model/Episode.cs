@@ -9,7 +9,7 @@ namespace MySerialList.Data.Model
 
         public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime Released { get; set; }
+        public string Released { get; set; }
         public int FilmProductionId { get; set; }
         public int Season { get; set; }
         public int EpisodeNumber { get; set; }

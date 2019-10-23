@@ -15,11 +15,11 @@ namespace MySerialList.Service.Services
     public class FilmProductionService : IFilmProductionService
     {
         private readonly string _postersPath;
-        private readonly IReviewRepository _reviewRepository;
+        private readonly IReviewFilmProductionRepository _reviewRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IFilmProductionRepository _filmProductionRepository;
 
-        public FilmProductionService(IOptions<AppSettings> appSettings, IReviewRepository reviewRepository, IHostingEnvironment hostingEnvironment, IFilmProductionRepository filmProductionRepository)
+        public FilmProductionService(IOptions<AppSettings> appSettings, IReviewFilmProductionRepository reviewRepository, IHostingEnvironment hostingEnvironment, IFilmProductionRepository filmProductionRepository)
         {
             _postersPath = appSettings.Value.PostersPath;
             _reviewRepository = reviewRepository;
@@ -40,11 +40,10 @@ namespace MySerialList.Service.Services
 
             if (file != null)
             {
-                string uploads = Path.Combine(_hostingEnvironment.WebRootPath, _postersPath);
                 if (file.Length > 0)
                 {
                     fileName = Guid.NewGuid().ToString() + "." + file.FileName.Split('.').Last();
-                    string filePath = Path.Combine(uploads, fileName);
+                    string filePath = Path.Combine(_postersPath, fileName);
                     using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);

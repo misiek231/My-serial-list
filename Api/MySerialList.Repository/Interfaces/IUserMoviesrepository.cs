@@ -10,7 +10,7 @@ namespace MySerialList.Repository.Interfaces
     {
         Task AddFilmProduction(AddUserFilmProductionModel addUserFilmProductionModel, int userId);
         Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductions(int userId, WatchingStatus status);
-        Task<bool> IsFilmProductionAdded(int movieId, string userId);
+        Task<bool> IsFilmProductionAddedAsync(int movieId, string userId);
         Task DeleteFilmProduction(int userId, string movieId);
     }
 }

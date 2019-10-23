@@ -14,8 +14,8 @@ namespace MySerialList.Service.Services
     {
         private readonly IUserFilmProductionsRepository _userFilmProductionsRepository;
         private readonly IFilmProductionService _movieService;
-        private readonly IReviewService _reviewService;
-        public UserFilmProductionsService(IUserFilmProductionsRepository userFilmProductionsRepository, IFilmProductionService movieService, IReviewService reviewService)
+        private readonly IReviewFilmProductionService _reviewService;
+        public UserFilmProductionsService(IUserFilmProductionsRepository userFilmProductionsRepository, IFilmProductionService movieService, IReviewFilmProductionService reviewService)
         {
             _userFilmProductionsRepository = userFilmProductionsRepository;
             _movieService = movieService;
@@ -24,7 +24,7 @@ namespace MySerialList.Service.Services
 
         public async Task AddFilmProduction(AddUserFilmProductionModel addUserFilmProductionModel, string userId)
         {
-            if (await _userFilmProductionsRepository.IsFilmProductionAdded(addUserFilmProductionModel.FilmProductionId, userId))
+            if (await _userFilmProductionsRepository.IsFilmProductionAddedAsync(addUserFilmProductionModel.FilmProductionId, userId))
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "FilmProduction already added");
             }
