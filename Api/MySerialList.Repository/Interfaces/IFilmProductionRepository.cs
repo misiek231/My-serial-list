@@ -1,15 +1,15 @@
-﻿using System;
+﻿using MySerialList.Model.FilmProduction;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using MySerialList.Model.Movie;
-using MySerialList.Model.FilmProduction;
 
 namespace MySerialList.Repository.Interfaces
 {
     public interface IFilmProductionRepository
     {
         Task AddFilmProductionAsync(AddFilmProduction addFilmProduction, string fileName);
-        Task<IEnumerable<FilmProductionRating>> GetTopRated();
+        Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to);
+        Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int from, int to);
+        Task<FilmProductionData> GetFilmProduction(int id);
+        Task<bool> Exsists(int filmProductionId);
     }
 }

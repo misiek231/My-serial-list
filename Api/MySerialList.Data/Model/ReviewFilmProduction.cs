@@ -1,8 +1,4 @@
-﻿using MySerialList.Data.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MySerialList.Data.Model
 {
@@ -16,6 +12,6 @@ namespace MySerialList.Data.Model
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         [ForeignKey("FilmProductionId")]
-        public virtual FilmProduction FilmProduction { get; set; }       
+        public virtual FilmProduction FilmProduction { get; set; }
     }
 }

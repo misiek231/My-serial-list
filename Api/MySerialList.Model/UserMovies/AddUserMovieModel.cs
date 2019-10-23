@@ -1,15 +1,12 @@
 ﻿using MySerialList.Component;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace MySerialList.Model.UserMovies
+namespace MySerialList.Model.UserFilmProductions
 {
-    public class AddUserMovieModel
+    public class AddUserFilmProductionModel
     {
         [Required]
-        public string MovieId { get; set; }
+        public int FilmProductionId { get; set; }
         [Required]
         public WatchingStatus WatchingStatus { get; set; }
         public int? Episodes { get; set; }

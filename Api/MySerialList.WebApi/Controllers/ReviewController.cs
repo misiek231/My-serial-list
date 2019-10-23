@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySerialList.Model.Review;
 using MySerialList.Service.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MySerialList.WebApi.Controllers
 {
@@ -23,10 +20,16 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpPost("add_review")]
-        public async Task<ActionResult> AddReview([FromBody]AddReviewModel addReviewModel)
+        public async Task<ActionResult> AddReviewAsync([FromBody]AddReviewModel addReviewModel)
         {
-            await _reviewService.AddReview(addReviewModel, int.Parse(User.Identity.Name));
+            await _reviewService.AddOrUpdateReview(addReviewModel, User.Identity.Name);
             return Ok();
+        }
+
+        [HttpGet("get_review")]
+        public async Task<ActionResult<int?>> GetUserReviewAsync(int filmProductionId)
+        {
+            return Ok(await _reviewService.GetUserReviewAsync(filmProductionId, User.Identity.Name));
         }
 
         [HttpPost("add_comment")]
@@ -39,7 +42,7 @@ namespace MySerialList.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet("get_comments")]
         public async Task<ActionResult<IEnumerable<CommentModel>>> GetComments(string movieId)
-        {  
+        {
             return Ok(await _reviewService.GetComments(movieId));
         }
 

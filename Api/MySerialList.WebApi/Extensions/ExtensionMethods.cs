@@ -37,7 +37,7 @@ namespace MySerialList.WebApi.Extensions
                     await _roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-            
+
             User user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)

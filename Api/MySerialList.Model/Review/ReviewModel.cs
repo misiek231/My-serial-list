@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MySerialList.Model.Review
+﻿namespace MySerialList.Model.Review
 {
     public class CommentModel
     {

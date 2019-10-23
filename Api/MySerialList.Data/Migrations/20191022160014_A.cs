@@ -54,7 +54,7 @@ namespace MySerialList.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: true),
-                    Released = table.Column<DateTime>(nullable: false),
+                    Released = table.Column<string>(nullable: true),
                     Genre = table.Column<string>(nullable: true),
                     Director = table.Column<string>(nullable: true),
                     Actors = table.Column<string>(nullable: true),

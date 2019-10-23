@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MySerialList.Data.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MySerialList.Data.Model
 {

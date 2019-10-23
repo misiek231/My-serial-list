@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MySerialList.Model.Movie
+﻿namespace MySerialList.Model.FilmProduction
 {
-    public class UserMovieList
+    public class UserFilmProductionList
     {
         public string Id { get; set; }
         public string Title { get; set; }

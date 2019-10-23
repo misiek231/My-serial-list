@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MySerialList.Component;
 using MySerialList.Data.Model;
 using MySerialList.Model.User;
-using MySerialList.Repository.Interfaces;
 using MySerialList.Service.Exception;
-using MySerialList.Service.Interfaces;
 using MySerialList.Service.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -43,14 +40,14 @@ namespace MySerialList.Service.Services
 
         public async Task<TokenModel> AuthenticateAsync(string username, string password)
         {
-        
+
             SignInResult result = await _signInManager.PasswordSignInAsync(username, password, false, false);
 
             if (result.Succeeded)
             {
                 User user = await _userManager.Users.FirstOrDefaultAsync(r => r.UserName == username);
                 return new TokenModel
-                {                  
+                {
                     Token = GenerateToken(user)
                 };
             }
@@ -82,7 +79,7 @@ namespace MySerialList.Service.Services
 
         public async Task CreateAsync(CreateUserModel value)
         {
-            if(await _userManager.Users.FirstOrDefaultAsync(r => r.Email == value.Email) != null)
+            if (await _userManager.Users.FirstOrDefaultAsync(r => r.Email == value.Email) != null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Taki email już istnieje");
             }
@@ -94,7 +91,7 @@ namespace MySerialList.Service.Services
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, value.Password);
-          
+
             if (result.Succeeded)
             {
                 User newUser = await _userManager.FindByEmailAsync(user.Email);

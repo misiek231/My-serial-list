@@ -1,11 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using MySerialList.Service;
 using MySerialList.Service.Interfaces;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MySerialList.Service.Services

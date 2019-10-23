@@ -195,7 +195,7 @@ namespace MySerialList.Data.Migrations
 
                     b.Property<string>("Poster");
 
-                    b.Property<DateTime>("Released");
+                    b.Property<string>("Released");
 
                     b.Property<string>("Title");
 

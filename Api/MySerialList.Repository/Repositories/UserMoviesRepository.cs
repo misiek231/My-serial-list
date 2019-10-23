@@ -1,55 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MySerialList.Component;
+﻿using MySerialList.Component;
 using MySerialList.Data;
-using MySerialList.Data.Model;
-using MySerialList.Model.Movie;
-using MySerialList.Model.UserMovies;
+using MySerialList.Model.FilmProduction;
+using MySerialList.Model.UserFilmProductions;
 using MySerialList.Repository.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MySerialList.Repository.Repositories
 {
-    public class UserMoviesRepository : IUserMoviesRepository
+    public class UserFilmProductionsRepository : IUserFilmProductionsRepository
     {
         public readonly MySerialListDBContext _movieBookDBContext;
 
-        public UserMoviesRepository(MySerialListDBContext movieBookDBContext)
+        public UserFilmProductionsRepository(MySerialListDBContext movieBookDBContext)
         {
             _movieBookDBContext = movieBookDBContext;
         }
 
-        public async Task AddMovie(AddUserMovieModel addUserMovieModel, int userId)
+        public async Task AddFilmProduction(AddUserFilmProductionModel addUserFilmProductionModel, int userId)
         {
-            //await _movieBookDBContext.UserMovies.AddAsync(new WatchingFilmProductionStatus
+            //await _movieBookDBContext.UserFilmProductions.AddAsync(new WatchingFilmProductionStatus
             //{
-            //    MovieId = addUserMovieModel.MovieId,
-            //    Status = addUserMovieModel.WatchingStatus,
+            //    FilmProductionId = addUserFilmProductionModel.FilmProductionId,
+            //    Status = addUserFilmProductionModel.WatchingStatus,
             //    UserId = userId,
-            //    Episodes = addUserMovieModel.Episodes
+            //    Episodes = addUserFilmProductionModel.Episodes
             //});
 
             //await _movieBookDBContext.SaveChangesAsync();
         }
 
-        public async Task DeleteMovie(int userId, string movieId)
+        public async Task DeleteFilmProduction(int userId, string movieId)
         {
-            //WatchingFilmProductionStatus i = await _movieBookDBContext.UserMovies.Where(u => u.UserId == userId).Where(u => u.MovieId == movieId).FirstOrDefaultAsync();
-            //_movieBookDBContext.UserMovies.Remove(i);
+            //WatchingFilmProductionStatus i = await _movieBookDBContext.UserFilmProductions.Where(u => u.UserId == userId).Where(u => u.FilmProductionId == movieId).FirstOrDefaultAsync();
+            //_movieBookDBContext.UserFilmProductions.Remove(i);
             //await _movieBookDBContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserMovieList>> GetUserMovies(int userId, WatchingStatus status)
+        public async Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductions(int userId, WatchingStatus status)
         {
-            //return await _movieBookDBContext.UserMovies
+            //return await _movieBookDBContext.UserFilmProductions
             //     .Where(u => u.UserId == userId)
             //     .Where(u => u.Status == status)
-            //     .Select(u => new UserMovieList
+            //     .Select(u => new UserFilmProductionList
             //     {
-            //         Id = u.MovieId,
+            //         Id = u.FilmProductionId,
             //         Episodes = u.Episodes,
             //     })
             //     .ToListAsync();
@@ -57,10 +52,10 @@ namespace MySerialList.Repository.Repositories
 
         }
 
-        public async Task<bool> IsMovieAdded(string movieId, int userId)
+        public async Task<bool> IsFilmProductionAdded(int movieId, string userId)
         {
-            //return await _movieBookDBContext.UserMovies
-            //    .Where(u => u.MovieId == movieId)
+            //return await _movieBookDBContext.UserFilmProductions
+            //    .Where(u => u.FilmProductionId == movieId)
             //    .Where(u => u.UserId == userId)
             //    .AnyAsync();
 

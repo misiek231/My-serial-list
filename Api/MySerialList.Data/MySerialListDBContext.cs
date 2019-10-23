@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MySerialList.Data.Model;
-using MySerialList.Data.Model;
 
 namespace MySerialList.Data
 {

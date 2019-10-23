@@ -1,5 +1,4 @@
 ﻿using MySerialList.Component;
-using MySerialList.Data.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MySerialList.Data.Model
