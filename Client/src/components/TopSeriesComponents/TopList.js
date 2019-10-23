@@ -23,7 +23,7 @@ const TopList = () => {
     const top = topSeries.length > 0 ? (
         topSeries.map(item =>{
             return(
-                <ItemTemplate key={topSeries.filmProductionId} data={item}></ItemTemplate>
+                <ItemTemplate key={item.filmProductionId} data={item}></ItemTemplate>
             )
         })
     ):(

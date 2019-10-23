@@ -9,6 +9,8 @@ import SignUpContextProvider from './contexts/SignUpContext';
 import SignInContextProvider from './contexts/SignInContext';
 import CompulsoryContextProvider from './contexts/CompulsoryContext';
 import Welcome from './components/Welcome';
+import SeriesView from './components/SeriesViewComponents/SeriesView';
+import OneSeriesContextProvider from './contexts/OneSeriesContext';
 
 function App() {
   return (
@@ -30,6 +32,11 @@ function App() {
           </SignInContextProvider>
         </Route>
         <Route path="/listview/current" render={() => <ListView  status={0} header={"Aktualnie oglądane:"} />} />
+        <Route path="/series/:id">
+          <OneSeriesContextProvider>
+            <SeriesView/>
+          </OneSeriesContextProvider>
+        </Route>
       </Switch>
       <Footer/>
       </CompulsoryContextProvider>

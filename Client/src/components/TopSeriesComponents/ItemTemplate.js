@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ItemTemplate = ({data}) => {
     return ( 
-        <Link to={'/series/' + data.filmProductionId} className="seriesTemplate">
+        <Link to={'/series/' + data.filmProductionId} className="seriesTemplate" key={data.filmProductionId}>
             <div className="poster">
                 <img src={'https://myseriallist.ml/images/' + data.poster} alt="There was a poster for this series"/>
             </div>

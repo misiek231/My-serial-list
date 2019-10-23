@@ -1,0 +1,118 @@
+@import '../../index.scss';
+
+.seriesView{
+    grid-area: myMain;
+    background: $secondary-color;
+    width: 100%;
+    min-height: 100%;
+    border-radius: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 150px minmax(100px, auto) auto;
+    row-gap: 15px;
+    color: $text;
+    box-shadow: none;
+    height: auto;
+    color: $text;
+    .seriesPoster{
+        width: 278px;
+        justify-self: center;
+        margin-top: 10px;
+        height: 100%;
+        img{
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+    }
+    .seriesData{
+        display: flex;
+        flex-direction: column;
+        .title{
+            font-weight: bold;
+            text-align: center;
+        }
+        .genre{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .plot{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            h1{
+                color: $text;
+                margin-top: 20px;
+                margin-bottom: 5px;
+            }
+        }
+        .addComment{
+            width: 280px;
+            align-self: center;
+            margin-top: 20px;
+            .submitButton{
+                background: $buttons;
+                border: 1px solid $buttons;
+                margin-top: 5px;
+                color: $text;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px){
+    .seriesView{
+        grid-template-rows: 300px minmax(100px, auto) auto;
+        .seriesPoster{
+            width: 400px
+        }
+        .seriesData{
+            .title{
+                font-size: 26px;
+                margin-top: 8px;
+            }
+            .genre{
+                flex-direction: row;
+                justify-content: center;
+                span{
+                    margin: 10px 15px 0 15px;
+                }
+            }
+            .plot{
+                h1{
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px){
+    .seriesView{
+        grid-template-rows: 450px minmax(100px, auto) auto;
+        .seriesPoster{
+            width: 640px;
+        }
+        .seriesData{
+            .title{
+                font-size: 26px;
+                margin-top: 8px;
+            }
+            .genre{
+                span{
+                    font-size: 18px;
+                }
+            }
+            .plot{
+                h1{
+                    font-size: 22px;
+                }
+                .plotText{
+                    font-size: 18.5px;
+                }
+            }
+        }
+    }
+}
