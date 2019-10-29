@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { OneSeriesContext } from '../../contexts/OneSeriesContext';
 import AddComment from './AddComment';
+import ShowComments from './ShowComments';
 
 const SeriesData = () => {
     const { oneSeries } = useContext(OneSeriesContext)
@@ -17,6 +18,7 @@ const SeriesData = () => {
                 <p className="plotText">{oneSeries.oneSeries.plot}</p>
             </div>
             <AddComment/>
+            <ShowComments/>
         </div>
      );
 }

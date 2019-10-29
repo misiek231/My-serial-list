@@ -48,7 +48,8 @@
             }
         }
         .addComment{
-            width: 280px;
+            width: 80%;
+            max-width: 980px;
             align-self: center;
             margin-top: 20px;
             .submitButton{
@@ -57,6 +58,39 @@
                 margin-top: 5px;
                 color: $text;
                 font-weight: bold;
+            }
+        }
+        .comments-list{
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            p{
+                align-self: center;
+            }
+            .singleComment{
+                width: 80%;
+                margin: 10px 0;
+                max-width: 980px;
+                background: $primary-color;
+                padding: 20px;
+                border-radius: 5px;
+                display: flex;
+                flex-direction: column;
+                align-self: center;
+                .comment-data{
+                    display: flex;
+                    align-items: center;
+                    span:nth-child(1){
+                        margin-right: 10px;
+                        font-weight: bold;
+                    }
+                    span:nth-child(2){
+                       font-size: 12px;
+                    }
+                }
+                .comment-content{
+                    padding: 5px;
+                }
             }
         }
     }

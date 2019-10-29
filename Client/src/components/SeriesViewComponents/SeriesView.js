@@ -22,7 +22,7 @@ const SeriesView = (props) => {
     return ( 
         <main className="seriesView">
             <div className="seriesPoster">
-                <img src={'https://myseriallist.ml/images/' + oneSeries.oneSeries.poster}/>
+                <img src={'https://myseriallist.ml/images/' + oneSeries.oneSeries.poster} alt="Obrazek serii"/>
             </div>
             <SeriesData/>
         </main>
