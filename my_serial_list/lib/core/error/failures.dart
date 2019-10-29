@@ -9,5 +9,7 @@ class CacheFailure extends Failure {
 }
 
 class RemoteFailure extends Failure {
-  RemoteFailure([List properties = const <dynamic>[]]) : super(properties);
+  final String message;
+
+  RemoteFailure({this.message}) : super([message]);
 }

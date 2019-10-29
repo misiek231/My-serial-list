@@ -25,28 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\build\" />
     <Folder Include="wwwroot\Images\Posters\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\build\favicon.ico" />
-    <None Include="wwwroot\build\index.html" />
-    <None Include="wwwroot\build\precache-manifest.510ec6e11cbe587e0a21fc0fad0911a1.js" />
-    <None Include="wwwroot\build\robots.txt" />
-    <None Include="wwwroot\build\service-worker.js" />
-    <None Include="wwwroot\build\static\css\2.802837ff.chunk.css" />
-    <None Include="wwwroot\build\static\css\2.802837ff.chunk.css.map" />
-    <None Include="wwwroot\build\static\css\main.70f8d912.chunk.css" />
-    <None Include="wwwroot\build\static\css\main.70f8d912.chunk.css.map" />
-    <None Include="wwwroot\build\static\js\2.d458819b.chunk.js" />
-    <None Include="wwwroot\build\static\js\2.d458819b.chunk.js.map" />
-    <None Include="wwwroot\build\static\js\main.da145ca0.chunk.js" />
-    <None Include="wwwroot\build\static\js\main.da145ca0.chunk.js.map" />
-    <None Include="wwwroot\build\static\js\runtime-main.6d055146.js" />
-    <None Include="wwwroot\build\static\js\runtime-main.6d055146.js.map" />
-    <None Include="wwwroot\build\static\media\spider.e7998d18.png" />
-    <None Include="wwwroot\build\static\media\wallpaper.0f5120a0.png" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
