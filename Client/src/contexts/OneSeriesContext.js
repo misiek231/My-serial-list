@@ -14,7 +14,8 @@ const OneSeriesContextProvider = (props) => {
             plot: "",
             votes: null,
             rating: null,
-            isSeries: false
+            isSeries: false,
+            episodes: 1
         }
     });
     return (

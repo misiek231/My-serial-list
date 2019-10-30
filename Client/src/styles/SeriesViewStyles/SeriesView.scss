@@ -47,8 +47,61 @@
                 margin-bottom: 5px;
             }
         }
+        .addSeries{
+            width: 80%;
+            max-width: 980px;
+            align-self: center;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .addSeriesButton{
+                background: $buttons;
+                margin-top: 10px;
+                border: none;
+                color: $text;
+                font-weight: bold;
+            }
+            .selectStatus, .episodes{
+                width: 260px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                span{
+                    align-self: flex-start;
+                    margin-bottom: 2px;
+                }
+                .episodes-number{
+                    margin-bottom: 7px;
+                }
+                select{
+                    width: 100%;
+                    margin: 5px;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 18px;
+                    background: $primary-color;
+                    padding: 4px;
+                    outline: none;
+                }
+                .inputSpan{
+                    width: 100%;
+                    display: flex;
+                    border-radius: 5px;
+                    font-size: 18px;
+                    background: $primary-color;
+                    padding: 4px;
+                    background: $primary-color;
+                    input{
+                        background: $primary-color;
+                        border: none;
+                    }
+                }
+            }
+        }
         .addComment{
-            width: 280px;
+            width: 80%;
+            max-width: 980px;
             align-self: center;
             margin-top: 20px;
             .submitButton{
@@ -57,6 +110,39 @@
                 margin-top: 5px;
                 color: $text;
                 font-weight: bold;
+            }
+        }
+        .comments-list{
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            p{
+                align-self: center;
+            }
+            .singleComment{
+                width: 80%;
+                margin: 10px 0;
+                max-width: 980px;
+                background: $primary-color;
+                padding: 20px;
+                border-radius: 5px;
+                display: flex;
+                flex-direction: column;
+                align-self: center;
+                .comment-data{
+                    display: flex;
+                    align-items: center;
+                    span:nth-child(1){
+                        margin-right: 10px;
+                        font-weight: bold;
+                    }
+                    span:nth-child(2){
+                       font-size: 12px;
+                    }
+                }
+                .comment-content{
+                    padding: 5px;
+                }
             }
         }
     }

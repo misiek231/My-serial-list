@@ -18,7 +18,7 @@ const TopList = () => {
         .catch(err =>{
             console.error(err);
         })
-    }, []);
+    }, [compulsoryData]);
 
     const top = topSeries.length > 0 ? (
         topSeries.map(item =>{

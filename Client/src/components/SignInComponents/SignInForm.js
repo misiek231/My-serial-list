@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Input, Tooltip, Icon, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 import { signInUser, restoreDefault } from '../../actions/signInActions';
 import { SignInContext } from '../../contexts/SignInContext';
@@ -8,7 +9,7 @@ import axios from 'axios';
 
 //SignInForm to log in on user account
 
-const SignUpForm = () => {
+const SignUpForm = (props) => {
     const [ iconLoading, setIconLoading ] = useState(false);
 
     const { signInData, dispatch } = useContext(SignInContext);
@@ -26,10 +27,14 @@ const SignUpForm = () => {
         .then(res =>{
             dispatch(restoreDefault());
             setIconLoading(false);
+            const { cookies } = props;
+            cookies.set('token', res.data.token, {path: '/'});
+            setTimeout(() =>{
+                props.history.push('/listview/current');
+            }, 1000)
         })
         .catch(err =>{
             console.error(err);
-            console.log(signInData.signInUser);
             setIconLoading(false);
         })
 }
@@ -76,4 +81,4 @@ const SignUpForm = () => {
      );
 }
  
-export default SignUpForm;
+export default withRouter(withCookies(SignUpForm));

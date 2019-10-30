@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { OneSeriesContext } from '../../contexts/OneSeriesContext';
 import AddComment from './AddComment';
+import ShowComments from './ShowComments';
+import CommentsContextProvider from '../../contexts/GetCommentsContext';
+import AddSeries from './AddSeries';
 
 const SeriesData = () => {
     const { oneSeries } = useContext(OneSeriesContext)
@@ -12,11 +15,15 @@ const SeriesData = () => {
                 <span>{'Gatunek: '+ oneSeries.oneSeries.genre}</span>
                 <span>{'Data wydania: ' + oneSeries.oneSeries.released}</span>
             </div>
+            <AddSeries episodes={oneSeries.oneSeries.episodes} id={oneSeries.oneSeries.filmProductionId}/>
             <div className="plot">
                 <h1>Krótki opis fabuły:</h1>
                 <p className="plotText">{oneSeries.oneSeries.plot}</p>
             </div>
-            <AddComment/>
+            <CommentsContextProvider>
+                <AddComment/>
+                <ShowComments/>
+            </CommentsContextProvider>
         </div>
      );
 }
