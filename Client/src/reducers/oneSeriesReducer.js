@@ -13,7 +13,8 @@ export const oneSeriesReducer = (state,action) =>{
                     plot: action.oneSeries.plot,
                     votes: action.oneSeries.votes,
                     rating: action.oneSeries.rating,
-                    isSeries: action.oneSeries.isSeries
+                    isSeries: action.oneSeries.isSeries,
+                    episodes: action.oneSeries.episodes
                 }
             }
         default:

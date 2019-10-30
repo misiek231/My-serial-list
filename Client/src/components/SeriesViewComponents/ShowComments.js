@@ -1,20 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
+import { CommentsContext } from '../../contexts/GetCommentsContext';
 import uuid from 'uuid/v1';
+import { getComments } from '../../actions/getComments';
 
 const ShowComments = (props) => {
     const {compulsoryData} = useContext(CompulsoryContext);
-    const [comments, setComments] = useState([])
+    const {comments, dispatch} = useContext(CommentsContext)
     useEffect(() =>{
-        axios.get(compulsoryData.ip + '/api/ReviewFilmProduction/get_comments/' + props.match.params.id)
-        .then(res =>{
-            setComments(res.data);
-        })
-        .catch(err =>{
-            console.error(err);
-        })
+       getComments(compulsoryData.ip, dispatch, props.match.params.id);
     }, [])
 
     const commentData = comments.length > 0 ? (

@@ -3,6 +3,8 @@ import { Input, Button, Divider } from 'antd';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
+import { getComments } from '../../actions/getComments';
+import { CommentsContext } from '../../contexts/GetCommentsContext'
 
 const AddComment = (props) => {
     const [commentData, setCommentData] = useState({
@@ -11,6 +13,8 @@ const AddComment = (props) => {
     })
 
     const {compulsoryData} = useContext(CompulsoryContext);
+
+    const {dispatch} = useContext(CommentsContext)
 
     const {TextArea} = Input;
 
@@ -21,9 +25,11 @@ const AddComment = (props) => {
             description: commentData.commentValue
         })
         .then(res =>{
+            getComments(compulsoryData.ip, dispatch, props.match.params.id);
+            setCommentData({...commentData, submitting: false})
         })
         .catch(err =>{
-
+            console.log(err)
         })
     }
 
