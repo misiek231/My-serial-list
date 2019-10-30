@@ -8,8 +8,8 @@ namespace MySerialList.Service.Interfaces
 {
     public interface IUserFilmProductionsService
     {
-        Task AddFilmProduction(AddUserFilmProductionModel addUserFilmProductionModel, string userId);
-        Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductions(string UserId, WatchingStatus status);
-        Task DeleteFilmProduction(string userId, string movieId);
+        Task AddFilmProductionAsync(AddUserFilmProductionModel addUserFilmProductionModel, string userId);
+        Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductionsAsync(string username, WatchingStatus status);
+        Task DeleteFilmProductionAsync(string userId, int movieId);
     }
 }

@@ -15,6 +15,7 @@ namespace MySerialList.Model.FilmProduction
         public string Poster { get; set; }
         public int Votes { get; set; }
         public double Rating { get; set; }
+        public int Episodes { get; set; }
         public bool IsSeries { get; set; }
     }
 }

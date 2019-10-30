@@ -42,7 +42,7 @@ namespace MySerialList.Repository.Repositories
 
         public async Task<FilmProductionData> GetFilmProduction(int id)
         {
-            return await _dbContext.FilmProductions.Include(f => f.Reviews).Where(f => f.Id == id).Select(f => new FilmProductionData
+            return await _dbContext.FilmProductions.Include(f => f.Reviews).Include(f => f.Episodes).Where(f => f.Id == id).Select(f => new FilmProductionData
             {
                 FilmProductionId = f.Id,
                 Actors = f.Actors,
@@ -55,12 +55,14 @@ namespace MySerialList.Repository.Repositories
                 Rating = Average(f),
                 Released = f.Released,
                 Title = f.Title,
+                Episodes = f.IsSeries ? f.Episodes.Count() : 1,
                 Votes = f.Reviews.Count()
             }).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to)
         {
+            int lastId = (await _dbContext.FilmProductions.LastAsync()).Id;
             return await _dbContext.FilmProductions.Include(f => f.Reviews).Select(f => new FilmProductionRating
             {
                 FilmProductionId = f.Id,
@@ -71,9 +73,9 @@ namespace MySerialList.Repository.Repositories
                 Plot = f.Plot,
                 Released = f.Released,
                 Title = f.Title,
-                Votes = f.Reviews.Count()
+                Votes = f.Reviews.Count(),
+                Last = f.Id == lastId
             }).Skip(from).Take(to).ToListAsync();
-
         }
 
         public async Task<bool> IsSeriesAsync(int filmProductionId)

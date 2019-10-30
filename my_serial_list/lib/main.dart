@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_serial_list/features/top_rated/presentation/pages/top_rated_page.dart';
+import 'package:my_serial_list/features/film_production/presentation/pages/top_rated_page.dart';
 import 'package:my_serial_list/injection_container.dart';
 
 void main() async {

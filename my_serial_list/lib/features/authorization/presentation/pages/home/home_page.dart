@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/features/authorization/presentation/bloc/authentication/authentication.dart';
 import 'package:my_serial_list/features/authorization/presentation/pages/login/login_page.dart';
 
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class HomePage extends StatelessWidget {
               child: RaisedButton(
             child: Text('logout'),
             onPressed: () {
-              authenticationBloc.dispatch(LogOut());
+              authenticationBloc.add(LogOut());
             },
           )),
         ),
