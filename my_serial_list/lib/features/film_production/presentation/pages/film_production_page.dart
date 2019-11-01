@@ -8,8 +8,12 @@ import 'package:meta/meta.dart';
 
 class FilmProductionPage extends StatefulWidget {
   final int filmProductionId;
-  FilmProductionPage({Key key, @required this.filmProductionId})
-      : super(key: key);
+  final String poster;
+  FilmProductionPage({
+    Key key,
+    @required this.filmProductionId,
+    @required this.poster,
+  }) : super(key: key);
 
   @override
   _FilmProductionPageState createState() => _FilmProductionPageState();
@@ -36,13 +40,20 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
       appBar: AppBar(
         title: Text('My serial list'),
       ),
-      backgroundColor: Colors.grey[600],
       body: BlocBuilder<FilmProductionBloc, FilmProductionState>(
         bloc: bloc,
         builder: (context, state) {
-          if (state is Loading) {
+          if (state is InitialFilmProductionState) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Column(children: <Widget>[
+                Hero(
+                  child: Image.network('$IMAGES_URL/${widget.poster}'),
+                  tag: widget.filmProductionId,
+                ),
+                Center(
+                  child: CircularProgressIndicator(),
+                )
+              ]),
             );
           } else if (state is Loaded) return _buildBody(state.filmProduction);
         },
@@ -54,7 +65,10 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
     return Center(
       child: Column(
         children: <Widget>[
-          Image.network('$IMAGES_URL/${filmProduction.poster}'),
+          Hero(
+            child: Image.network('$IMAGES_URL/${filmProduction.poster}'),
+            tag: filmProduction.filmProductionId,
+          ),
           Text(
             filmProduction.title,
             style: TextStyle(fontSize: 50, color: Colors.white),

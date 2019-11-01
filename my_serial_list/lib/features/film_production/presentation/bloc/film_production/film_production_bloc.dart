@@ -19,7 +19,7 @@ class FilmProductionBloc
     FilmProductionEvent event,
   ) async* {
     if (event is GetData) {
-      yield Loading();
+      yield InitialFilmProductionState();
       final i = await getFilmProduction(Params(id: event.id));
       yield* i.fold((failure) async* {
         if (failure is RemoteFailure) {

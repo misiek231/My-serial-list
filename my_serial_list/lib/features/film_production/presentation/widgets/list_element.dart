@@ -9,27 +9,23 @@ class ListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Color(0xff002132), borderRadius: new BorderRadius.circular(5)),
-      padding: const EdgeInsets.all(8.0),
-      alignment: Alignment.topLeft,
+    return Card(
       child: Row(
         children: <Widget>[
           SizedBox(
             width: 150,
-            child: Image.network(
-              '$IMAGES_URL/${model.poster}',
+            child: Hero(
+              child: Image.network('$IMAGES_URL/${model.poster}'),
+              tag: model.filmProductionId,
             ),
           ),
-          Flexible(child: buildText()),
+          Flexible(child: buildText(context)),
         ],
       ),
-      margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
     );
   }
 
-  Column buildText() {
+  Column buildText(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -37,14 +33,13 @@ class ListElement extends StatelessWidget {
           padding: const EdgeInsets.all(5.0),
           child: Text(this.model.title,
               style: TextStyle(
-                  color: Color(0xffce9f3d),
+                  color: Theme.of(context).accentColor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
         ),
         Padding(
           padding: const EdgeInsets.all(5.0),
-          child: Text(this.model.released,
-              style: TextStyle(color: Colors.white, fontSize: 13)),
+          child: Text(this.model.released, style: TextStyle(fontSize: 13)),
         ),
         Padding(
           padding: const EdgeInsets.all(5.0),
