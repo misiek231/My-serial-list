@@ -1,6 +1,7 @@
 import 'package:floating_search_bar/ui/sliver_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_serial_list/features/authorization/presentation/pages/authorization_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/top_rated/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/pages/film_production_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/list_element.dart';
@@ -63,8 +64,7 @@ class _InfiniteListViewState extends State<InfiniteListView> {
             context,
             MaterialPageRoute(
               builder: (context) => FilmProductionPage(
-                filmProductionId: state.filmProductions[index].filmProductionId,
-                poster: state.filmProductions[index].poster,
+                filmProduction: state.filmProductions[index],
               ),
             ),
           );
@@ -89,13 +89,31 @@ class _InfiniteListViewState extends State<InfiniteListView> {
               controller: _scrollController,
               slivers: <Widget>[
                 SliverFloatingBar(
+                  backgroundColor: Theme.of(context).backgroundColor,
                   trailing: IconButton(
-                    icon: Icon(Icons.supervised_user_circle),
-                    onPressed: () {},
+                    icon: CircleAvatar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      child: Text(
+                        'M',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthorizationPage(),
+                        ),
+                      );
+                    },
                   ),
                   floating: true,
                   title: TextField(
-                    decoration: InputDecoration(hintText: 'Szukaj filmu...'),
+                    style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      hintText: 'Szukaj filmu...',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
                 SliverList(

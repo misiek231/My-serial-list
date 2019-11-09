@@ -33,6 +33,17 @@ class TopRatedBloc extends Bloc<TopRatedEvent, TopRatedState> {
 
       //yield Loading();
       final i = await getTopRated(Params(page: page));
+      final nextPage = await getTopRated(Params(page: page + 1));
+      bool hasReachedEndOfResults = false;
+
+      yield* nextPage.fold((failure) async* {
+        if (failure is RemoteFailure) {
+          yield Error(message: failure.message);
+        }
+      }, (succes) async* {
+        hasReachedEndOfResults = succes.isEmpty;
+      });
+
       yield* i.fold((failure) async* {
         if (failure is RemoteFailure) {
           yield Error(message: failure.message);
@@ -42,7 +53,7 @@ class TopRatedBloc extends Bloc<TopRatedEvent, TopRatedState> {
         yield Loaded(
           filmProductions: list,
           page: page + 1,
-          hasReachedEndOfResults: succes.isEmpty,
+          hasReachedEndOfResults: hasReachedEndOfResults,
         );
       });
     }

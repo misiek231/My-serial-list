@@ -23,6 +23,9 @@ dependencies:
   get_it: ^2.0.1
   floating_search_bar: ^0.2.0
   bottom_navy_bar: ^3.0.0
+  meet_network_image: ^0.1.1
+  auto_size_text: ^2.1.0
+  flutter_rating_bar: ^3.0.0
   # Bloc for state management
   flutter_bloc: ^1.0.0
   # Value equality

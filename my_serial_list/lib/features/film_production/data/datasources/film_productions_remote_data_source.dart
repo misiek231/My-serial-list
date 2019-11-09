@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
+import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_rating_model.dart';
+import 'package:my_serial_list/features/film_production/domain/entities/comment.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +18,8 @@ abstract class FilmProductionsRemoteDataSource {
   Future<List<FilmProductionRating>> getTopRated(int page);
 
   Future<FilmProduction> getFilmProduction(int id);
+
+  Future<List<Comment>> getComments(int id);
 }
 
 class FilmProductionsRemoteDataSourceImpl
@@ -50,6 +54,20 @@ class FilmProductionsRemoteDataSourceImpl
 
     if (response.statusCode == 200) {
       return FilmProductionModel.fromJson(json.decode(response.body));
+    } else {
+      throw ServerException(message: response.body);
+    }
+  }
+
+  @override
+  Future<List<Comment>> getComments(int id) async {
+    final response = await client.get(
+      '$GET_COMMENTS/$id',
+    );
+
+    if (response.statusCode == 200) {
+      Iterable l = json.decode(response.body);
+      return l.map((model) => CommentModel.fromJson(model)).toList();
     } else {
       throw ServerException(message: response.body);
     }

@@ -15,7 +15,18 @@ class ListElement extends StatelessWidget {
           SizedBox(
             width: 150,
             child: Hero(
-              child: Image.network('$IMAGES_URL/${model.poster}'),
+              child: Image.network('$IMAGES_URL/${model.poster}',
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                    child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                ));
+              }),
               tag: model.filmProductionId,
             ),
           ),

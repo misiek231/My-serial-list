@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
+import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/film_production/bloc.dart';
+import 'package:my_serial_list/features/film_production/presentation/utils/film_production_sliver_header_delegate.dart';
+import 'package:my_serial_list/features/film_production/presentation/widgets/film_production_details.dart';
 import '../../../../injection_container.dart';
 import 'package:meta/meta.dart';
 
 class FilmProductionPage extends StatefulWidget {
-  final int filmProductionId;
-  final String poster;
+  final FilmProductionRating filmProduction;
   FilmProductionPage({
     Key key,
-    @required this.filmProductionId,
-    @required this.poster,
+    @required this.filmProduction,
   }) : super(key: key);
 
   @override
@@ -21,6 +22,7 @@ class FilmProductionPage extends StatefulWidget {
 
 class _FilmProductionPageState extends State<FilmProductionPage> {
   FilmProductionBloc bloc = sl<FilmProductionBloc>();
+  String dropdownValue;
 
   @override
   void dispose() {
@@ -31,77 +33,73 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
   @override
   void initState() {
     super.initState();
-    bloc.add(GetData(widget.filmProductionId));
+    bloc.add(GetData(widget.filmProduction.filmProductionId));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My serial list'),
+        title: Text(widget.filmProduction.title),
       ),
       body: BlocBuilder<FilmProductionBloc, FilmProductionState>(
         bloc: bloc,
         builder: (context, state) {
           if (state is InitialFilmProductionState) {
-            return Center(
-              child: Column(children: <Widget>[
-                Hero(
-                  child: Image.network('$IMAGES_URL/${widget.poster}'),
-                  tag: widget.filmProductionId,
-                ),
-                Center(
-                  child: CircularProgressIndicator(),
-                )
-              ]),
+            return _buildProgressIndicator();
+          } else if (state is Loaded)
+            return CustomScrollView(
+              slivers: <Widget>[
+                _buildHeader(context, state.filmProduction),
+                FilmProductionDetails(model: state.filmProduction),
+              ],
             );
-          } else if (state is Loaded) return _buildBody(state.filmProduction);
+          return null;
         },
       ),
     );
   }
 
-  Widget _buildBody(FilmProduction filmProduction) {
+  Center _buildProgressIndicator() {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Hero(
-            child: Image.network('$IMAGES_URL/${filmProduction.poster}'),
-            tag: filmProduction.filmProductionId,
+            child: Image.network(
+              '$IMAGES_URL/${widget.filmProduction.poster}',
+              fit: BoxFit.fitWidth,
+            ),
+            tag: widget.filmProduction.filmProductionId,
           ),
-          Text(
-            filmProduction.title,
-            style: TextStyle(fontSize: 50, color: Colors.white),
+          Expanded(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text(
-                'Gatunek: ${filmProduction.genre}',
-                style: TextStyle(fontSize: 30, color: Colors.white),
-              ),
-              Text(
-                'Data wydania: ${filmProduction.released}',
-                style: TextStyle(fontSize: 30, color: Colors.white),
-              ),
-            ],
-          ),
-          Text(
-            'Aktorzy: ${filmProduction.actors}',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          Text(
-            'Reżyser: ${filmProduction.director}',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          SizedBox(height: 20),
-          Text(
-            filmProduction.plot,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          )
         ],
       ),
+    );
+  }
+
+  SliverPersistentHeader _buildHeader(
+      BuildContext context, FilmProduction model) {
+    return SliverPersistentHeader(
+      pinned: false,
+      delegate: FilmProductionSliverHeaderDelegate(
+          child: Container(
+            child: Hero(
+              tag: model.filmProductionId,
+              child: Image.network(
+                '$IMAGES_URL/${widget.filmProduction.poster}',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          minHeight: 300.0,
+          maxHeight: 600.0),
     );
   }
 }

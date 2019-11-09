@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_serial_list/injection_container.dart';
 
-import 'features/film_production/presentation/pages/main_page.dart';
+import 'core/presentation/pages/main_page.dart';
 
 void main() async {
   init();
