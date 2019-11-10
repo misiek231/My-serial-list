@@ -63,10 +63,11 @@ namespace MySerialList.Repository.Repositories
         public async Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to)
         {
             int lastId = (await _dbContext.FilmProductions.LastAsync()).Id;
-            return await _dbContext.FilmProductions.Include(f => f.Reviews).Select(f => new FilmProductionRating
+            return await _dbContext.FilmProductions.Include(f => f.Reviews).Include(f=> f.Episodes).Select(f => new FilmProductionRating
             {
                 FilmProductionId = f.Id,
                 IsSeries = f.IsSeries,
+                Seasons = f.Episodes.Any() ? (int?)f.Episodes.OrderByDescending(i => i.Season).Select(s => s.Season).FirstOrDefault() : null,
                 Genre = f.Genre,
                 Poster = f.Poster,
                 Rating = Average(f),

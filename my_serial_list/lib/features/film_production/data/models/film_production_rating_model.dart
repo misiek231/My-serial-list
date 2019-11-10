@@ -12,6 +12,7 @@ class FilmProductionRatingModel extends FilmProductionRating {
     @required votes,
     @required rating,
     @required isSeries,
+    @required seasons,
   }) : super(
           title: title,
           genre: genre,
@@ -22,6 +23,7 @@ class FilmProductionRatingModel extends FilmProductionRating {
           votes: votes,
           rating: rating,
           isSeries: isSeries,
+          seasons: seasons,
         );
 
   factory FilmProductionRatingModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class FilmProductionRatingModel extends FilmProductionRating {
       votes: json['votes'],
       rating: json['rating'],
       isSeries: json['isSeries'],
+      seasons: json['seasons'],
     );
   }
 
@@ -49,6 +52,7 @@ class FilmProductionRatingModel extends FilmProductionRating {
     data['votes'] = this.votes;
     data['rating'] = this.rating;
     data['isSeries'] = this.isSeries;
+    data['seasons'] = this.seasons;
     return data;
   }
 }

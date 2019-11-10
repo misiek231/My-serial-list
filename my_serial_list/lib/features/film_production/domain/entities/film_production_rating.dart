@@ -11,17 +11,20 @@ class FilmProductionRating extends Equatable {
   final int votes;
   final double rating;
   final bool isSeries;
+  final int seasons;
 
-  FilmProductionRating(
-      {@required this.title,
-      @required this.genre,
-      @required this.released,
-      @required this.filmProductionId,
-      @required this.poster,
-      @required this.plot,
-      @required this.votes,
-      @required this.rating,
-      @required this.isSeries});
+  FilmProductionRating({
+    @required this.title,
+    @required this.genre,
+    @required this.released,
+    @required this.filmProductionId,
+    @required this.poster,
+    @required this.plot,
+    @required this.votes,
+    @required this.rating,
+    @required this.isSeries,
+    @required this.seasons,
+  });
 
   @override
   List<Object> get props => [
@@ -33,6 +36,7 @@ class FilmProductionRating extends Equatable {
         plot,
         votes,
         rating,
-        isSeries
+        isSeries,
+        seasons,
       ];
 }

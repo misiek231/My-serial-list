@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
@@ -29,12 +30,17 @@ class FilmProductionsRemoteDataSourceImpl
   FilmProductionsRemoteDataSourceImpl({@required this.client});
 
   Future<List<FilmProductionRating>> getTopRated(int page) async {
-    final response = await client.get(
-      '$GET_TOP?page=$page',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    Response response;
+    try {
+      response = await client.get(
+        '$GET_TOP?page=$page',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+    } catch (_) {
+      throw ServerException(message: 'Błąd łączenia z serwerem');
+    }
 
     if (response.statusCode == 200) {
       Iterable l = json.decode(response.body);
@@ -48,9 +54,14 @@ class FilmProductionsRemoteDataSourceImpl
 
   @override
   Future<FilmProduction> getFilmProduction(int id) async {
-    final response = await client.get(
-      '$GET_FILM_PRODUCTION/$id',
-    );
+    Response response;
+    try {
+      response = await client.get(
+        '$GET_FILM_PRODUCTION/$id',
+      );
+    } catch (_) {
+      throw ServerException(message: 'Błąd łączenia z serwerem');
+    }
 
     if (response.statusCode == 200) {
       return FilmProductionModel.fromJson(json.decode(response.body));
@@ -61,9 +72,14 @@ class FilmProductionsRemoteDataSourceImpl
 
   @override
   Future<List<Comment>> getComments(int id) async {
-    final response = await client.get(
-      '$GET_COMMENTS/$id',
-    );
+    Response response;
+    try {
+      response = await client.get(
+        '$GET_COMMENTS/$id',
+      );
+    } catch (_) {
+      throw ServerException(message: 'Błąd łączenia z serwerem');
+    }
 
     if (response.statusCode == 200) {
       Iterable l = json.decode(response.body);

@@ -75,60 +75,90 @@ class _InfiniteListViewState extends State<InfiniteListView> {
 
   @override
   Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5),
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: <Widget>[
+          _buildSliverFloatingBar(context),
+          _buildContent(),
+        ],
+      ),
+    );
+  }
+
+  BlocBuilder<TopRatedBloc, TopRatedState> _buildContent() {
     return BlocBuilder(
       bloc: bloc,
       builder: (context, TopRatedState state) {
         if (state is Empty) {
-          return Center(
-            child: CircularProgressIndicator(),
+          return SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Center(child: CircularProgressIndicator()),
+            ),
           );
         } else if (state is Loaded) {
-          return Padding(
-            padding: EdgeInsets.only(top: 5),
-            child: CustomScrollView(
-              controller: _scrollController,
-              slivers: <Widget>[
-                SliverFloatingBar(
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  trailing: IconButton(
-                    icon: CircleAvatar(
-                      backgroundColor: Theme.of(context).accentColor,
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => _buildItem(index, state),
+              childCount: calculateListItemCount(state),
+            ),
+          );
+        } else if (state is Error) {
+          return SliverToBoxAdapter(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(
                       child: Text(
-                        'M',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AuthorizationPage(),
-                        ),
-                      );
-                    },
-                  ),
-                  floating: true,
-                  title: TextField(
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      hintText: 'Szukaj filmu...',
-                      border: InputBorder.none,
-                    ),
-                  ),
+                    state.message,
+                    style: TextStyle(fontSize: 30),
+                  )),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _buildItem(index, state),
-                    childCount: calculateListItemCount(state),
-                  ),
+                SizedBox(height: 20),
+                RaisedButton(
+                  child: Text('Odśwież'),
+                  onPressed: () => bloc.add(GetMoreData()),
                 )
               ],
             ),
           );
-        } else {
-          return Text("error");
         }
+        return Text("error");
       },
+    );
+  }
+
+  SliverFloatingBar _buildSliverFloatingBar(BuildContext context) {
+    return SliverFloatingBar(
+      backgroundColor: Theme.of(context).backgroundColor,
+      trailing: IconButton(
+        icon: CircleAvatar(
+          backgroundColor: Theme.of(context).accentColor,
+          child: Text(
+            'M',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthorizationPage(),
+            ),
+          );
+        },
+      ),
+      floating: true,
+      title: TextField(
+        style: TextStyle(fontSize: 20),
+        decoration: InputDecoration(
+          hintText: 'Szukaj filmu...',
+          border: InputBorder.none,
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
 import 'package:meta/meta.dart';
-import 'package:my_serial_list/features/film_production/presentation/widgets/add_film_production_card.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/comments_section.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/rating_card.dart';
 
@@ -22,7 +21,6 @@ class FilmProductionDetails extends StatelessWidget {
           children: <Widget>[
             FilmProductionInfo(model: model),
             RatingCard(model: model),
-            AddFilmProductionCard(model: model),
             CommentsSection(
               filmProductionId: model.filmProductionId,
             ),

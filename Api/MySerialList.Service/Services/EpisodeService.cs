@@ -36,7 +36,7 @@ namespace MySerialList.Service.Services
             await _episodeRepository.AddEpisodeAsync(addEpisode);
         }
 
-        public async Task<IEnumerable<EpisodeData>> GetAllEpisodesAsync(int filmProductionId)
+        public async Task<IEnumerable<EpisodeData>> GetAllEpisodesAsync(int filmProductionId, int season)
         {
             if (!await _filmProductionRepository.ExsistsAsync(filmProductionId))
             {
@@ -48,7 +48,7 @@ namespace MySerialList.Service.Services
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Podana produkcja filmowa nie jest serialem.");
             }
 
-            return await _episodeRepository.GetAllEpisodes(filmProductionId);
+            return await _episodeRepository.GetAllEpisodes(filmProductionId, season);
         }
 
         public async Task<EpisodeData> GetEpisodeAsync(int id)

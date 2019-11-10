@@ -21,8 +21,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
       body: Stack(
         children: <Widget>[
           Image.asset('assets/wallpaper.png',
-              fit: BoxFit.fitHeight,
-              height: MediaQuery.of(context).size.height),
+              fit: BoxFit.contain, height: MediaQuery.of(context).size.height),
           _buildAnimatedForm(true, isLoginFormShowing),
           _buildAnimatedForm(false, !isLoginFormShowing),
         ],
@@ -61,14 +60,17 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                         text: isLoginForm ? 'Zaloguj' : 'Rejestracja',
                         onPressed: () {},
                       ),
-                      ButtonIndicator(
-                        isBusy: false,
-                        text: isLoginForm ? 'Nie mam konta' : 'Mam już konto',
-                        onPressed: () {
-                          setState(() {
-                            isLoginFormShowing = !isLoginFormShowing;
-                          });
-                        },
+                      FittedBox(
+                        fit: BoxFit.contain,
+                        child: ButtonIndicator(
+                          isBusy: false,
+                          text: isLoginForm ? 'Nie mam konta' : 'Mam już konto',
+                          onPressed: () {
+                            setState(() {
+                              isLoginFormShowing = !isLoginFormShowing;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
