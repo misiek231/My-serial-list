@@ -9,7 +9,6 @@ namespace MySerialList.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ReviewFilmProductionController : ControllerBase
     {
         private readonly IReviewFilmProductionService _reviewFilmProductionService;
@@ -20,6 +19,7 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpPost("add_review")]
+        [Authorize]
         public async Task<ActionResult> AddOrUpdateReviewAsync([FromBody]AddReviewFilmProductionModel addReviewModel)
         {
             await _reviewFilmProductionService.AddOrUpdateReviewAsync(addReviewModel, User.Identity.Name);
@@ -27,12 +27,14 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpGet("get_review")]
+        [Authorize]
         public async Task<ActionResult<int?>> GetUserReviewAsync(int filmProductionId)
         {
             return Ok(await _reviewFilmProductionService.GetUserReviewAsync(filmProductionId, User.Identity.Name));
         }
 
         [HttpPost("add_comment")]
+        [Authorize]
         public async Task<ActionResult> AddCommentAsync([FromBody]AddCommentModel addCommentModel)
         {
             await _reviewFilmProductionService.AddCommentAsync(addCommentModel, User.Identity.Name);
@@ -40,6 +42,7 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpPut("edit_comment/{id}")]
+        [Authorize]
         public async Task<ActionResult> EditCommentAsync([FromBody]AddCommentModel addCommentModel, int id)
         {
             await _reviewFilmProductionService.EditCommentAsync(addCommentModel, id, User.Identity.Name);

@@ -22,41 +22,26 @@ namespace MySerialList.Service.Services
             _reviewService = reviewService;
         }
 
-        public async Task AddFilmProduction(AddUserFilmProductionModel addUserFilmProductionModel, string userId)
+        public async Task AddFilmProductionAsync(AddUserFilmProductionModel addUserFilmProductionModel, string userId)
         {
             if (await _userFilmProductionsRepository.IsFilmProductionAddedAsync(addUserFilmProductionModel.FilmProductionId, userId))
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "FilmProduction already added");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Film jest już na twojej liście.");
             }
             else
             {
-               // await _userFilmProductionsRepository.AddFilmProduction(addUserFilmProductionModel, userId);
+                await _userFilmProductionsRepository.AddFilmProductionAsync(addUserFilmProductionModel, userId);
             }
         }
 
-        public async Task DeleteFilmProduction(string userId, string movieId)
+        public async Task DeleteFilmProductionAsync(string userId, int movieId)
         {
-            //await _userFilmProductionsRepository.DeleteFilmProduction(userId, movieId);
+            await _userFilmProductionsRepository.DeleteFilmProductionAsync(movieId, userId);
         }
 
-        public async Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductions(string UserId, WatchingStatus status)
+        public async Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductionsAsync(string username, WatchingStatus status)
         {
-            List<UserFilmProductionList> movies = new List<UserFilmProductionList>();
-            //foreach (UserFilmProductionList userFilmProduction in await _userFilmProductionsRepository.GetUserFilmProductions(UserId, status))
-            //{
-            //    FilmProductionData movie = await _movieService.GetFilmProduction(userFilmProduction.Id);
-            //    movies.Add(new UserFilmProductionList
-            //    {
-            //        Id = movie.Id,
-            //        Poster = movie.Poster,
-            //        Title = movie.Title,
-            //        Type = movie.Type,
-            //        Year = movie.Year,
-            //        Rating = (await _reviewService.GetRating(movie.Id)).Rating,
-            //        Episodes = userFilmProduction.Episodes
-            //    });
-            //}
-            return movies;
+            return await _userFilmProductionsRepository.GetUserFilmProductionsAsync(username, status);
         }
     }
 }

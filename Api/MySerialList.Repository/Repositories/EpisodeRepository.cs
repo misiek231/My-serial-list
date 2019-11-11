@@ -37,11 +37,11 @@ namespace MySerialList.Repository.Repositories
             return _dbContext.Episodes.Where(e => e.Id == episodeId).AnyAsync();
         }
 
-        public async Task<IEnumerable<EpisodeData>> GetAllEpisodes(int filmProductionId)
+        public async Task<IEnumerable<EpisodeData>> GetAllEpisodes(int filmProductionId, int season)
         {
             return await _dbContext.Episodes.Where(e => e.FilmProductionId == filmProductionId)
-                .OrderBy(e => e.Season)
-                .ThenBy(e => e.EpisodeNumber)
+                .OrderBy(e => e.EpisodeNumber)
+                .Where(e => e.Season == season)
                 .Select(e => new EpisodeData
                 {
                     EpisodeNumber = e.EpisodeNumber,

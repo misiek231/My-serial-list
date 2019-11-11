@@ -4,7 +4,8 @@ import 'package:my_serial_list/features/authorization/domain/entities/user/authe
 import 'package:my_serial_list/features/authorization/domain/entities/user/create_user_model.dart';
 
 abstract class AuthenticationEvent extends Equatable {
-  AuthenticationEvent([List props = const []]) : super(props);
+  @override
+  List<Object> get props => [];
 }
 
 class AppStarted extends AuthenticationEvent {
@@ -15,7 +16,10 @@ class AppStarted extends AuthenticationEvent {
 class LogIn extends AuthenticationEvent {
   final AuthenticateUser authenticateUser;
 
-  LogIn({@required this.authenticateUser}) : super([authenticateUser]);
+  LogIn({@required this.authenticateUser});
+
+  @override
+  List<Object> get props => [authenticateUser];
 }
 
 class LogOut extends AuthenticationEvent {
@@ -26,7 +30,10 @@ class LogOut extends AuthenticationEvent {
 class Register extends AuthenticationEvent {
   final CreateUser createUser;
 
-  Register({@required this.createUser}) : super([createUser]);
+  Register({@required this.createUser});
+
+  @override
+  List<Object> get props => [createUser];
 
   @override
   String toString() => 'Register';

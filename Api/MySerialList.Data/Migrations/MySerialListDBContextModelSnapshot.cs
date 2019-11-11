@@ -328,6 +328,8 @@ namespace MySerialList.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Episodes");
+
                     b.Property<int>("FilmProductionId");
 
                     b.Property<string>("UserId");

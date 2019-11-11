@@ -9,6 +9,7 @@ namespace MySerialList.Data.Model
         public int FilmProductionId { get; set; }
         public string UserId { get; set; }
         public WatchingStatus WatchingStatus { get; set; }
+        public int Episodes { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

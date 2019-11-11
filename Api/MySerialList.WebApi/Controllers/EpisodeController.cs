@@ -31,10 +31,10 @@ namespace MySerialList.WebApi.Controllers
             return Ok(await _episodeService.GetEpisodeAsync(id));
         }
 
-        [HttpGet("get_all/{filmProductionId}")]
-        public async Task<ActionResult<IEnumerable<EpisodeData>>> GetAllEpisodesAsync(int filmProductionId)
+        [HttpGet("get_all")]
+        public async Task<ActionResult<IEnumerable<EpisodeData>>> GetAllEpisodesAsync(int filmProductionId, int season)
         {
-            return Ok(await _episodeService.GetAllEpisodesAsync(filmProductionId));
+            return Ok(await _episodeService.GetAllEpisodesAsync(filmProductionId, season));
         }
     }
 }

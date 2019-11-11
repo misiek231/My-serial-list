@@ -10,6 +10,6 @@ namespace MySerialList.Service.Interfaces
     {
         Task AddEpisodeAsync(AddEpisode addEpisode);
         Task<EpisodeData> GetEpisodeAsync(int id);
-        Task<IEnumerable<EpisodeData>> GetAllEpisodesAsync(int filmProductionId);
+        Task<IEnumerable<EpisodeData>> GetAllEpisodesAsync(int filmProductionId, int season);
     }
 }

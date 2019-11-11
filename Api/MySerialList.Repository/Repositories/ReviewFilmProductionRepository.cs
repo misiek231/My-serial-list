@@ -89,7 +89,7 @@ namespace MySerialList.Repository.Repositories
                     Description = r.Description,
                     CreateAt = r.CreateAt.ToString(@"dd/MM/yyyy hh\:mm"),
                     Username = r.User.UserName,
-                    IsCurrentUserComment = r.UserId == userId
+                    IsCurrentUserComment = userId != null ? (r.UserId == userId) : false
                 }).ToListAsync();
         }
 
