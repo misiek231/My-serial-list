@@ -8,22 +8,21 @@
     border-radius: 0;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 150px minmax(100px, auto) auto;
+    grid-template-rows: auto minmax(100px, auto) auto;
     row-gap: 15px;
     color: $text;
     box-shadow: none;
     height: auto;
     color: $text;
-    .seriesPoster{
-        width: 278px;
+    .image{
+        display: flex;
+        justify-content: center;
+    }
+    img{
         justify-self: center;
         margin-top: 10px;
-        height: 100%;
-        img{
-            width: 100%;
-            height: 100%;
-            border-radius: 5px;
-        }
+        border: 2px solid #fff;
+        border-radius: 5px;
     }
     .seriesData{
         display: flex;
@@ -41,6 +40,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            .plotText{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 5px 40px 0 40px;
+            }
             h1{
                 color: $text;
                 margin-top: 20px;
@@ -55,6 +60,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            form{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             .addSeriesButton{
                 background: $buttons;
                 margin-top: 10px;
@@ -62,7 +72,7 @@
                 color: $text;
                 font-weight: bold;
             }
-            .selectStatus, .episodes{
+            .selectStatus, .episodes, .ratingStatus{
                 width: 260px;
                 display: flex;
                 flex-direction: column;
@@ -150,10 +160,7 @@
 
 @media only screen and (min-width: 768px){
     .seriesView{
-        grid-template-rows: 300px minmax(100px, auto) auto;
-        .seriesPoster{
-            width: 400px
-        }
+        grid-template-rows: auto minmax(100px, auto) auto;
         .seriesData{
             .title{
                 font-size: 26px;
@@ -177,10 +184,7 @@
 
 @media only screen and (min-width: 1200px){
     .seriesView{
-        grid-template-rows: 450px minmax(100px, auto) auto;
-        .seriesPoster{
-            width: 640px;
-        }
+        grid-template-rows: auto minmax(100px, auto) auto;
         .seriesData{
             .title{
                 font-size: 26px;
