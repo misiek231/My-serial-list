@@ -29,9 +29,7 @@ const SignUpForm = (props) => {
             setIconLoading(false);
             const { cookies } = props;
             cookies.set('token', res.data.token, {path: '/'});
-            setTimeout(() =>{
-                props.history.push('/listview/current');
-            }, 1000)
+            props.history.push('/listview/current');
         })
         .catch(err =>{
             console.error(err);

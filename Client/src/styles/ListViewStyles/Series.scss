@@ -60,7 +60,10 @@
         .seriesTemplate{
             grid-template-columns: 0.7fr 1fr 1.5fr;
             .plot{
-                display: block;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
