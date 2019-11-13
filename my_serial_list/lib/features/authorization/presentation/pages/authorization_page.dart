@@ -21,7 +21,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
       body: Stack(
         children: <Widget>[
           Image.asset('assets/wallpaper.png',
-              fit: BoxFit.contain, height: MediaQuery.of(context).size.height),
+              fit: BoxFit.fitHeight, height: MediaQuery.of(context).size.height),
           _buildAnimatedForm(true, isLoginFormShowing),
           _buildAnimatedForm(false, !isLoginFormShowing),
         ],

@@ -15,15 +15,16 @@ class TopRated implements UseCase<List<FilmProductionRating>, Params> {
   Future<Either<Failure, List<FilmProductionRating>>> call(
     Params params,
   ) async {
-    return await repository.getTopRated(params.page);
+    return await repository.getTopRated(params.page, params.type);
   }
 }
 
 class Params extends Equatable {
   final int page;
+  final int type;
 
-  Params({@required this.page});
+  Params({@required this.page, this.type});
 
   @override
-  List<Object> get props => [page];
+  List<Object> get props => [page, type];
 }

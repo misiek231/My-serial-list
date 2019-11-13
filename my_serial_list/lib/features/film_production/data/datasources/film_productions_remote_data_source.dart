@@ -4,9 +4,11 @@ import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
+import 'package:my_serial_list/features/film_production/data/models/episode_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_rating_model.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/comment.dart';
+import 'package:my_serial_list/features/film_production/domain/entities/episode.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +18,13 @@ abstract class FilmProductionsRemoteDataSource {
   /// Calls the https://myseriallist.ml/api/FilmProduction/top_rated endpoint.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<List<FilmProductionRating>> getTopRated(int page);
+  Future<List<FilmProductionRating>> getTopRated(int page, int type);
 
   Future<FilmProduction> getFilmProduction(int id);
 
   Future<List<Comment>> getComments(int id);
+
+  Future<List<Episode>> getEpisodes(int filmProductionId, int season);
 }
 
 class FilmProductionsRemoteDataSourceImpl
@@ -29,11 +33,11 @@ class FilmProductionsRemoteDataSourceImpl
 
   FilmProductionsRemoteDataSourceImpl({@required this.client});
 
-  Future<List<FilmProductionRating>> getTopRated(int page) async {
+  Future<List<FilmProductionRating>> getTopRated(int page, int type) async {
     Response response;
     try {
       response = await client.get(
-        '$GET_TOP?page=$page',
+        '$GET_TOP?page=$page&type=$type',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -84,6 +88,25 @@ class FilmProductionsRemoteDataSourceImpl
     if (response.statusCode == 200) {
       Iterable l = json.decode(response.body);
       return l.map((model) => CommentModel.fromJson(model)).toList();
+    } else {
+      throw ServerException(message: response.body);
+    }
+  }
+
+  @override
+  Future<List<Episode>> getEpisodes(int filmProductionId, int season) async {
+    Response response;
+    try {
+      response = await client.get(
+        '$GET_EPISODES?filmProductionId=$filmProductionId&season=$season',
+      );
+    } catch (_) {
+      throw ServerException(message: 'Błąd łączenia z serwerem');
+    }
+
+    if (response.statusCode == 200) {
+      Iterable l = json.decode(response.body);
+      return l.map((model) => EpisodeModel.fromJson(model)).toList();
     } else {
       throw ServerException(message: response.body);
     }

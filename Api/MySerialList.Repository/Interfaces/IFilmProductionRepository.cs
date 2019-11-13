@@ -7,7 +7,7 @@ namespace MySerialList.Repository.Interfaces
     public interface IFilmProductionRepository
     {
         Task AddFilmProductionAsync(AddFilmProduction addFilmProduction, string fileName);
-        Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to);
+        Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to, int type);
         Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int from, int to);
         Task<FilmProductionData> GetFilmProduction(int id);
         Task<bool> ExsistsAsync(int filmProductionId);

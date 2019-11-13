@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 
 class ListElement extends StatelessWidget {
@@ -15,7 +14,7 @@ class ListElement extends StatelessWidget {
           SizedBox(
             width: 150,
             child: Hero(
-              child: Image.network('$IMAGES_URL/${model.poster}',
+              child: Image.network(model.poster,
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent loadingProgress) {
                 if (loadingProgress == null) return child;

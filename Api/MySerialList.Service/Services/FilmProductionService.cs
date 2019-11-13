@@ -27,10 +27,10 @@ namespace MySerialList.Service.Services
             _filmProductionRepository = filmProductionRepository;
         }
 
-        public Task<IEnumerable<FilmProductionRating>> GetTopRated(int page)
+        public Task<IEnumerable<FilmProductionRating>> GetTopRated(int page, int type)
         {
             int filmProductionsPerPage = 100;
-            return _filmProductionRepository.GetTopRated(page * filmProductionsPerPage - 100, filmProductionsPerPage);
+            return _filmProductionRepository.GetTopRated(page * filmProductionsPerPage - 100, filmProductionsPerPage, type);
         }
 
         public async Task AddFilmProductionAsync(AddFilmProduction addFilmProduction)

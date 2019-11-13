@@ -8,7 +8,7 @@ namespace MySerialList.Service.Interfaces
     {
         Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int page);
         Task<FilmProductionData> GetFilmProduction(int id);
-        Task<IEnumerable<FilmProductionRating>> GetTopRated(int page);
+        Task<IEnumerable<FilmProductionRating>> GetTopRated(int page, int type);
         Task AddFilmProductionAsync(AddFilmProduction addFilmProduction);
     }
 }

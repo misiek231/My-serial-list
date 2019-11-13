@@ -60,23 +60,29 @@ namespace MySerialList.Repository.Repositories
             }).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to)
+        public async Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to, int type)
         {
             int lastId = (await _dbContext.FilmProductions.LastAsync()).Id;
-            return await _dbContext.FilmProductions.Include(f => f.Reviews).Include(f=> f.Episodes).Select(f => new FilmProductionRating
-            {
-                FilmProductionId = f.Id,
-                IsSeries = f.IsSeries,
-                Seasons = f.Episodes.Any() ? (int?)f.Episodes.OrderByDescending(i => i.Season).Select(s => s.Season).FirstOrDefault() : null,
-                Genre = f.Genre,
-                Poster = f.Poster,
-                Rating = Average(f),
-                Plot = f.Plot,
-                Released = f.Released,
-                Title = f.Title,
-                Votes = f.Reviews.Count(),
-                Last = f.Id == lastId
-            }).Skip(from).Take(to).ToListAsync();
+            List<FilmProduction> d = await _dbContext.FilmProductions
+                .Include(f => f.Reviews)
+                .Include(f => f.Episodes)
+                .Where(f => type == 1 ? true : f.IsSeries == (type != 2))
+                .Skip(from).Take(to).ToListAsync();
+            return d.OrderBy(f => Average(f))
+                .Select(f => new FilmProductionRating
+                {
+                    FilmProductionId = f.Id,
+                    IsSeries = f.IsSeries,
+                    Seasons = f.Episodes.Any() ? (int?)f.Episodes.OrderByDescending(i => i.Season).Select(s => s.Season).FirstOrDefault() : null,
+                    Genre = f.Genre,
+                    Poster = f.Poster,
+                    Rating = Average(f),
+                    Plot = f.Plot,
+                    Released = f.Released,
+                    Title = f.Title,
+                    Votes = f.Reviews.Count(),
+                    Last = f.Id == lastId
+                });
         }
 
         public async Task<bool> IsSeriesAsync(int filmProductionId)

@@ -38,9 +38,9 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpGet("top_rated")]
-        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetTopRated(int page = 1)
+        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetTopRated(int page = 1, int type = 1)
         {
-            return Ok(await _filmProductionService.GetTopRated(page));
+            return Ok(await _filmProductionService.GetTopRated(page, type));
         }
     }
 }
