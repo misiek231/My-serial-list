@@ -3,6 +3,8 @@ import 'package:my_serial_list/features/authorization/presentation/pages/authori
 import 'package:my_serial_list/features/film_production/presentation/pages/search_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/list_view.dart';
 
+import '../../constants.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -31,12 +33,7 @@ class _MainPageState extends State<MainPage> {
                 child: IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchPage(),
-                      ),
-                    );
+                    showSearch(context: context, delegate: SearchPage());
                   },
                 ),
               ),
@@ -94,13 +91,17 @@ class _MainPageState extends State<MainPage> {
     switch (_currentIndex) {
       case 0:
         return InfiniteListView(
-          serials: true,
+          filmProductionType: FilmProductionType.all,
         );
       case 1:
         return TabBarView(
           children: <Widget>[
-            InfiniteListView(serials: false),
-            InfiniteListView(serials: true),
+            InfiniteListView(
+              filmProductionType: FilmProductionType.films,
+            ),
+            InfiniteListView(
+              filmProductionType: FilmProductionType.serials,
+            ),
           ],
         );
       default:

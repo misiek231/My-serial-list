@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySerialList.Component;
 using MySerialList.Model.FilmProduction;
 using MySerialList.Service.Interfaces;
 using System.Collections.Generic;
@@ -25,22 +26,16 @@ namespace MySerialList.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("search/{title}")]
-        public async Task<ActionResult<IEnumerable<FilmProductionSearch>>> SearchFilmProduction(string title, int page = 1)
-        {
-            return Ok(await _filmProductionService.SearchFilmProductions(title, page));
-        }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<FilmProductionData>> GetFilmProduction(int id)
         {
             return Ok(await _filmProductionService.GetFilmProduction(id));
         }
 
-        [HttpGet("top_rated")]
-        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetTopRated(int page = 1, int type = 1)
+        [HttpGet("get_all")]
+        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetAll(int page = 1, FilmProductionType type = FilmProductionType.all, string search = "")
         {
-            return Ok(await _filmProductionService.GetTopRated(page, type));
+            return Ok(await _filmProductionService.GetAll(page, type, search));
         }
     }
 }

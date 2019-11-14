@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/top_rated/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/pages/film_production_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/list_element.dart';
@@ -8,9 +11,14 @@ import 'package:my_serial_list/injection_container.dart';
 import 'error_view.dart';
 
 class InfiniteListView extends StatefulWidget {
-  final bool serials;
+  final FilmProductionType filmProductionType;
+  final String query;
 
-  const InfiniteListView({Key key, @required this.serials}) : super(key: key);
+  const InfiniteListView({
+    Key key,
+    @required this.filmProductionType,
+    this.query,
+  }) : super(key: key);
 
   @override
   _InfiniteListViewState createState() => _InfiniteListViewState();
@@ -26,14 +34,27 @@ class _InfiniteListViewState extends State<InfiniteListView>
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    bloc.add(GetMoreData(widget.serials));
+    bloc.add(GetMoreData(widget.filmProductionType, widget.query));
+  }
+
+  @override
+  void didUpdateWidget(InfiniteListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.query != widget.query)
+      bloc.add(
+        GetMoreData(
+          widget.filmProductionType,
+          widget.query,
+          resetPages: true,
+        ),
+      );
   }
 
   _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      bloc.add(GetMoreData(widget.serials));
+      bloc.add(GetMoreData(widget.filmProductionType, widget.query));
     }
     FocusScope.of(context).requestFocus(FocusNode());
   }
@@ -88,10 +109,17 @@ class _InfiniteListViewState extends State<InfiniteListView>
     return BlocBuilder(
       bloc: bloc,
       builder: (context, TopRatedState state) {
-        if (state is Empty) {
+        if (state is Loading) {
           return Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is Empty) {
+          return Center(
+            child: Text(
+              'Brak wyników!',
+              style: TextStyle(fontSize: 20),
+            ),
           );
         } else if (state is Loaded) {
           return ListView.builder(
@@ -102,7 +130,8 @@ class _InfiniteListViewState extends State<InfiniteListView>
         } else if (state is Error) {
           return ErrorView(
             message: state.message,
-            reload: () => bloc.add(GetMoreData(widget.serials)),
+            reload: () =>
+                bloc.add(GetMoreData(widget.filmProductionType, widget.query)),
           );
         }
         return Text("error");

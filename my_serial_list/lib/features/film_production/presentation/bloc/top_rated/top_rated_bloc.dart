@@ -17,7 +17,7 @@ class TopRatedBloc extends Bloc<TopRatedEvent, TopRatedState> {
   }) : assert(getTopRated != null);
 
   @override
-  TopRatedState get initialState => Empty();
+  TopRatedState get initialState => Loading();
 
   @override
   Stream<TopRatedState> mapEventToState(
@@ -26,14 +26,20 @@ class TopRatedBloc extends Bloc<TopRatedEvent, TopRatedState> {
     if (event is GetMoreData) {
       int page = 1;
       List<FilmProductionRating> list = List();
-      if (state is Loaded) {
+      if (state is Loaded && !event.resetPages) {
         page = (state as Loaded).page;
         list = (state as Loaded).filmProductions;
       }
 
-      //yield Loading();
-      final a = Params(page: page, type: event.serials ? 3 : 2);
-      final i = await getTopRated(a);
+      if (list.isEmpty) yield Loading();
+
+      final i = await getTopRated(
+        Params(
+          page: page,
+          type: event.filmProductionType,
+          query: event.query,
+        ),
+      );
 
       yield* i.fold((failure) async* {
         if (failure is RemoteFailure) {
@@ -41,11 +47,15 @@ class TopRatedBloc extends Bloc<TopRatedEvent, TopRatedState> {
         }
       }, (succes) async* {
         list.addAll(succes);
-        yield Loaded(
-          filmProductions: list,
-          page: page + 1,
-          hasReachedEndOfResults: succes.last.last,
-        );
+        if (list.isEmpty)
+          yield Empty();
+        else
+          yield Loaded(
+            filmProductions: list,
+            page: page + 1,
+            hasReachedEndOfResults:
+                succes.length != 0 ? succes.last.last : true,
+          );
       });
     }
   }

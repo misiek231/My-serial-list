@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
 import 'package:my_serial_list/core/error/failures.dart';
 import 'package:meta/meta.dart';
@@ -15,12 +16,13 @@ class FilmProductionsRepositoryImpl implements FilmProductionsRepository {
   FilmProductionsRepositoryImpl({@required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<FilmProductionRating>>> getTopRated(
+  Future<Either<Failure, List<FilmProductionRating>>> getAll(
     int page,
-    int type,
+    FilmProductionType type,
+    String query,
   ) async {
     try {
-      return Right(await remoteDataSource.getTopRated(page, type));
+      return Right(await remoteDataSource.getAll(page, type, query));
     } on ServerException catch (e) {
       return Left(RemoteFailure(message: e.message));
     }

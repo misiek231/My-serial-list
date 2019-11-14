@@ -3,7 +3,6 @@ import 'package:my_serial_list/features/film_production/domain/entities/film_pro
 import 'package:meta/meta.dart';
 
 abstract class FilmProductionState extends Equatable {
-  const FilmProductionState();
   @override
   List<Object> get props => [];
 }

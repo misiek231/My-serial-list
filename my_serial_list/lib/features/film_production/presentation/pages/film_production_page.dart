@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
@@ -129,9 +130,12 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
           child: Container(
             child: Hero(
               tag: model.filmProductionId,
-              child: Image.network(
-                widget.filmProduction.poster,
+              child: CachedNetworkImage(
                 fit: BoxFit.contain,
+                imageUrl: widget.filmProduction.poster,
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),
@@ -148,9 +152,12 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Hero(
-            child: Image.network(
-              widget.filmProduction.poster,
-              fit: BoxFit.fitWidth,
+            child: CachedNetworkImage(
+              fit: BoxFit.contain,
+              imageUrl: widget.filmProduction.poster,
+              placeholder: (context, url) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             tag: widget.filmProduction.filmProductionId,
           ),

@@ -18,7 +18,8 @@ abstract class FilmProductionsRemoteDataSource {
   /// Calls the https://myseriallist.ml/api/FilmProduction/top_rated endpoint.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<List<FilmProductionRating>> getTopRated(int page, int type);
+  Future<List<FilmProductionRating>> getAll(
+      int page, FilmProductionType type, String query);
 
   Future<FilmProduction> getFilmProduction(int id);
 
@@ -33,11 +34,18 @@ class FilmProductionsRemoteDataSourceImpl
 
   FilmProductionsRemoteDataSourceImpl({@required this.client});
 
-  Future<List<FilmProductionRating>> getTopRated(int page, int type) async {
+  @override
+  Future<List<FilmProductionRating>> getAll(
+      int page, FilmProductionType type, String query) async {
     Response response;
     try {
+      String link = '$GET_ALL';
+      link += page != null ? '?page=$page' : '';
+      link += type != null ? '&type=${type.index}' : '';
+      link += query == null || query == "" ? '' : '&search=$query';
+
       response = await client.get(
-        '$GET_TOP?page=$page&type=$type',
+        link,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -52,7 +60,7 @@ class FilmProductionsRemoteDataSourceImpl
           .map((model) => FilmProductionRatingModel.fromJson(model))
           .toList();
     } else {
-      throw ServerException(message: response.body);
+      throw ServerException(message: response.reasonPhrase);
     }
   }
 

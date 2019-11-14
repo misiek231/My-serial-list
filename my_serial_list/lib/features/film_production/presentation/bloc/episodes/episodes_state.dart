@@ -5,7 +5,7 @@ import 'package:my_serial_list/features/film_production/domain/entities/episode.
 @immutable
 abstract class EpisodeState extends Equatable {
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class Loading extends EpisodeState {}

@@ -4,10 +4,8 @@ import 'package:my_serial_list/features/film_production/domain/entities/film_pro
 
 @immutable
 abstract class TopRatedState extends Equatable {
-  TopRatedState([List propsList = const <dynamic>[]]);
-
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class Empty extends TopRatedState {}
@@ -22,12 +20,17 @@ class Loaded extends TopRatedState {
   Loaded(
       {@required this.filmProductions,
       @required this.page,
-      @required this.hasReachedEndOfResults})
-      : super([filmProductions, page, hasReachedEndOfResults]);
+      @required this.hasReachedEndOfResults});
+
+  @override
+  List<Object> get props => [filmProductions, page, hasReachedEndOfResults];
 }
 
 class Error extends TopRatedState {
   final String message;
 
-  Error({@required this.message}) : super([message]);
+  Error({@required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
