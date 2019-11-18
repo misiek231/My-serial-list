@@ -5,20 +5,33 @@ import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 import '../../styles/ListViewStyles/Series.scss';
 import ItemTemplate from './ItemTemplate';
 import '../../styles/ListViewStyles/Series.scss';
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 const TopList = () => {
     const { compulsoryData } = useContext(CompulsoryContext);
     const [topSeries, setTopSeries] = useState([]);
+    const [page, setPage] = useState(1);
 
     useEffect(() =>{
-        axios.get(compulsoryData.ip + '/api/FilmProduction/top_rated')
+      getTop();
+    }, []);
+
+    useBottomScrollListener(()=>{
+        if(topSeries[topSeries.length-1]!==undefined &&!topSeries[topSeries.length-1].last){
+            getTop();
+        }
+    });
+    const getTop = () =>{
+        axios.get(compulsoryData.ip + '/api/FilmProduction/get_all?page=' + page)
         .then(res =>{
-           setTopSeries(res.data);
+           setTopSeries(topSeries.concat(res.data));
+           setPage(page+1);
         })
         .catch(err =>{
             console.error(err);
         })
-    }, [compulsoryData]);
+    }
+  
 
     const top = topSeries.length > 0 ? (
         topSeries.map(item =>{

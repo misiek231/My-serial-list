@@ -30,6 +30,7 @@ const AddComment = (props) => {
         })
         .catch(err =>{
             console.log(err)
+            setCommentData({...commentData, submitting: false})
         })
     }
 
