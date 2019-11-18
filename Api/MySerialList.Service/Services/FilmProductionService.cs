@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using MySerialList.Component;
 using MySerialList.Model.FilmProduction;
 using MySerialList.Repository.Interfaces;
 using MySerialList.Service.Interfaces;
@@ -27,10 +28,10 @@ namespace MySerialList.Service.Services
             _filmProductionRepository = filmProductionRepository;
         }
 
-        public Task<IEnumerable<FilmProductionRating>> GetTopRated(int page)
+        public Task<IEnumerable<FilmProductionRating>> GetAll(int page, FilmProductionType type, string search)
         {
             int filmProductionsPerPage = 100;
-            return _filmProductionRepository.GetTopRated(page * filmProductionsPerPage - 100, filmProductionsPerPage);
+            return _filmProductionRepository.GetAll(page * filmProductionsPerPage - 100, filmProductionsPerPage, type, search);
         }
 
         public async Task AddFilmProductionAsync(AddFilmProduction addFilmProduction)

@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 
 class ListElement extends StatelessWidget {
@@ -15,18 +15,12 @@ class ListElement extends StatelessWidget {
           SizedBox(
             width: 150,
             child: Hero(
-              child: Image.network('$IMAGES_URL/${model.poster}',
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                    child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                      : null,
-                ));
-              }),
+              child: CachedNetworkImage(
+                imageUrl: model.poster,
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
               tag: model.filmProductionId,
             ),
           ),

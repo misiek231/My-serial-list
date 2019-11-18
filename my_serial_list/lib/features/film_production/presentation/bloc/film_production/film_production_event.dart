@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 abstract class FilmProductionEvent extends Equatable {
-  const FilmProductionEvent();
 
   @override
   List<Object> get props => [];

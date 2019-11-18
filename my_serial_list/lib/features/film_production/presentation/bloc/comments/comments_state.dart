@@ -3,7 +3,6 @@ import 'package:my_serial_list/features/film_production/domain/entities/comment.
 import 'package:meta/meta.dart';
 
 abstract class CommentsState extends Equatable {
-  const CommentsState();
   @override
   List<Object> get props => [];
 }

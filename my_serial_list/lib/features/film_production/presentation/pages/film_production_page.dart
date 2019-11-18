@@ -1,12 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/film_production/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/utils/film_production_sliver_header_delegate.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/adding_fab_button.dart';
+import 'package:my_serial_list/features/film_production/presentation/widgets/error_view.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/film_production_details.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/season_view.dart';
 import '../../../../injection_container.dart';
@@ -41,7 +41,10 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
     if (widget.filmProduction.isSeries) {
       seasonViews = List.generate(
         widget.filmProduction.seasons,
-        (index) => SeasonView(season: index + 1),
+        (index) => SeasonView(
+          season: index + 1,
+          filmProductionId: widget.filmProduction.filmProductionId,
+        ),
       );
     }
   }
@@ -75,7 +78,12 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
                 ? _buildTabBarView(context, state)
                 : _buildCustomScrollView(context, state);
           } else if (state is Error) {
-            return _buildError(state);
+            return ErrorView(
+              message: state.error,
+              reload: () => bloc.add(
+                GetData(widget.filmProduction.filmProductionId),
+              ),
+            );
           }
           return null;
         },
@@ -93,6 +101,7 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
 
   TabBar _buildTabBar() {
     return TabBar(
+      isScrollable: true,
       tabs: List.generate(
         widget.filmProduction.seasons + 1,
         (index) {
@@ -121,33 +130,17 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
           child: Container(
             child: Hero(
               tag: model.filmProductionId,
-              child: Image.network(
-                '$IMAGES_URL/${widget.filmProduction.poster}',
+              child: CachedNetworkImage(
                 fit: BoxFit.contain,
+                imageUrl: widget.filmProduction.poster,
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),
           minHeight: 300.0,
           maxHeight: 600.0),
-    );
-  }
-
-  Column _buildError(Error state) {
-    return Column(
-      children: <Widget>[
-        Center(
-          child: Text(
-            state.error,
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
-        SizedBox(height: 20),
-        RaisedButton(
-          child: Text('Odśwież'),
-          onPressed: () =>
-              bloc.add(GetData(widget.filmProduction.filmProductionId)),
-        )
-      ],
     );
   }
 
@@ -159,9 +152,12 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Hero(
-            child: Image.network(
-              '$IMAGES_URL/${widget.filmProduction.poster}',
-              fit: BoxFit.fitWidth,
+            child: CachedNetworkImage(
+              fit: BoxFit.contain,
+              imageUrl: widget.filmProduction.poster,
+              placeholder: (context, url) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             tag: widget.filmProduction.filmProductionId,
           ),

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySerialList.Component;
 using MySerialList.Data;
 using MySerialList.Data.Model;
 using MySerialList.Model.FilmProduction;
@@ -60,23 +61,32 @@ namespace MySerialList.Repository.Repositories
             }).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<FilmProductionRating>> GetTopRated(int from, int to)
+        public async Task<IEnumerable<FilmProductionRating>> GetAll(int from, int to, FilmProductionType type, string search)
         {
-            int lastId = (await _dbContext.FilmProductions.LastAsync()).Id;
-            return await _dbContext.FilmProductions.Include(f => f.Reviews).Include(f=> f.Episodes).Select(f => new FilmProductionRating
-            {
-                FilmProductionId = f.Id,
-                IsSeries = f.IsSeries,
-                Seasons = f.Episodes.Any() ? (int?)f.Episodes.OrderByDescending(i => i.Season).Select(s => s.Season).FirstOrDefault() : null,
-                Genre = f.Genre,
-                Poster = f.Poster,
-                Rating = Average(f),
-                Plot = f.Plot,
-                Released = f.Released,
-                Title = f.Title,
-                Votes = f.Reviews.Count(),
-                Last = f.Id == lastId
-            }).Skip(from).Take(to).ToListAsync();
+            int? lastId = (await _dbContext.FilmProductions
+                .Where(f => type == FilmProductionType.all ? true : (f.IsSeries == (type == FilmProductionType.serials)))
+                .Where(f => f.Title.Contains(search)).LastOrDefaultAsync())?.Id;
+            List<FilmProduction> d = await _dbContext.FilmProductions
+                .Include(f => f.Reviews)
+                .Include(f => f.Episodes)
+                .Where(f => type == FilmProductionType.all ? true : (f.IsSeries == (type == FilmProductionType.serials)))
+                .Where(f => f.Title.Contains(search))
+                .Skip(from).Take(to).ToListAsync();
+            return d.OrderBy(f => Average(f))
+                .Select(f => new FilmProductionRating
+                {
+                    FilmProductionId = f.Id,
+                    IsSeries = f.IsSeries,
+                    Seasons = f.Episodes.Any() ? (int?)f.Episodes.OrderByDescending(i => i.Season).Select(s => s.Season).FirstOrDefault() : null,
+                    Genre = f.Genre,
+                    Poster = f.Poster,
+                    Rating = Average(f),
+                    Plot = f.Plot,
+                    Released = f.Released,
+                    Title = f.Title,
+                    Votes = f.Reviews.Count(),
+                    Last = lastId == null ? true : f.Id == lastId
+                });
         }
 
         public async Task<bool> IsSeriesAsync(int filmProductionId)

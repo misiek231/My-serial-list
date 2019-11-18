@@ -1,33 +1,60 @@
-import 'package:floating_search_bar/ui/sliver_search_bar.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_serial_list/features/authorization/presentation/pages/authorization_page.dart';
+import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/top_rated/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/pages/film_production_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/list_element.dart';
 import 'package:my_serial_list/injection_container.dart';
 
+import 'error_view.dart';
+
 class InfiniteListView extends StatefulWidget {
+  final FilmProductionType filmProductionType;
+  final String query;
+
+  const InfiniteListView({
+    Key key,
+    @required this.filmProductionType,
+    this.query,
+  }) : super(key: key);
+
   @override
   _InfiniteListViewState createState() => _InfiniteListViewState();
 }
 
-class _InfiniteListViewState extends State<InfiniteListView> {
-  ScrollController _scrollController = new ScrollController();
+class _InfiniteListViewState extends State<InfiniteListView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  ScrollController _scrollController = ScrollController();
   TopRatedBloc bloc = sl<TopRatedBloc>();
   @override
   void initState() {
     super.initState();
-
     _scrollController.addListener(_scrollListener);
-    bloc.add(GetMoreData());
+    bloc.add(GetMoreData(widget.filmProductionType, widget.query));
+  }
+
+  @override
+  void didUpdateWidget(InfiniteListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.query != widget.query)
+      bloc.add(
+        GetMoreData(
+          widget.filmProductionType,
+          widget.query,
+          resetPages: true,
+        ),
+      );
   }
 
   _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      bloc.add(GetMoreData());
+      bloc.add(GetMoreData(widget.filmProductionType, widget.query));
     }
     FocusScope.of(context).requestFocus(FocusNode());
   }
@@ -48,8 +75,11 @@ class _InfiniteListViewState extends State<InfiniteListView> {
   }
 
   Widget _buildLoaderListItem() {
-    return Center(
-      child: CircularProgressIndicator(),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
@@ -75,90 +105,37 @@ class _InfiniteListViewState extends State<InfiniteListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 5),
-      child: CustomScrollView(
-        controller: _scrollController,
-        slivers: <Widget>[
-          _buildSliverFloatingBar(context),
-          _buildContent(),
-        ],
-      ),
-    );
-  }
-
-  BlocBuilder<TopRatedBloc, TopRatedState> _buildContent() {
+    super.build(context);
     return BlocBuilder(
       bloc: bloc,
       builder: (context, TopRatedState state) {
-        if (state is Empty) {
-          return SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Center(child: CircularProgressIndicator()),
+        if (state is Loading) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is Empty) {
+          return Center(
+            child: Text(
+              'Brak wyników!',
+              style: TextStyle(fontSize: 20),
             ),
           );
         } else if (state is Loaded) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildItem(index, state),
-              childCount: calculateListItemCount(state),
-            ),
+          return ListView.builder(
+            controller: _scrollController,
+            itemBuilder: (context, index) => _buildItem(index, state),
+            itemCount: calculateListItemCount(state),
           );
         } else if (state is Error) {
-          return SliverToBoxAdapter(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Center(
-                      child: Text(
-                    state.message,
-                    style: TextStyle(fontSize: 30),
-                  )),
-                ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  child: Text('Odśwież'),
-                  onPressed: () => bloc.add(GetMoreData()),
-                )
-              ],
-            ),
+          return ErrorView(
+            message: state.message,
+            reload: () =>
+                bloc.add(GetMoreData(widget.filmProductionType, widget.query)),
           );
         }
         return Text("error");
       },
-    );
-  }
-
-  SliverFloatingBar _buildSliverFloatingBar(BuildContext context) {
-    return SliverFloatingBar(
-      backgroundColor: Theme.of(context).backgroundColor,
-      trailing: IconButton(
-        icon: CircleAvatar(
-          backgroundColor: Theme.of(context).accentColor,
-          child: Text(
-            'M',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AuthorizationPage(),
-            ),
-          );
-        },
-      ),
-      floating: true,
-      title: TextField(
-        style: TextStyle(fontSize: 20),
-        decoration: InputDecoration(
-          hintText: 'Szukaj filmu...',
-          border: InputBorder.none,
-        ),
-      ),
     );
   }
 }
