@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:division/division.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/core/constants.dart';
@@ -66,26 +65,22 @@ class _InfiniteListViewState extends State<InfiniteListView>
   }
 
   int calculateListItemCount(Loaded state) {
-    if (state.hasReachedEndOfResults) {
-      return state.filmProductions.length;
-    } else {
-      // + 1 for the loading indicator
-      return state.filmProductions.length + 1;
-    }
+    return state.filmProductions.length +
+        (state.hasReachedEndOfResults ? 0 : 1);
   }
 
-  Widget _buildLoaderListItem() {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+  Widget _buildLoader() {
+    return Parent(
+      child: CircularProgressIndicator(),
+      style: ParentStyle()
+        ..alignment.center()
+        ..padding(all: 10),
     );
   }
 
   Widget _buildItem(int index, Loaded state) {
     if (index >= state.filmProductions.length) {
-      return _buildLoaderListItem();
+      return _buildLoader();
     } else {
       return GestureDetector(
         child: ListElement(state.filmProductions[index]),
@@ -110,16 +105,14 @@ class _InfiniteListViewState extends State<InfiniteListView>
       bloc: bloc,
       builder: (context, TopRatedState state) {
         if (state is Loading) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return _buildLoader();
         } else if (state is Empty) {
-          return Center(
-            child: Text(
-              'Brak wyników!',
-              style: TextStyle(fontSize: 20),
-            ),
+          return Txt(
+            'Brak wyników!',
+            style: TxtStyle()
+              ..alignment.center()
+              ..fontSize(20)
+              ..textColor(Colors.white),
           );
         } else if (state is Loaded) {
           return ListView.builder(

@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
+import 'package:my_serial_list/core/usecases/usecase.dart';
+import 'package:my_serial_list/features/account/domain/entities/user/token.dart';
+import 'package:my_serial_list/features/account/domain/usecases/get_token.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/episode_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_model.dart';
@@ -13,6 +16,8 @@ import 'package:my_serial_list/features/film_production/domain/entities/film_pro
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+
+import '../../../../injection_container.dart';
 
 abstract class FilmProductionsRemoteDataSource {
   /// Calls the https://myseriallist.ml/api/FilmProduction/top_rated endpoint.
@@ -31,6 +36,7 @@ abstract class FilmProductionsRemoteDataSource {
 class FilmProductionsRemoteDataSourceImpl
     implements FilmProductionsRemoteDataSource {
   final http.Client client;
+  GetToken getToken = sl();
 
   FilmProductionsRemoteDataSourceImpl({@required this.client});
 
@@ -67,9 +73,19 @@ class FilmProductionsRemoteDataSourceImpl
   @override
   Future<FilmProduction> getFilmProduction(int id) async {
     Response response;
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    (await getToken(NoParams())).fold((failure) {}, (succes) {
+      headers['authorization'] = "bearer " + succes.token;
+    });
+
     try {
       response = await client.get(
         '$GET_FILM_PRODUCTION/$id',
+        headers: headers,
       );
     } catch (_) {
       throw ServerException(message: 'Błąd łączenia z serwerem');

@@ -8,7 +8,7 @@ namespace MySerialList.Service.Interfaces
     public interface IFilmProductionService
     {
         Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int page);
-        Task<FilmProductionData> GetFilmProduction(int id);
+        Task<FilmProductionData> GetFilmProduction(int id, string userId);
         Task<IEnumerable<FilmProductionRating>> GetAll(int page, FilmProductionType type, string search);
         Task AddFilmProductionAsync(AddFilmProduction addFilmProduction);
     }

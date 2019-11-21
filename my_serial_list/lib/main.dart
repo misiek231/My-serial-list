@@ -4,7 +4,7 @@ import 'package:my_serial_list/injection_container.dart';
 import 'core/presentation/pages/main_page.dart';
 
 void main() async {
-  init();
+  await init();
   runApp(App());
 }
 

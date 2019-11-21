@@ -2,21 +2,23 @@ import 'package:my_serial_list/features/film_production/domain/entities/film_pro
 import 'package:meta/meta.dart';
 
 class FilmProductionModel extends FilmProduction {
-  FilmProductionModel(
-      {@required title,
-      @required genre,
-      @required released,
-      @required filmProductionId,
-      @required poster,
-      @required plot,
-      @required votes,
-      @required rating,
-      @required isSeries,
-      @required language,
-      @required actors,
-      @required director,
-      @required episodes})
-      : super(
+  FilmProductionModel({
+    @required title,
+    @required genre,
+    @required released,
+    @required filmProductionId,
+    @required poster,
+    @required plot,
+    @required votes,
+    @required rating,
+    @required isSeries,
+    @required language,
+    @required actors,
+    @required director,
+    @required isInMyList,
+    @required episodes,
+    @required myRating,
+  }) : super(
           title: title,
           language: language,
           actors: actors,
@@ -30,6 +32,8 @@ class FilmProductionModel extends FilmProduction {
           rating: rating,
           episodes: episodes,
           isSeries: isSeries,
+          isInMyList: isInMyList,
+          myRating: myRating,
         );
 
   factory FilmProductionModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +51,8 @@ class FilmProductionModel extends FilmProduction {
       rating: json['rating'],
       episodes: json['episodes'],
       isSeries: json['isSeries'],
+      isInMyList: json['isInMyList'],
+      myRating: json['myRating'],
     );
   }
 
@@ -64,7 +70,9 @@ class FilmProductionModel extends FilmProduction {
       'votes': votes,
       'rating': rating,
       'episodes': episodes,
-      'isSeries': isSeries
+      'isSeries': isSeries,
+      'isInMyList': isInMyList,
+      'myRating': myRating,
     };
   }
 }

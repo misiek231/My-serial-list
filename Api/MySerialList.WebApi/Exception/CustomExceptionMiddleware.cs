@@ -33,10 +33,10 @@ namespace MySerialList.WebApi.Exception
         private Task HandleExceptionAsync(HttpContext context, HttpStatusCodeException exception)
         {
             string result = null;
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = "text/plain; charset=utf-8";
             if (exception is HttpStatusCodeException)
             {
-                result = new { exception.Message, StatusCode = (int)exception.StatusCode }.ToString();
+                result = exception.Message;
                 context.Response.StatusCode = (int)exception.StatusCode;
             }
             else

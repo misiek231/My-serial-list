@@ -1,13 +1,21 @@
+import 'package:division/division.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/comment.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/comments/bloc.dart';
 import 'package:my_serial_list/injection_container.dart';
 
+import 'styles/comments_section_style.dart';
+import 'styles/default_styles.dart';
+
 class CommentsSection extends StatefulWidget {
   final int filmProductionId;
-  const CommentsSection({Key key, @required this.filmProductionId})
-      : super(key: key);
+  final bool canAddComment;
+  const CommentsSection({
+    Key key,
+    @required this.filmProductionId,
+    @required this.canAddComment,
+  }) : super(key: key);
 
   @override
   _CommentsSectionState createState() => _CommentsSectionState();
@@ -33,17 +41,24 @@ class _CommentsSectionState extends State<CommentsSection> {
     return Card(
       child: Column(
         children: <Widget>[
-          _buildAddingComment(),
+          widget.canAddComment
+              ? _buildAddingComment()
+              : Txt(
+                  "Dodaj film do swojej listy aby móc dodać komentarz",
+                  style: TxtStyle()
+                    ..alignment.center()
+                    ..textColor(Colors.red)
+                    ..fontSize(20)
+                    ..padding(all: 20),
+                ),
           Divider(),
           BlocBuilder<CommentsBloc, CommentsState>(
             bloc: bloc,
             builder: (context, state) {
               if (state is InitialCommentsState) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: CircularProgressIndicator(),
-                  ),
+                return Parent(
+                  style: centerStyle,
+                  child: CircularProgressIndicator(),
                 );
               } else if (state is Loaded) {
                 return ListView.builder(
@@ -56,23 +71,21 @@ class _CommentsSectionState extends State<CommentsSection> {
                   },
                 );
               } else if (state is Empty) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      'Brak komentarzy',
-                      style: TextStyle(fontSize: 20),
-                    ),
+                return Parent(
+                  style: centerStyle,
+                  child: Txt(
+                    'Brak komentarzy',
+                    style: TxtStyle()
+                      ..fontSize(20)
+                      ..textColor(Colors.white),
                   ),
                 );
               } else if (state is Error) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      state.error,
-                      style: TextStyle(fontSize: 20),
-                    ),
+                return Parent(
+                  style: centerStyle,
+                  child: Txt(
+                    state.error,
+                    style: TxtStyle()..fontSize(20),
                   ),
                 );
               }
@@ -92,33 +105,34 @@ class _CommentsSectionState extends State<CommentsSection> {
           CircleAvatar(
             child: Text(comment.username[0]),
           ),
-          SizedBox(
-            width: 10,
-          ),
+          SizedBox(width: 10),
           Expanded(
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          comment.username,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(comment.createAt),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(comment.description),
-                  ],
-                )),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Txt(
+                        comment.username,
+                        style: TxtStyle()
+                          ..add(txtStyle)
+                          ..fontSize(20),
+                      ),
+                      SizedBox(width: 10),
+                      Txt(
+                        comment.createAt,
+                        style: txtStyle,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    comment.description,
+                  ),
+                ],
+              ),
+            ),
           ),
           PopupMenuButton<String>(
             onSelected: (String result) {},

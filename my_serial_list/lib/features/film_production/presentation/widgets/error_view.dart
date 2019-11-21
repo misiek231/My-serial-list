@@ -17,10 +17,11 @@ class ErrorView extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 50),
           child: Center(
-              child: Text(
-            message,
-            style: TextStyle(fontSize: 30),
-          )),
+            child: Text(
+              message,
+              style: TextStyle(fontSize: 30),
+            ),
+          ),
         ),
         SizedBox(height: 20),
         RaisedButton(
