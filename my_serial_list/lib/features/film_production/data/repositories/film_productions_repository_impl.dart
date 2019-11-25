@@ -56,4 +56,17 @@ class FilmProductionsRepositoryImpl implements FilmProductionsRepository {
       return Left(RemoteFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<FilmProductionRating>>> getMyFilmProductions(
+      WatchingStatus watchingStatus, int page) async {
+    try {
+      return Right(
+          await remoteDataSource.getMyFilmProductions(watchingStatus, page));
+    } on ServerException catch (e) {
+      return Left(RemoteFailure(message: e.message));
+    } on NoAuthorizationException {
+      return Left(NoAuthorizationFailure());
+    }
+  }
 }

@@ -19,4 +19,7 @@ abstract class FilmProductionsRepository {
 
   Future<Either<Failure, List<Episode>>> getEpisodes(
       int filmProductionId, int season);
+
+  Future<Either<Failure, List<FilmProductionRating>>> getMyFilmProductions(
+      WatchingStatus watchingStatus, int page);
 }

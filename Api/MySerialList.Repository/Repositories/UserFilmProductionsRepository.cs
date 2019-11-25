@@ -28,7 +28,7 @@ namespace MySerialList.Repository.Repositories
                 WatchingStatus = addUserFilmProductionModel.WatchingStatus,
                 UserId = userId,
                 Episodes = addUserFilmProductionModel.Episodes ?? 1
-            }); 
+            });
             await _mySerialListDBContext.SaveChangesAsync();
         }
 
@@ -42,25 +42,48 @@ namespace MySerialList.Repository.Repositories
             await _mySerialListDBContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductionsAsync(string username, WatchingStatus status)
+        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int from, int to)
         {
-            var i = _mySerialListDBContext.WatchingFilmProductionStatuses
+            int? lastId = null;
+            try
+            {
+                lastId = await _mySerialListDBContext.WatchingFilmProductionStatuses
+                   .Include(w => w.User)
+                   .Where(u => u.User.UserName == username)
+                   .Where(u => u.WatchingStatus == status)
+                   .OrderBy(u => u.Id)
+                   .Select(u => u.Id)                  
+                   .LastOrDefaultAsync();
+            }
+            catch { }
+
+            IAsyncEnumerable<WatchingFilmProductionStatus> i = _mySerialListDBContext.WatchingFilmProductionStatuses
                 .Include(w => w.User)
                 .Include(w => w.FilmProduction)
                 .ThenInclude(w => w.Reviews)
+                .Include(w => w.FilmProduction)
+                .ThenInclude(f => f.Episodes)
                 .Where(u => u.User.UserName == username)
-                .Where(u => u.WatchingStatus == status).ToAsyncEnumerable();
+                .Where(u => u.WatchingStatus == status)
+                .OrderBy(u => u.Id)
+                .Skip(from)
+                .Take(to)
+                .ToAsyncEnumerable();
 
-
-                return await i.Select(u => new UserFilmProductionList
-                {
-                    FilmProductionId = u.FilmProductionId,
-                    Episodes = u.Episodes,
-                    Poster = u.FilmProduction.Poster,
-                    Rating = Average(u.FilmProduction),
-                    Title = u.FilmProduction.Title,
-                    Released = u.FilmProduction.Released
-                }).ToList();
+            return await i.Select(u => new FilmProductionRating
+            {
+                FilmProductionId = u.FilmProductionId,
+                Poster = u.FilmProduction.Poster,
+                Rating = Average(u.FilmProduction),
+                Title = u.FilmProduction.Title,
+                Released = u.FilmProduction.Released,
+                Genre = u.FilmProduction.Genre,
+                IsSeries = u.FilmProduction.IsSeries,
+                Plot = u.FilmProduction.Plot,
+                Votes = u.FilmProduction.Reviews?.Count() ?? 1,
+                Seasons = u.FilmProduction.Episodes.Any() ? (int?)u.FilmProduction.Episodes.OrderByDescending(k => k.Season).Select(s => s.Season).FirstOrDefault() : null,
+                Last = u.Id == lastId.Value
+            }).ToList();
         }
 
         public async Task<bool> IsFilmProductionAddedAsync(int movieId, string userId)

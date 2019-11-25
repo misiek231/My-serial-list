@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
+import 'package:my_serial_list/core/error/failures.dart';
 import 'package:my_serial_list/core/usecases/usecase.dart';
+import 'package:my_serial_list/features/account/domain/entities/user/token.dart';
 import 'package:my_serial_list/features/account/domain/usecases/get_token.dart';
+import 'package:my_serial_list/features/account/domain/usecases/get_username.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/episode_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/film_production_model.dart';
@@ -30,12 +33,16 @@ abstract class FilmProductionsRemoteDataSource {
   Future<List<Comment>> getComments(int id);
 
   Future<List<Episode>> getEpisodes(int filmProductionId, int season);
+
+  Future<List<FilmProductionRating>> getMyFilmProductions(
+      WatchingStatus watchingStatus, int page);
 }
 
 class FilmProductionsRemoteDataSourceImpl
     implements FilmProductionsRemoteDataSource {
   final http.Client client;
   GetToken getToken = sl();
+  GetUsername getUsername = sl();
 
   FilmProductionsRemoteDataSourceImpl({@required this.client});
 
@@ -132,6 +139,47 @@ class FilmProductionsRemoteDataSourceImpl
       return l.map((model) => EpisodeModel.fromJson(model)).toList();
     } else {
       throw ServerException(message: response.body);
+    }
+  }
+
+  @override
+  Future<List<FilmProductionRating>> getMyFilmProductions(
+      WatchingStatus watchingStatus, int page) async {
+    Response response;
+    String token;
+    String username;
+
+    (await getToken(NoParams())).fold((failure) {
+      throw NoAuthorizationException();
+    }, (success) {
+      token = success.token;
+    });
+
+    (await getUsername(NoParams())).fold((failure) {
+      throw NoAuthorizationException();
+    }, (success) {
+      username = success;
+    });
+
+    try {
+      response = await client.get(
+        '$GET_MY_LIST/$username?status=${watchingStatus.index}&page=$page',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer $token',
+        },
+      );
+    } catch (_) {
+      throw ServerException(message: 'Błąd łączenia z serwerem');
+    }
+
+    if (response.statusCode == 200) {
+      Iterable l = json.decode(response.body);
+      return l
+          .map((model) => FilmProductionRatingModel.fromJson(model))
+          .toList();
+    } else {
+      throw ServerException(message: response.reasonPhrase);
     }
   }
 }
