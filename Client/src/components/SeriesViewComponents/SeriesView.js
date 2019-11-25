@@ -9,7 +9,7 @@ import SeriesData from './SeriesData';
 
 const SeriesView = (props) => {
     const {compulsoryData} = useContext(CompulsoryContext);
-    const {oneSeries, dispatch} = useContext(OneSeriesContext)
+    const {oneSeries, dispatch} = useContext(OneSeriesContext);
     useEffect(() =>{
         axios.get(compulsoryData.ip + '/api/FilmProduction/' + props.match.params.id)
         .then(res =>{

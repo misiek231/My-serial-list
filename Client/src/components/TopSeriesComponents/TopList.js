@@ -8,49 +8,57 @@ import '../../styles/ListViewStyles/Series.scss';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 const TopList = () => {
-    const { compulsoryData } = useContext(CompulsoryContext);
+    const { compulsoryData} = useContext(CompulsoryContext);
     const [topSeries, setTopSeries] = useState([]);
     const [page, setPage] = useState(1);
+    const [spin, setSpin] = useState(true);
 
     useEffect(() =>{
-      getTop();
-    }, []);
+        console.log('kliknąłeś xD')
+            if(page === 1){
+                getTop();
+            }else{
+                setPage(1);
+            }
+    }, [compulsoryData.title]);
 
     useBottomScrollListener(()=>{
         if(topSeries[topSeries.length-1]!==undefined &&!topSeries[topSeries.length-1].last){
-            getTop();
+            setPage(page+1);
         }
     });
+
+    useEffect(() =>{
+        getTop();
+    },[page])
+
     const getTop = () =>{
-        axios.get(compulsoryData.ip + '/api/FilmProduction/get_all?page=' + page)
+        console.log(page)
+        let link = compulsoryData.ip + '/api/FilmProduction/get_all?page=' + page;
+        if(compulsoryData.title !== ""){
+            link += "&search=" + compulsoryData.title;
+        }
+        setSpin(true);
+        axios.get(link)
         .then(res =>{
-           setTopSeries(topSeries.concat(res.data));
-           setPage(page+1);
+            setSpin(false);
+           setTopSeries(page===1 ? (res.data) : (topSeries.concat(res.data)));
         })
         .catch(err =>{
             console.error(err);
         })
     }
-  
-
-    const top = topSeries.length > 0 ? (
-        topSeries.map(item =>{
-            return(
-                <ItemTemplate key={item.filmProductionId} data={item}></ItemTemplate>
-            )
-        })
-    ):(
-        <div className="spinner">
-            <Spin/>
-        </div>
-    )
-   
+     
+    const top = topSeries.map(item =>{
+        return(
+            <ItemTemplate key={item.filmProductionId} data={item}></ItemTemplate>
+        )
+        }) 
     return (  
         <div className="series">
-            <div className="header">
-                <h2>Top lista</h2>
-            </div>
             {top}
+            { spin ? ( <div className="spinner"><Spin/></div>):
+            (<span className="spinner" style={{margin: '10px 0'}}>Brak wyników</span>)}
         </div>
     );
 }
