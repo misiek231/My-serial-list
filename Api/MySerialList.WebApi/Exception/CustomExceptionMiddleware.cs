@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MySerialList.Service.Exception;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MySerialList.WebApi.Exception
@@ -14,44 +13,18 @@ namespace MySerialList.WebApi.Exception
             this.next = next;
         }
 
-        public async Task Invoke(HttpContext context /* other dependencies */)
+        public async Task Invoke(HttpContext context)
         {
             try
             {
                 await next(context);
             }
-            catch (HttpStatusCodeException ex)
+            catch (HttpStatusCodeException exception)
             {
-                await HandleExceptionAsync(context, ex);
-            }
-            catch (WebException exceptionObj)
-            {
-                await HandleExceptionAsync(context, exceptionObj);
-            }
-        }
-
-        private Task HandleExceptionAsync(HttpContext context, HttpStatusCodeException exception)
-        {
-            string result = null;
-            context.Response.ContentType = "text/plain; charset=utf-8";
-            if (exception is HttpStatusCodeException)
-            {
-                result = exception.Message;
+                context.Response.ContentType = "text/plain; charset=utf-8";
                 context.Response.StatusCode = (int)exception.StatusCode;
+                await context.Response.WriteAsync(exception.Message);
             }
-            else
-            {
-                result = new { Message = "Runtime Error", StatusCode = (int)HttpStatusCode.BadRequest }.ToString();
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-            return context.Response.WriteAsync(result);
-        }
-
-        private Task HandleExceptionAsync(HttpContext context, WebException exception)
-        {
-            string result = new { exception.Message, StatusCode = (int)HttpStatusCode.InternalServerError }.ToString();
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return context.Response.WriteAsync(result);
         }
     }
 }

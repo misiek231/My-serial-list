@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
 import 'package:my_serial_list/core/usecases/usecase.dart';
-import 'package:my_serial_list/features/account/domain/entities/user/token.dart';
 import 'package:my_serial_list/features/account/domain/usecases/get_token.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
 import 'package:my_serial_list/features/film_production/data/models/episode_model.dart';

@@ -28,12 +28,13 @@ namespace MySerialList.WebApi.Controllers
         }
 
         [HttpGet("get_film_productions/{username}")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserFilmProductionList>>> GetFilmProductionsAsync(WatchingStatus status, string username)
         {
             return Ok(await _userFilmProductionsService.GetUserFilmProductionsAsync(username, status));
         }
 
-        [HttpDelete("delete_film_production")]
+        [HttpDelete("delete_film_production/{filmProductionId}")]
         public async Task<ActionResult> DeleteFilmProductionAsync(int filmProductionId)
         {
             await _userFilmProductionsService.DeleteFilmProductionAsync(User.Identity.Name, filmProductionId);

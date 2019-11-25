@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
@@ -26,6 +27,8 @@ class FilmProductionPage extends StatefulWidget {
 class _FilmProductionPageState extends State<FilmProductionPage> {
   FilmProductionBloc bloc = sl<FilmProductionBloc>();
   List<Widget> seasonViews;
+  ScrollController _hideButtonController;
+  bool _isVisible = true;
 
   @override
   void dispose() {
@@ -37,6 +40,23 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
   void initState() {
     super.initState();
     bloc.add(GetData(widget.filmProduction.filmProductionId));
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (_isVisible == true) {
+          setState(() {
+            _isVisible = false;
+          });
+        }
+      } else {
+        if (_isVisible == false) {
+          setState(() {
+            _isVisible = true;
+          });
+        }
+      }
+    });
 
     if (widget.filmProduction.isSeries) {
       seasonViews = List.generate(
@@ -67,7 +87,7 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
         title: Text(widget.filmProduction.title),
         bottom: widget.filmProduction.isSeries ? _buildTabBar() : null,
       ),
-      floatingActionButton: AddingFabButton(),
+      floatingActionButton: AddingFabButton(visible: _isVisible),
       body: BlocBuilder<FilmProductionBloc, FilmProductionState>(
         bloc: bloc,
         builder: (context, state) {
@@ -115,6 +135,7 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
 
   CustomScrollView _buildCustomScrollView(BuildContext context, Loaded state) {
     return CustomScrollView(
+      controller: _hideButtonController,
       slivers: <Widget>[
         _buildHeader(context, state.filmProduction),
         FilmProductionDetails(model: state.filmProduction),

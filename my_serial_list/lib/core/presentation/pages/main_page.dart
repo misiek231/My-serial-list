@@ -2,12 +2,10 @@ import 'package:division/division.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_serial_list/core/presentation/bloc/main_page/main.dart';
-import 'package:my_serial_list/core/usecases/usecase.dart';
-import 'package:my_serial_list/features/account/domain/usecases/get_username.dart';
 import 'package:my_serial_list/features/account/presentation/pages/account_page.dart';
 import 'package:my_serial_list/features/account/presentation/pages/authorization_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/pages/search_page.dart';
-import 'package:my_serial_list/features/film_production/presentation/widgets/list_view.dart';
+import 'package:my_serial_list/features/film_production/presentation/widgets/top_rated_list.dart';
 import 'package:my_serial_list/injection_container.dart';
 
 import '../../constants.dart';
@@ -135,16 +133,16 @@ class _MainPageState extends State<MainPage> {
   Widget _indexToPage() {
     switch (_currentIndex) {
       case 0:
-        return InfiniteListView(
+        return TopRatedList(
           filmProductionType: FilmProductionType.all,
         );
       case 1:
         return TabBarView(
           children: <Widget>[
-            InfiniteListView(
+            TopRatedList(
               filmProductionType: FilmProductionType.films,
             ),
-            InfiniteListView(
+            TopRatedList(
               filmProductionType: FilmProductionType.serials,
             ),
           ],
