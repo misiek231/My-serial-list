@@ -10,7 +10,7 @@ namespace MySerialList.Repository.Interfaces
         Task AddFilmProductionAsync(AddFilmProduction addFilmProduction, string fileName);
         Task<IEnumerable<FilmProductionRating>> GetAll(int from, int to, FilmProductionType type, string search);
         Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int from, int to);
-        Task<FilmProductionData> GetFilmProduction(int id);
+        Task<FilmProductionData> GetFilmProduction(int id, string userId);
         Task<bool> ExsistsAsync(int filmProductionId);
         Task<bool> IsSeriesAsync(int filmProductionId);
     }

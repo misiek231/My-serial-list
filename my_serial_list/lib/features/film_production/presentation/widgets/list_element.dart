@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:division/division.dart';
 import 'package:flutter/material.dart';
 import 'package:my_serial_list/features/film_production/domain/entities/film_production_rating.dart';
+
+import 'styles/list_element_style.dart';
 
 class ListElement extends StatelessWidget {
   final FilmProductionRating model;
@@ -11,9 +14,11 @@ class ListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
-            width: 150,
+          Expanded(
+            flex: 2,
             child: Hero(
               child: CachedNetworkImage(
                 imageUrl: model.poster,
@@ -24,7 +29,10 @@ class ListElement extends StatelessWidget {
               tag: model.filmProductionId,
             ),
           ),
-          Flexible(child: buildText(context)),
+          Expanded(
+            child: buildText(context),
+            flex: 5,
+          ),
         ],
       ),
     );
@@ -33,28 +41,25 @@ class ListElement extends StatelessWidget {
   Column buildText(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(this.model.title,
-              style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
+        Txt(
+          this.model.title,
+          style: titleTxtStyle.clone()
+            ..textColor(Theme.of(context).accentColor),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(this.model.released, style: TextStyle(fontSize: 13)),
+        Txt(
+          this.model.released,
+          style: detailsTxtStyle,
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(this.model.genre,
-              style: TextStyle(color: Colors.white, fontSize: 13)),
+        Txt(
+          this.model.genre,
+          style: detailsTxtStyle,
         ),
-        Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(this.model.plot,
-                style: TextStyle(color: Colors.white, fontSize: 15))),
+        Txt(
+          this.model.plot,
+          style: detailsTxtStyle,
+        ),
       ],
     );
   }

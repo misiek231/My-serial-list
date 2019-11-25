@@ -54,9 +54,9 @@ namespace MySerialList.Service.Services
             await _filmProductionRepository.AddFilmProductionAsync(addFilmProduction, fileName);
         }
 
-        public Task<FilmProductionData> GetFilmProduction(int id)
+        public Task<FilmProductionData> GetFilmProduction(int id, string userId)
         {
-            return _filmProductionRepository.GetFilmProduction(id);
+            return _filmProductionRepository.GetFilmProduction(id, userId);
         }
 
         public async Task<IEnumerable<FilmProductionSearch>> SearchFilmProductions(string title, int page)

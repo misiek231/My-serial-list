@@ -29,7 +29,7 @@ namespace MySerialList.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FilmProductionData>> GetFilmProduction(int id)
         {
-            return Ok(await _filmProductionService.GetFilmProduction(id));
+            return Ok(await _filmProductionService.GetFilmProduction(id, User.Identity.Name));
         }
 
         [HttpGet("get_all")]

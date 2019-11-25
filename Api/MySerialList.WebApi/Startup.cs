@@ -107,27 +107,21 @@ namespace MySerialList
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            app.UseMiddleware<CustomExceptionMiddleware>();
 
-            app.UseAuthentication();
-
-            
+            app.UseAuthentication();    
 
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+            app.UseMiddleware<CustomExceptionMiddleware>();
+
+            app.UseMvcWithDefaultRoute();
 
             app.UseSpa(spa =>
             {

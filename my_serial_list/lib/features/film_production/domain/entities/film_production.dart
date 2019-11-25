@@ -14,6 +14,8 @@ class FilmProduction {
   final double rating;
   final bool isSeries;
   final int episodes;
+  final int myRating;
+  final bool isInMyList;
 
   FilmProduction({
     @required this.filmProductionId,
@@ -29,5 +31,7 @@ class FilmProduction {
     @required this.rating,
     @required this.isSeries,
     @required this.episodes,
+    @required this.myRating,
+    @required this.isInMyList,
   });
 }

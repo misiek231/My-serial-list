@@ -41,38 +41,64 @@ namespace MySerialList.Repository.Repositories
             return await _dbContext.FilmProductions.Where(f => f.Id == filmProductionId).AnyAsync();
         }
 
-        public async Task<FilmProductionData> GetFilmProduction(int id)
+        public async Task<FilmProductionData> GetFilmProduction(int id, string userId)
         {
-            return await _dbContext.FilmProductions.Include(f => f.Reviews).Include(f => f.Episodes).Where(f => f.Id == id).Select(f => new FilmProductionData
+            bool isInMyList = false;
+            int myRating = 0;
+            if (userId != null)
             {
-                FilmProductionId = f.Id,
-                Actors = f.Actors,
-                Director = f.Director,
-                IsSeries = f.IsSeries,
-                Language = f.Language,
-                Plot = f.Plot,
-                Genre = f.Genre,
-                Poster = f.Poster,
-                Rating = Average(f),
-                Released = f.Released,
-                Title = f.Title,
-                Episodes = f.IsSeries ? f.Episodes.Count() : 1,
-                Votes = f.Reviews.Count()
-            }).FirstOrDefaultAsync();
+                isInMyList = await _dbContext.WatchingFilmProductionStatuses
+                .Where(f => f.UserId == userId)
+                .Where(f => f.FilmProductionId == id)
+                .AnyAsync();
+
+                myRating = await _dbContext.FilmProductionReviews
+                    .Where(r => r.UserId == userId)
+                    .Where(r => r.FilmProductionId == id)
+                    .Select(r => r.Grade)
+                    .FirstOrDefaultAsync();
+            }
+
+            return await _dbContext.FilmProductions
+                .Include(f => f.Reviews)
+                .Include(f => f.Episodes)
+                .Where(f => f.Id == id)
+                .Select(f => new FilmProductionData
+                {
+                    FilmProductionId = f.Id,
+                    Actors = f.Actors,
+                    Director = f.Director,
+                    IsSeries = f.IsSeries,
+                    Language = f.Language,
+                    Plot = f.Plot,
+                    Genre = f.Genre,
+                    Poster = f.Poster,
+                    Rating = Average(f),
+                    Released = f.Released,
+                    Title = f.Title,
+                    Episodes = f.IsSeries ? f.Episodes.Count() : 1,
+                    Votes = f.Reviews.Count(),
+                    IsInMyList = isInMyList,
+                    MyRating = myRating
+                }).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<FilmProductionRating>> GetAll(int from, int to, FilmProductionType type, string search)
         {
             int? lastId = (await _dbContext.FilmProductions
+                .Include(f => f.Reviews)
                 .Where(f => type == FilmProductionType.all ? true : (f.IsSeries == (type == FilmProductionType.serials)))
-                .Where(f => f.Title.Contains(search)).LastOrDefaultAsync())?.Id;
+                .Where(f => f.Title.Contains(search))
+                .ToAsyncEnumerable()
+                .OrderByDescending(f => Average(f))
+                .LastOrDefault())?.Id;
             List<FilmProduction> d = await _dbContext.FilmProductions
                 .Include(f => f.Reviews)
                 .Include(f => f.Episodes)
                 .Where(f => type == FilmProductionType.all ? true : (f.IsSeries == (type == FilmProductionType.serials)))
                 .Where(f => f.Title.Contains(search))
                 .Skip(from).Take(to).ToListAsync();
-            return d.OrderBy(f => Average(f))
+            return d.OrderByDescending(f => Average(f))
                 .Select(f => new FilmProductionRating
                 {
                     FilmProductionId = f.Id,

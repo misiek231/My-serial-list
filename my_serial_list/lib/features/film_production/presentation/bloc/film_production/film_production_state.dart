@@ -9,7 +9,6 @@ abstract class FilmProductionState extends Equatable {
 
 class InitialFilmProductionState extends FilmProductionState {}
 
-
 class Loaded extends FilmProductionState {
   final FilmProduction filmProduction;
 

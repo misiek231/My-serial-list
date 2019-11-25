@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class AddingFabButton extends StatelessWidget {
-  const AddingFabButton({Key key}) : super(key: key);
+  final bool visible;
+  const AddingFabButton({Key key, @required this.visible}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
+      visible: visible,
       animatedIcon: AnimatedIcons.add_event,
       curve: Curves.bounceIn,
       overlayOpacity: 0.5,

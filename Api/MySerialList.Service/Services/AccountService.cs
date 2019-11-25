@@ -79,9 +79,10 @@ namespace MySerialList.Service.Services
 
         public async Task CreateAsync(CreateUserModel value)
         {
-            if (await _userManager.Users.FirstOrDefaultAsync(r => r.Email == value.Email) != null)
+            if (await _userManager.Users.FirstOrDefaultAsync(r => r.Email == value.Email) != null ||
+                await _userManager.Users.FirstOrDefaultAsync(r => r.UserName == value.Username) != null)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Taki email już istnieje");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Taki użytkownik już istnieje");
             }
 
             User user = new User
