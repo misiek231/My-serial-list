@@ -1,11 +1,15 @@
 import React from 'react';
 import { Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-const ListViewActions = () => {
+const ListViewActions = (props) => {
+
+    const handleClick = () =>{
+        props.history.push('/search');
+    }
     return ( 
     <div className="actions">
-        <div className="actions-option">
+        <div className="actions-option" onClick={handleClick}>
             <Icon type="plus" style={{marginRight: '8px'}}/>
             Dodaj serial
         </div>
@@ -31,4 +35,4 @@ const ListViewActions = () => {
      );
 }
  
-export default ListViewActions;
+export default withRouter(ListViewActions);

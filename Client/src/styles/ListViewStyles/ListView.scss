@@ -11,6 +11,19 @@
     color: $text;
     box-shadow: none;
     height: auto;
+    .searchBox{
+        display: flex;
+        justify-content: center;
+        margin: 20px 0 0 0;
+        .ant-input{
+            &::placeholder{
+                color: #222;
+                font-size: 14px;
+                font-style: italic;
+                letter-spacing: 2px;
+            }
+        }
+    }
     h1{
         align-self: center;
         font-size: 22px;
