@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 
-export const openNotificationWithIcon = type => {
+export const openNotificationWithIcon = (type,mess) => {
     notification[type]({
       message: 'Wszystko OK!',
       description:
@@ -8,19 +8,18 @@ export const openNotificationWithIcon = type => {
     });
   };
   
-  export const openNotificationWithIconErr = type => {
+  export const openNotificationWithIconErr = (type,mess) => {
     notification[type]({
       message: 'Ups, coś poszło nie tak!',
-      description:
-        'Użytkownik figuruje już w bazie danych lub dane są niepoprawne',
+      description: mess
     });
   };
 
-  export const openNotificationWithIconWarning = type => {
+  export const openNotificationWithIconWarning = (type,mess) => {
     notification[type]({
       message: 'Błędne dane',
       description:
-        'Hasła nie są zgodne',
+      mess,
     });
   };
 

@@ -1,23 +1,26 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 
-const AddSeries = ({episodes, id, cookies}) => {
+const AddSeries = ({episodes, id, isSeries}) => {
     const [list, setList] = useState({
             watchingStatus: 0,
             episodes: 0
     })
+    const [series,setSeries] = useState('none')
     const [grade, setGrade] = useState(0);
     const [submitting, setSubmitting] = useState(false);
     const [gradeSubmitting, setGradeSubmitting] = useState(false);
-
     const { compulsoryData } = useContext(CompulsoryContext);
 
-    const handleChange = (name, value) =>{
-        if(isNaN(value)){
-            value = 0
+    useEffect(() =>{
+        console.log(isSeries);
+        if(isSeries){
+            setSeries('inline-flex');
         }
+    })
+    const handleChange = (name, value) =>{
         if(name === 'episodes' && value>episodes){
             value=episodes
         }
@@ -25,10 +28,7 @@ const AddSeries = ({episodes, id, cookies}) => {
     }
     
     const handleRating = (value) =>{
-        if(isNaN(value)){
-            value = 0
-        }
-        setGrade(value);
+           setGrade(value);
     }
 
     const handleSubmit = (e) =>{
@@ -68,15 +68,15 @@ const AddSeries = ({episodes, id, cookies}) => {
             <form>
                 <div className="selectStatus">
                     <span>Status:</span>
-                    <select onChange={e => {handleChange('watchingStatus', parseInt(e.target.value))}}>
+                    <select onChange={e => {handleChange('watchingStatus', e.target.value)}}>
                         <option value={0}>Aktualnie oglądane</option>
                         <option value={1}>Zakończone</option>
                         <option value={2}>Planowane</option>
                     </select>
                 </div>
-                <div className="episodes">
+                <div className="episodes" style={{display: series}}>
                     <span className="episodes-number">Liczba odcinków:</span>
-                    <span className="inputSpan"><input type="text" value={list.episodes} onChange={e =>{handleChange('episodes',parseInt(e.target.value))}}></input><span>{'/'+episodes}</span></span>
+                    <span className="inputSpan"><input type="number" value={list.episodes} onChange={e =>{handleChange('episodes',parseInt(e.target.value))}}></input><span>{'/'+episodes}</span></span>
                 </div>
                 <Button htmlType="submit" loading={submitting} onClick={handleSubmit} className="addSeriesButton">
                     Dodaj serię

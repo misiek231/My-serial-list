@@ -40,11 +40,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 60%;
+            align-self: center;
             .plotText{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 5px 40px 0 40px;
+                text-align: center;
             }
             h1{
                 color: $text;
@@ -60,6 +59,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button{
+                display: none;
+            }
+            input[type=number]{
+                appearance: textfield;
+            }
             form{
                 display: flex;
                 flex-direction: column;

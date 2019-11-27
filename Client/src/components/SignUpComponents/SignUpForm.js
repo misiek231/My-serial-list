@@ -1,23 +1,20 @@
 import React, { useState, useContext } from 'react'
 import { Input, Tooltip, Icon, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { SignUpContext } from '../../contexts/SignUpContext';
 import { registerUser, restoreDefault } from '../../actions/signUpActions';
 import axios from 'axios';
-import { openNotificationWithIcon, openNotificationWithIconErr, openNotificationWithIconWarning } from '../../actions/notifications';
+import { openNotificationWithIconErr, openNotificationWithIconWarning } from '../../actions/notifications';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 
+//regEx for validating e-mail address
+const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //SignUpForm to get new user data and send to the server
 
-const SignUpForm = () => {
+const SignUpForm = (props) => {
     const [ iconLoading, setIconLoading ] = useState(false)
-
-    const [ text, setText] = useState('Zarejestruj się')
-
     const [confirmPassword, setConfirmPassword] = useState('');
-
     const { signUpData, dispatch } = useContext(SignUpContext);
-
     const { compulsoryData } = useContext(CompulsoryContext);
 
     const handleChange = (name,value) =>{
@@ -31,20 +28,23 @@ const SignUpForm = () => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         if(confirmPassword !== signUpData.registerUser.password){
-            openNotificationWithIconWarning('warning');
+            openNotificationWithIconWarning('warning', "Hasła nie są zgodne!");
+            return
+        }
+        else if(!regEx.test(signUpData.registerUser.email)){
+            openNotificationWithIconWarning('warning', "Podano nieprawidłowy adres e-mail");
             return
         }else{
             setIconLoading(true);
             axios.post(compulsoryData.ip +'/api/account/create', signUpData.registerUser)
             .then(res =>{
-                openNotificationWithIcon('success');
                 dispatch(restoreDefault());
                 setConfirmPassword('');
                 setIconLoading(false);
-                setText('Gotowe!')
+                props.history.push('/signin');
             })
             .catch(err =>{
-                openNotificationWithIconErr('error')
+                openNotificationWithIconErr('error', "Użytkownik figuruje już w bazie danych")
                 console.log(err)
                 setIconLoading(false);
             })
@@ -111,10 +111,10 @@ const SignUpForm = () => {
                 icon="check"
                 loading={iconLoading}
             >
-                {text}
+                Zarejestruj się
             </Button>
         </form>
      );
 }
  
-export default SignUpForm;
+export default withRouter(SignUpForm);

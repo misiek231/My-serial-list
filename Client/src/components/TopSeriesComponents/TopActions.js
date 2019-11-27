@@ -35,8 +35,8 @@ const TopActions = (props) => {
                 Zarejestruj się
             </Link>
         </div>
-        <div className="actions-option">
-            <Link to="listview/current">
+        <div className={"actions-option" + logoutClass}>
+            <Link to={'/listview/current/' + props.cookies.get('username')}>
                 <Icon type="menu-unfold" style={{marginRight: '8px'}}/>
                 Lista
             </Link>

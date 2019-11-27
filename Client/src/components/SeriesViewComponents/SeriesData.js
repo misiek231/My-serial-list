@@ -15,7 +15,7 @@ const SeriesData = () => {
                 <span>{'Gatunek: '+ oneSeries.oneSeries.genre}</span>
                 <span>{'Data wydania: ' + oneSeries.oneSeries.released}</span>
             </div>
-            <AddSeries episodes={oneSeries.oneSeries.episodes} id={oneSeries.oneSeries.filmProductionId}/>
+            <AddSeries episodes={oneSeries.oneSeries.episodes} id={oneSeries.oneSeries.filmProductionId} isSeries={oneSeries.oneSeries.isSeries}/>
             <div className="plot">
                 <h1>Krótki opis fabuły:</h1>
                 <p className="plotText">{oneSeries.oneSeries.plot}</p>

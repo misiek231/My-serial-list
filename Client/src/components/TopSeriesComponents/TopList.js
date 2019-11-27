@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Spin } from 'antd';
 import axios from 'axios';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
-import '../../styles/ListViewStyles/Series.scss';
 import ItemTemplate from './ItemTemplate';
 import '../../styles/ListViewStyles/Series.scss';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
@@ -14,7 +13,6 @@ const TopList = () => {
     const [spin, setSpin] = useState(true);
 
     useEffect(() =>{
-        console.log('kliknąłeś xD')
             if(page === 1){
                 getTop();
             }else{
@@ -33,7 +31,6 @@ const TopList = () => {
     },[page])
 
     const getTop = () =>{
-        console.log(page)
         let link = compulsoryData.ip + '/api/FilmProduction/get_all?page=' + page;
         if(compulsoryData.title !== ""){
             link += "&search=" + compulsoryData.title;
@@ -58,7 +55,7 @@ const TopList = () => {
         <div className="series">
             {top}
             { spin ? ( <div className="spinner"><Spin/></div>):
-            (<span className="spinner" style={{margin: '10px 0'}}>Brak wyników</span>)}
+            (<span className="spinner" style={{margin: '10px 0'}}></span>)}
         </div>
     );
 }

@@ -5,6 +5,7 @@ import { withCookies } from 'react-cookie';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 import { signInUser, restoreDefault } from '../../actions/signInActions';
 import { SignInContext } from '../../contexts/SignInContext';
+import { openNotificationWithIconWarning } from '../../actions/notifications';
 import axios from 'axios';
 
 //SignInForm to log in on user account
@@ -29,11 +30,12 @@ const SignUpForm = (props) => {
             setIconLoading(false);
             const { cookies } = props;
             cookies.set('token', res.data.token, {path: '/'});
-            props.history.push('/listview/current');
+            cookies.set('username', signInData.signInUser.username, {path: '/'});
+            props.history.push('/listview/current/' + signInData.signInUser.username );
         })
         .catch(err =>{
-            console.error(err);
             setIconLoading(false);
+            openNotificationWithIconWarning('warning', err.response.data)
         })
 }
 

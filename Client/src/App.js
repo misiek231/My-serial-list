@@ -31,7 +31,9 @@ function App() {
             <SignIn/>
           </SignInContextProvider>
         </Route>
-        <Route path="/listview/current" render={() => <ListView  status={0} header={"Aktualnie oglądane:"} />} />
+        <Route path="/listview/current/:username" render={() => <ListView  status={0} header={"Aktualnie oglądane:"} />} />
+        <Route path="/listview/planned/:username" render={() => <ListView  status={2} header={"Planowane:"} />} />
+        <Route path="/listview/completed/:username" render={() => <ListView  status={1} header={"Zakończone:"} />} />
         <Route path="/series/:id">
           <OneSeriesContextProvider>
             <SeriesView/>
