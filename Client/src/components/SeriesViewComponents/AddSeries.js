@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import axios from 'axios';
+import { withCookies } from 'react-cookie';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
+import { openNotificationWithIconErr } from '../../actions/notifications';
 
-const AddSeries = ({episodes, id, isSeries}) => {
+const AddSeries = ({episodes, id, isSeries, cookies}) => {
     const [list, setList] = useState({
             watchingStatus: 0,
             episodes: 0
@@ -12,14 +14,18 @@ const AddSeries = ({episodes, id, isSeries}) => {
     const [grade, setGrade] = useState(0);
     const [submitting, setSubmitting] = useState(false);
     const [gradeSubmitting, setGradeSubmitting] = useState(false);
+    const [isDisabled, setDisabled] = useState(false);
     const { compulsoryData } = useContext(CompulsoryContext);
 
     useEffect(() =>{
-        console.log(isSeries);
         if(isSeries){
             setSeries('inline-flex');
         }
-    })
+        if(cookies.get('token') === undefined){
+            setDisabled(true)
+        }
+    },[])
+
     const handleChange = (name, value) =>{
         if(name === 'episodes' && value>episodes){
             value=episodes
@@ -40,11 +46,10 @@ const AddSeries = ({episodes, id, isSeries}) => {
         })
         .then(res =>{
             setSubmitting(false);
-            console.log(res);
         })
         .catch(err =>{
             setSubmitting(false);
-            console.log(err)
+            openNotificationWithIconErr('error', 'Film znajduje się już na Twojej liście') 
         })
     }
 
@@ -60,6 +65,7 @@ const AddSeries = ({episodes, id, isSeries}) => {
         })
         .catch(err =>{
             setGradeSubmitting(false);
+            openNotificationWithIconErr('error', 'Oceniłeś już film') 
         })
     }
 
@@ -78,7 +84,8 @@ const AddSeries = ({episodes, id, isSeries}) => {
                     <span className="episodes-number">Liczba odcinków:</span>
                     <span className="inputSpan"><input type="number" value={list.episodes} onChange={e =>{handleChange('episodes',parseInt(e.target.value))}}></input><span>{'/'+episodes}</span></span>
                 </div>
-                <Button htmlType="submit" loading={submitting} onClick={handleSubmit} className="addSeriesButton">
+                <Button disabled={isDisabled} htmlType="submit" loading={submitting} onClick={handleSubmit} className="addSeriesButton">
+                    <Tooltip placement='right' title='dupa'/>
                     Dodaj serię
                 </Button>
             </form>
@@ -99,7 +106,7 @@ const AddSeries = ({episodes, id, isSeries}) => {
                             <option value={10}>10</option>
                         </select>
                     </div>
-                <Button htmlType="submit" loading={gradeSubmitting} onClick={handleRatingSubmit} className="addSeriesButton">
+                <Button disabled={isDisabled} htmlType="submit" loading={gradeSubmitting} onClick={handleRatingSubmit} className="addSeriesButton">
                    Dodaj ocenę
                 </Button>
             </form>
@@ -107,4 +114,4 @@ const AddSeries = ({episodes, id, isSeries}) => {
      );
 }
  
-export default AddSeries;
+export default withCookies(AddSeries);

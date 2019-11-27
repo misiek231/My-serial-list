@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Input, Button, Divider } from 'antd';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import { withCookies } from 'react-cookie'
 import axios from 'axios';
 import { CompulsoryContext } from '../../contexts/CompulsoryContext';
 import { getComments } from '../../actions/getComments';
@@ -42,19 +43,23 @@ const AddComment = (props) => {
     return ( 
         <div className="addComment">
              <Divider style={{color: '#fff'}}>Sekcja komentarzy</Divider>
-             <div className="addComment-content">
-                <TextArea
-                    autosize = {{ minRows: 2, maxRows: 6 }}
-                    placeholder = 'Podziel się opinią'
-                    onChange = {handleChange}
-                    style={{fontSize: '14px'}}
-                />
-                <Button htmlType="submit" loading={commentData.submitting} onClick={handleSubmit} className="submitButton">
-                    Dodaj opinię
-                </Button>
-            </div>
+             {props.cookies.get('token') !== undefined ? (
+                 <div className="addComment-content">
+                    <TextArea
+                        autosize = {{ minRows: 2, maxRows: 6 }}
+                        placeholder = 'Podziel się opinią'
+                        onChange = {handleChange}
+                        style={{fontSize: '14px'}}
+                    />
+                    <Button htmlType="submit" loading={commentData.submitting} onClick={handleSubmit} className="submitButton">
+                        Dodaj opinię
+                    </Button>
+                </div>
+             ):(
+                 <span style={{display: 'flex', width: '100%', justifyContent: 'center'}}>Tylko zalogowane osoby mogą dodawać komentarze. <Link to="/signin" style={{color: '#7289da', marginLeft: '2px'}}>Zaloguj się</Link></span>
+             )}
         </div>
      );
 }
  
-export default withRouter(AddComment);
+export default withRouter(withCookies(AddComment));

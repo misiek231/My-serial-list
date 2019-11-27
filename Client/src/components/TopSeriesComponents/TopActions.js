@@ -8,6 +8,7 @@ const TopActions = (props) => {
     const [logoutClass, setLogoutClass] = useState(' logout');
     const [loginClass, setLoginClass] = useState(' login')
     useEffect(() =>{
+        console.log(props.cookies.get('token'))
         if(props.cookies.get('token') !== undefined){
             setLogoutClass(' logout-on')
             setLoginClass(' login-out')
