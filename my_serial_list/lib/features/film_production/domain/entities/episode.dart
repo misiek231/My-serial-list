@@ -6,6 +6,7 @@ class Episode {
   final int filmProductionId;
   final int season;
   final int episodeNumber;
+  final bool watched;
 
   Episode({
     @required this.title,
@@ -13,5 +14,6 @@ class Episode {
     @required this.filmProductionId,
     @required this.season,
     @required this.episodeNumber,
+    @required this.watched,
   });
 }

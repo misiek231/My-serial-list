@@ -9,10 +9,14 @@ import '../../../../injection_container.dart';
 class SeasonView extends StatefulWidget {
   final season;
   final filmProductionId;
+  final addCheckBoxes;
+  final int watchedEpisodes;
 
   SeasonView({
     @required this.season,
     @required this.filmProductionId,
+    this.addCheckBoxes = false,
+    this.watchedEpisodes = 7,
     Key key,
   }) : super(key: key);
 
@@ -49,10 +53,15 @@ class _SeasonViewState extends State<SeasonView>
             itemBuilder: (context, index) {
               Episode model = state.episodes[index];
               return Card(
-                child: ListTile(
+                child: CheckboxListTile(
+                  onChanged: (a) {},
+                  value: model.watched,
                   title: Text("${model.episodeNumber} - ${model.title}"),
                   subtitle: Text(model.released),
                 ),
+                color: model.watched
+                    ? Colors.green.shade800
+                    : Theme.of(context).backgroundColor,
               );
             },
           );

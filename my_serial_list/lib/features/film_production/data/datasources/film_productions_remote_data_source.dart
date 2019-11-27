@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:my_serial_list/core/constants.dart';
 import 'package:my_serial_list/core/error/exceptions.dart';
-import 'package:my_serial_list/core/error/failures.dart';
 import 'package:my_serial_list/core/usecases/usecase.dart';
-import 'package:my_serial_list/features/account/domain/entities/user/token.dart';
 import 'package:my_serial_list/features/account/domain/usecases/get_token.dart';
 import 'package:my_serial_list/features/account/domain/usecases/get_username.dart';
 import 'package:my_serial_list/features/film_production/data/models/comment_model.dart';
@@ -126,9 +124,18 @@ class FilmProductionsRemoteDataSourceImpl
   @override
   Future<List<Episode>> getEpisodes(int filmProductionId, int season) async {
     Response response;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    (await getToken(NoParams())).fold((failure) {}, (succes) {
+      headers['authorization'] = "bearer " + succes.token;
+    });
+
     try {
       response = await client.get(
         '$GET_EPISODES?filmProductionId=$filmProductionId&season=$season',
+        headers: headers
       );
     } catch (_) {
       throw ServerException(message: 'Błąd łączenia z serwerem');

@@ -11,5 +11,6 @@ namespace MySerialList.Model.Episode
         public int FilmProductionId { get; set; }
         public int Season { get; set; }
         public int EpisodeNumber { get; set; }
+        public bool Watched { get; set; }
     }
 }

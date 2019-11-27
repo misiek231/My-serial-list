@@ -24,11 +24,13 @@ class FilmProductionPage extends StatefulWidget {
   _FilmProductionPageState createState() => _FilmProductionPageState();
 }
 
-class _FilmProductionPageState extends State<FilmProductionPage> {
-  FilmProductionBloc bloc = sl<FilmProductionBloc>();
+class _FilmProductionPageState extends State<FilmProductionPage>
+    with SingleTickerProviderStateMixin {
+  final FilmProductionBloc bloc = sl<FilmProductionBloc>();
   List<Widget> seasonViews;
   ScrollController _hideButtonController;
   bool _isVisible = true;
+  TabController _tabController;
 
   @override
   void dispose() {
@@ -39,24 +41,30 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
   @override
   void initState() {
     super.initState();
+    _tabController = new TabController(
+        vsync: this, length: widget.filmProduction.seasons + 1);
     bloc.add(GetData(widget.filmProduction.filmProductionId));
     _hideButtonController = new ScrollController();
-    _hideButtonController.addListener(() {
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (_isVisible == true) {
-          setState(() {
-            _isVisible = false;
-          });
+
+    if (widget.filmProduction.currentUserItem) {
+      _isVisible = false;
+    } else
+      _hideButtonController.addListener(() {
+        if (_hideButtonController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (_isVisible == true) {
+            setState(() {
+              _isVisible = false;
+            });
+          }
+        } else {
+          if (_isVisible == false) {
+            setState(() {
+              _isVisible = true;
+            });
+          }
         }
-      } else {
-        if (_isVisible == false) {
-          setState(() {
-            _isVisible = true;
-          });
-        }
-      }
-    });
+      });
 
     if (widget.filmProduction.isSeries) {
       seasonViews = List.generate(
@@ -87,7 +95,13 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
         title: Text(widget.filmProduction.title),
         bottom: widget.filmProduction.isSeries ? _buildTabBar() : null,
       ),
-      floatingActionButton: AddingFabButton(visible: _isVisible),
+      floatingActionButton: AddingFabButton(
+        visible: _isVisible,
+        filmProduction: widget.filmProduction,
+        refresh: () =>
+            bloc.add(GetData(widget.filmProduction.filmProductionId)),
+        navigateToTab: () => _tabController.animateTo(1),
+      ),
       body: BlocBuilder<FilmProductionBloc, FilmProductionState>(
         bloc: bloc,
         builder: (context, state) {
@@ -116,12 +130,13 @@ class _FilmProductionPageState extends State<FilmProductionPage> {
       _buildCustomScrollView(context, state),
     ];
     a.addAll(seasonViews);
-    return TabBarView(children: a);
+    return TabBarView(controller: _tabController, children: a);
   }
 
   TabBar _buildTabBar() {
     return TabBar(
       isScrollable: true,
+      controller: _tabController,
       tabs: List.generate(
         widget.filmProduction.seasons + 1,
         (index) {

@@ -8,12 +8,14 @@ class EpisodeModel extends Episode {
     @required filmProductionId,
     @required season,
     @required episodeNumber,
+    @required watched,
   }) : super(
           title: title,
           released: released,
           filmProductionId: filmProductionId,
           season: season,
           episodeNumber: episodeNumber,
+          watched: watched,
         );
 
   factory EpisodeModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class EpisodeModel extends Episode {
       filmProductionId: json['filmProductionId'],
       season: json['season'],
       episodeNumber: json['episodeNumber'],
+      watched: json['watched'],
     );
   }
 
@@ -33,6 +36,7 @@ class EpisodeModel extends Episode {
     data['filmProductionId'] = this.filmProductionId;
     data['season'] = this.season;
     data['episodeNumber'] = this.episodeNumber;
+    data['watched'] = this.watched;
     return data;
   }
 }

@@ -13,6 +13,8 @@ class FilmProductionRating extends Equatable {
   final bool isSeries;
   final int seasons;
   final bool last;
+  final bool currentUserItem;
+  final int totalEpisodes;
 
   FilmProductionRating({
     @required this.title,
@@ -26,6 +28,8 @@ class FilmProductionRating extends Equatable {
     @required this.isSeries,
     @required this.seasons,
     @required this.last,
+    @required this.currentUserItem,
+    @required this.totalEpisodes,
   });
 
   @override
@@ -41,5 +45,7 @@ class FilmProductionRating extends Equatable {
         isSeries,
         seasons,
         last,
+        currentUserItem,
+        totalEpisodes,
       ];
 }

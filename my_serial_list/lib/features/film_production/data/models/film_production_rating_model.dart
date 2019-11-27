@@ -14,6 +14,8 @@ class FilmProductionRatingModel extends FilmProductionRating {
     @required isSeries,
     @required seasons,
     @required last,
+    @required currentUserItem,
+    @required totalEpisodes,
   }) : super(
           title: title,
           genre: genre,
@@ -26,6 +28,8 @@ class FilmProductionRatingModel extends FilmProductionRating {
           isSeries: isSeries,
           seasons: seasons,
           last: last,
+          currentUserItem: currentUserItem,
+          totalEpisodes: totalEpisodes,
         );
 
   factory FilmProductionRatingModel.fromJson(Map<String, dynamic> json) {
@@ -41,6 +45,8 @@ class FilmProductionRatingModel extends FilmProductionRating {
       isSeries: json['isSeries'],
       seasons: json['seasons'],
       last: json['last'],
+      currentUserItem: json['currentUserItem'],
+      totalEpisodes: json['totalEpisodes'],
     );
   }
 
@@ -57,6 +63,8 @@ class FilmProductionRatingModel extends FilmProductionRating {
     data['isSeries'] = this.isSeries;
     data['seasons'] = this.seasons;
     data['last'] = this.last;
+    data['currentUserItem'] = this.currentUserItem;
+    data['totalEpisodes'] = this.totalEpisodes;
     return data;
   }
 }

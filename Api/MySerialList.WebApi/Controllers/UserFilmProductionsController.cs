@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySerialList.Component;
 using MySerialList.Model.FilmProduction;
 using MySerialList.Model.UserFilmProductions;
+using MySerialList.Model.UserMovies;
 using MySerialList.Service.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,9 +30,16 @@ namespace MySerialList.WebApi.Controllers
 
         [HttpGet("get_film_productions/{username}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetFilmProductionsAsync(WatchingStatus status, string username, int page)
+        public async Task<ActionResult<IEnumerable<FilmProductionRating>>> GetFilmProductionsAsync(string username, int page = 1, WatchingStatus status = WatchingStatus.Current)
         {
-            return Ok(await _userFilmProductionsService.GetUserFilmProductionsAsync(username, status, page));
+            return Ok(await _userFilmProductionsService.GetUserFilmProductionsAsync(username, status, page, User.Identity.Name));
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> GetFilmProductionsAsync([FromBody] UpdateUserFilmProductionModel updateUserFilmProductionModel)
+        {
+            await _userFilmProductionsService.UpdateUserFilmProductionsAsync(User.Identity.Name, updateUserFilmProductionModel);
+            return Ok();
         }
 
         [HttpDelete("delete_film_production/{filmProductionId}")]

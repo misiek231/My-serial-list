@@ -34,7 +34,7 @@ namespace MySerialList.WebApi.Controllers
         [HttpGet("get_all")]
         public async Task<ActionResult<IEnumerable<EpisodeData>>> GetAllEpisodesAsync(int filmProductionId, int season)
         {
-            return Ok(await _episodeService.GetAllEpisodesAsync(filmProductionId, season));
+            return Ok(await _episodeService.GetAllEpisodesAsync(filmProductionId, season, User.Identity.Name));
         }
     }
 }

@@ -42,6 +42,7 @@ class _MyFilmProductionsListState extends State<MyFilmProductionsList>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder(
       bloc: bloc,
       builder: (context, state) {

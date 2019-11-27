@@ -10,7 +10,7 @@ namespace MySerialList.Repository.Interfaces
     {
         Task<bool> ExsistsAsync(int episodeId);
         Task AddEpisodeAsync(AddEpisode addEpisode);
-        Task<IEnumerable<EpisodeData>> GetAllEpisodes(int filmProductionId, int season);
+        Task<IEnumerable<EpisodeData>> GetAllEpisodes(int filmProductionId, int season, string userId);
         Task<EpisodeData> GetEpisodeAsync(int id);
     }
 }

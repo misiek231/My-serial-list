@@ -4,6 +4,7 @@ using MySerialList.Data;
 using MySerialList.Data.Model;
 using MySerialList.Model.FilmProduction;
 using MySerialList.Model.UserFilmProductions;
+using MySerialList.Model.UserMovies;
 using MySerialList.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace MySerialList.Repository.Repositories
             await _mySerialListDBContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int from, int to)
+        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, string userId, WatchingStatus status, int from, int to)
         {
             int? lastId = null;
             try
@@ -52,7 +53,7 @@ namespace MySerialList.Repository.Repositories
                    .Where(u => u.User.UserName == username)
                    .Where(u => u.WatchingStatus == status)
                    .OrderBy(u => u.Id)
-                   .Select(u => u.Id)                  
+                   .Select(u => u.Id)
                    .LastOrDefaultAsync();
             }
             catch { }
@@ -82,7 +83,12 @@ namespace MySerialList.Repository.Repositories
                 Plot = u.FilmProduction.Plot,
                 Votes = u.FilmProduction.Reviews?.Count() ?? 1,
                 Seasons = u.FilmProduction.Episodes.Any() ? (int?)u.FilmProduction.Episodes.OrderByDescending(k => k.Season).Select(s => s.Season).FirstOrDefault() : null,
-                Last = u.Id == lastId.Value
+                Last = u.Id == lastId.Value,
+                MyRating = u.FilmProduction.Reviews.Where(r => r.User.UserName == username).Select(r => r.Grade).FirstOrDefault(),
+                TotalEpisodes = u.FilmProduction.Episodes.Any() ? u.FilmProduction.Episodes.Count() : 0,
+                WatchedEpisodes = u.FilmProduction.IsSeries ? u.Episodes : 0,
+                CurrentUserItem = userId != null ? userId == u.UserId : false
+
             }).ToList();
         }
 
@@ -92,6 +98,15 @@ namespace MySerialList.Repository.Repositories
                 .Where(u => u.FilmProductionId == movieId)
                 .Where(u => u.UserId == userId)
                 .AnyAsync();
+        }
+
+        public async Task UpdateFilmProductionAsync(UpdateUserFilmProductionModel updateUserFilmProductionModel, string userId)
+        {
+            WatchingFilmProductionStatus status = await _mySerialListDBContext.WatchingFilmProductionStatuses.Where(s => s.FilmProductionId == updateUserFilmProductionModel.FilmProductionId).FirstOrDefaultAsync();
+            status.Episodes = updateUserFilmProductionModel.Episodes;
+            status.WatchingStatus = updateUserFilmProductionModel.WatchingStatus;
+            _mySerialListDBContext.WatchingFilmProductionStatuses.Update(status);
+            await _mySerialListDBContext.SaveChangesAsync();
         }
 
         private double Average(FilmProduction f)

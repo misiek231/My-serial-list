@@ -1,6 +1,7 @@
 ﻿using MySerialList.Component;
 using MySerialList.Model.FilmProduction;
 using MySerialList.Model.UserFilmProductions;
+using MySerialList.Model.UserMovies;
 using MySerialList.Repository.Interfaces;
 using MySerialList.Service.Exception;
 using MySerialList.Service.Interfaces;
@@ -39,10 +40,22 @@ namespace MySerialList.Service.Services
             await _userFilmProductionsRepository.DeleteFilmProductionAsync(movieId, userId);
         }
 
-        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int page)
+        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int page, string userId)
         {
             int filmProductionsPerPage = 100;
-            return await _userFilmProductionsRepository.GetUserFilmProductionsAsync(username, status, page * filmProductionsPerPage - 100, filmProductionsPerPage);
+            return await _userFilmProductionsRepository.GetUserFilmProductionsAsync(username, userId, status, page * filmProductionsPerPage - 100, filmProductionsPerPage);
+        }
+
+        public async Task UpdateUserFilmProductionsAsync(string userId, UpdateUserFilmProductionModel updateUserFilmProductionModel)
+        {
+            if (!await _userFilmProductionsRepository.IsFilmProductionAddedAsync(updateUserFilmProductionModel.FilmProductionId, userId))
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Film nie jest na twojej liście.");
+            }
+            else
+            {
+                await _userFilmProductionsRepository.UpdateFilmProductionAsync(updateUserFilmProductionModel, userId);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ import 'package:my_serial_list/features/film_production/domain/usecases/get_epis
 import 'package:my_serial_list/features/film_production/domain/usecases/get_film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/usecases/get_my_film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/usecases/top_rated.dart';
+import 'package:my_serial_list/features/film_production/presentation/bloc/add_film_production.dart/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/comments/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/episodes/episodes_bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/film_production/bloc.dart';
@@ -31,6 +32,10 @@ final sl = GetIt.instance;
 
 Future init() async {
   // Bloc
+
+  sl.registerFactory(
+    () => AddFilmProductionBloc(),
+  );
 
   sl.registerFactory(
     () => MyFilmProductionsBloc(
