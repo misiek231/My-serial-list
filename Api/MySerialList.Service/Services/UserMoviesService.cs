@@ -39,9 +39,10 @@ namespace MySerialList.Service.Services
             await _userFilmProductionsRepository.DeleteFilmProductionAsync(movieId, userId);
         }
 
-        public async Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductionsAsync(string username, WatchingStatus status)
+        public async Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int page)
         {
-            return await _userFilmProductionsRepository.GetUserFilmProductionsAsync(username, status);
+            int filmProductionsPerPage = 100;
+            return await _userFilmProductionsRepository.GetUserFilmProductionsAsync(username, status, page * filmProductionsPerPage - 100, filmProductionsPerPage);
         }
     }
 }

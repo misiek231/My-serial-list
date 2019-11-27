@@ -7,6 +7,8 @@ abstract class Failure extends Equatable {
 
 class CacheFailure extends Failure {}
 
+class NoAuthorizationFailure extends Failure {}
+
 class RemoteFailure extends Failure {
   final String message;
 

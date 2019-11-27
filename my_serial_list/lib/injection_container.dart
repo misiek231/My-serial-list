@@ -10,10 +10,12 @@ import 'package:my_serial_list/features/film_production/data/repositories/film_p
 import 'package:my_serial_list/features/film_production/domain/usecases/get_comments.dart';
 import 'package:my_serial_list/features/film_production/domain/usecases/get_episodes.dart';
 import 'package:my_serial_list/features/film_production/domain/usecases/get_film_production.dart';
+import 'package:my_serial_list/features/film_production/domain/usecases/get_my_film_production.dart';
 import 'package:my_serial_list/features/film_production/domain/usecases/top_rated.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/comments/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/episodes/episodes_bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/film_production/bloc.dart';
+import 'package:my_serial_list/features/film_production/presentation/bloc/my_film_productions/bloc.dart';
 import 'package:my_serial_list/features/film_production/presentation/bloc/top_rated/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,8 +30,13 @@ import 'features/film_production/domain/repositories/film_productions_repository
 final sl = GetIt.instance;
 
 Future init() async {
-  // ! Features - Number Trivia
   // Bloc
+
+  sl.registerFactory(
+    () => MyFilmProductionsBloc(
+      getMyFilmProductions: sl(),
+    ),
+  );
 
   sl.registerFactory(
     () => MainBloc(
@@ -70,6 +77,7 @@ Future init() async {
   );
 
   // Use cases
+  sl.registerLazySingleton(() => GetMyFilmProductions(sl()));
   sl.registerLazySingleton(() => Logout(sl()));
   sl.registerLazySingleton(() => GetUsername(sl()));
   sl.registerLazySingleton(() => Login(sl()));

@@ -5,6 +5,7 @@ import 'package:my_serial_list/core/presentation/bloc/main_page/main.dart';
 import 'package:my_serial_list/features/account/presentation/pages/account_page.dart';
 import 'package:my_serial_list/features/account/presentation/pages/authorization_page.dart';
 import 'package:my_serial_list/features/film_production/presentation/pages/search_page.dart';
+import 'package:my_serial_list/features/film_production/presentation/widgets/my_film_productions_list.dart';
 import 'package:my_serial_list/features/film_production/presentation/widgets/top_rated_list.dart';
 import 'package:my_serial_list/injection_container.dart';
 
@@ -34,16 +35,13 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: _currentPageToTabsCount(),
       child: Scaffold(
           body: _indexToPage(),
           appBar: AppBar(
             title: Text("MySerialList"),
             bottom: TabBar(
-              tabs: <Widget>[
-                Tab(child: Text("Filmy", style: TextStyle(fontSize: 20))),
-                Tab(child: Text("Seriale", style: TextStyle(fontSize: 20))),
-              ],
+              tabs: _getTabs(),
             ),
             actions: <Widget>[
               IconButton(
@@ -76,6 +74,35 @@ class _MainPageState extends State<MainPage> {
             ],
           )),
     );
+  }
+
+  List<Widget> _getTabs() {
+    switch (_currentIndex) {
+      case 0:
+        return [
+          Tab(
+            child: Text("Aktualnie oglądane", style: TextStyle(fontSize: 15)),
+          ),
+          Tab(child: Text("Planowane", style: TextStyle(fontSize: 15))),
+          Tab(child: Text("Zakończone", style: TextStyle(fontSize: 15))),
+        ];
+      case 1:
+        return [
+          Tab(child: Text("Filmy", style: TextStyle(fontSize: 20))),
+          Tab(child: Text("Seriale", style: TextStyle(fontSize: 20))),
+        ];
+    }
+    return [];
+  }
+
+  int _currentPageToTabsCount() {
+    switch (_currentIndex) {
+      case 0:
+        return 3;
+      case 1:
+        return 2;
+    }
+    return 0;
   }
 
   Widget _buildAccountButton(BuildContext context) {
@@ -125,16 +152,27 @@ class _MainPageState extends State<MainPage> {
   }
 
   _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index != 2)
+      setState(() {
+        _currentIndex = index;
+      });
   }
 
   Widget _indexToPage() {
     switch (_currentIndex) {
       case 0:
-        return TopRatedList(
-          filmProductionType: FilmProductionType.all,
+        return TabBarView(
+          children: <Widget>[
+            MyFilmProductionsList(
+              watchingStatus: WatchingStatus.current,
+            ),
+            MyFilmProductionsList(
+              watchingStatus: WatchingStatus.plan,
+            ),
+            MyFilmProductionsList(
+              watchingStatus: WatchingStatus.finished,
+            ),
+          ],
         );
       case 1:
         return TabBarView(

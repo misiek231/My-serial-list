@@ -9,7 +9,7 @@ namespace MySerialList.Repository.Interfaces
     public interface IUserFilmProductionsRepository
     {
         Task AddFilmProductionAsync(AddUserFilmProductionModel addUserFilmProductionModel, string userId);
-        Task<IEnumerable<UserFilmProductionList>> GetUserFilmProductionsAsync(string username, WatchingStatus status);
+        Task<IEnumerable<FilmProductionRating>> GetUserFilmProductionsAsync(string username, WatchingStatus status, int from, int to);
         Task<bool> IsFilmProductionAddedAsync(int movieId, string userId);
         Task DeleteFilmProductionAsync(int movieId, string userId);
     }
