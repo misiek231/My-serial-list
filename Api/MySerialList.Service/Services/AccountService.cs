@@ -60,6 +60,11 @@ namespace MySerialList.Service.Services
             throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Nieprawidłowy email lub hasło");
         }
 
+        public Task LogoutAsync()
+        {
+            return _signInManager.SignOutAsync();
+        }
+
         public async Task ConfirmEmail(string userId, string emailToken)
         {
             User user = await _userManager.FindByIdAsync(userId);

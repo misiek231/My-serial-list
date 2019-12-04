@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+
+using Microsoft.EntityFrameworkCore;
 using MySerialList.Component;
 using MySerialList.Data;
 using MySerialList.Data.Model;
@@ -58,7 +60,7 @@ namespace MySerialList.Repository.Repositories
             }
             catch { }
 
-            IAsyncEnumerable<WatchingFilmProductionStatus> i = _mySerialListDBContext.WatchingFilmProductionStatuses
+            var i = _mySerialListDBContext.WatchingFilmProductionStatuses
                 .Include(w => w.User)
                 .Include(w => w.FilmProduction)
                 .ThenInclude(w => w.Reviews)
@@ -69,9 +71,9 @@ namespace MySerialList.Repository.Repositories
                 .OrderBy(u => u.Id)
                 .Skip(from)
                 .Take(to)
-                .ToAsyncEnumerable();
+                .AsEnumerable();
 
-            return await i.Select(u => new FilmProductionRating
+            return i.Select(u => new FilmProductionRating
             {
                 FilmProductionId = u.FilmProductionId,
                 Poster = u.FilmProduction.Poster,

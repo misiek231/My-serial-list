@@ -10,5 +10,6 @@ namespace MySerialList.Service.Interfaces
         Task UpdateAsync(int id, EditUserModel value);
         Task DeleteAsync(int id);
         Task ConfirmEmail(string userId, string emailToken);
+        Task LogoutAsync();
     }
 }

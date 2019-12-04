@@ -85,11 +85,11 @@ namespace MySerialList.Repository.Repositories
 
         public async Task<IEnumerable<FilmProductionRating>> GetAll(int from, int to, FilmProductionType type, string search)
         {
-            int? lastId = (await _dbContext.FilmProductions
+            int? lastId = (_dbContext.FilmProductions
                 .Include(f => f.Reviews)
                 .Where(f => type == FilmProductionType.all ? true : (f.IsSeries == (type == FilmProductionType.serials)))
                 .Where(f => f.Title.Contains(search))
-                .ToAsyncEnumerable()
+                .AsEnumerable()
                 .OrderByDescending(f => Average(f))
                 .LastOrDefault())?.Id;
             List<FilmProduction> d = await _dbContext.FilmProductions
