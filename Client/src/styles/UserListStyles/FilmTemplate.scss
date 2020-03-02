@@ -1,0 +1,157 @@
+@import '../../index.scss';
+.user-list{
+    display: flex;
+    flex-direction: column;
+    .hide{
+        display: none !important;
+    }
+    .template:last-child{
+        margin-bottom: 10px;
+    }
+    .collapse{
+        background: $primary-color;
+        margin: 0 10px 0 10px;
+        .ant-collapse-header{
+            color: $text;
+            display: flex;
+            justify-content: center;
+        }
+        .ant-collapse-content-box{
+            box-sizing: border-box;
+            width: 100%;
+            padding: 0;
+            color: $text;
+            margin-bottom: 10px;
+            form{
+                width: 100%;
+            }
+        }
+        .panel-content{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .update-button{
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .episodes-input{
+            display: flex;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding: 2px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            height: 30px;
+            width: 100px;
+            input{
+                width: 70px;
+                border: none;
+                background: $primary-color;
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-inner-spin-button{
+                display: none;
+            }
+            input[type=number]{
+                -moz-appearance: textfield;
+            }
+        }
+        .status-select{
+            background: $primary-color;
+            border: none;
+            padding: 2px;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            height: 30px;
+        }
+    }
+    .user-film{
+        color: $text;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 0.4fr 1fr;
+        background: $primary-color;
+        align-items: center;
+        margin: 10px 10px 0 10px;
+        font-size: 14px;
+        grid-gap: 10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        .user-list-poster{
+            width: 60px;
+            img{
+                width: 100%;
+                margin: 10px;
+                height: 100%;
+                border-radius: 5px;
+            }
+        }
+        .user-film-data{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+               .user-list-title{
+                   font-size: 16px;
+                   font-weight: bold;
+               }
+           .bold-value{
+            font-weight: bold;
+            }
+            .hidden{
+                display: none;
+            }
+            .episodes-controles{
+                margin: 5px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px){
+    .user-list{
+        .collapse{
+            .episodes-input{
+                width: 150px;
+                input{
+                    width: 116px;
+                }
+            }
+        }
+        .user-film{
+            grid-template-columns: 0.2fr 1fr;
+            .user-list-poster{
+                width: 120px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px){
+    .user-list{
+        .user-film{
+            grid-template-columns: 0.1fr 1fr;
+            .user-list-poster{
+                width: 150px;
+            }
+        }
+        .user-film{
+            .user-film-data{
+                .user-list-title{
+                    font-size: 18px;
+                }
+                .user-list-details{
+                    font-size: 16px;
+                }
+            }
+        }
+        .collapse{
+            .ant-collapse-header{
+                font-size: 16px;
+            }
+        }
+    }
+}

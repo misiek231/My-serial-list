@@ -1,0 +1,124 @@
+@import '../../index.scss';
+
+.signIn, .signUp{
+    background: $secondary-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-area: myMain;
+
+    .spider{
+        height: 150px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        display: flex;
+        img{
+            height: 80%;
+        }
+    }
+    .ant-btn{
+        background-color: #7289da; 
+        border: none; 
+        margin: 10px 0;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .label_box:nth-child(1){
+            margin-top: 15px;
+        }
+        .label_box{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin: 5px 0;
+            a,p{
+                font-size: 12px;
+                align-self: flex-end;
+                color: $buttons;
+            }
+            label{
+                align-self: flex-start;
+                color: $secondary-text;
+                font-weight: 700;
+            }
+        }
+        .ant-input-affix-wrapper, .ant-input-password{
+            height:36px;
+            margin: 3px 0;
+            .ant-input{
+                background: $primary-color;
+                color: $text;
+                border: 1px solid #111;
+                font-size: 18px;
+            }
+            .ant-input:focus{
+                border: 1px solid $buttons;
+            }
+            .ant-input-prefix, .ant-input-suffix, .anticon {
+                color: $text;
+            }
+        }
+    }
+    h1{
+        color: $text;
+        font-weight: bold;
+        font-size: 25px;
+        margin: 40px 0 0 0;
+    }
+    p{
+        color: $secondary-text;
+        font-size: 15px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media only screen and (min-width:768px){
+    main{
+        .spider{
+            height: 180px;
+        }
+        h1{
+            margin-top: 40px;
+            font-size: 28px;
+        }
+        p{
+            font-size: 16px;
+        }
+        form{
+            width: 400px;
+            .label_box{
+                width: 100%;
+            }
+            .ant-input-affix-wrapper, .ant-input-password{
+                height: 40px;
+            }
+            .label_box{
+                a,p{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px){
+    main{
+        align-self: center;
+        width: 700px;
+        justify-self: center;
+        border-radius: 8px;
+        box-shadow: 0px -1px 11px 0px rgba(0,0,0,0.75);
+        h1{
+            margin: 15px 0;
+        }
+        .ant-btn{
+            margin-bottom: 20px;
+        }
+    }
+}
